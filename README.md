@@ -229,8 +229,11 @@ APP_URL=http://localhost:3000
 
 - [API 상세 스펙](./API_SPEC.md) ✅
 - [Phase 1 완료 보고서](./PHASE1_COMPLETE.md) ✅
-- [디자인 가이드 v1.0](./docs/design/METI_DESIGN_GUIDE.md) - Warm Professional
-- [디자인 가이드 v2.0](./docs/design/METI_DESIGN_GUIDE_v2_Vibrant.md) - Vibrant Edition ⭐
+- [디자인 가이드 통합본](./docs/design/METI_DESIGN_GUIDE_ALL.md) ⭐
+  - v1: Warm Professional (신뢰 · 안정)
+  - v2: Vibrant (에너지 · 개성)
+  - v3: Aurum (럭셔리 · 프리미엄)
+  - v4: Indigo Script (깊이 · 우아함)
 - [METI 기획문서](./METI_PLANNING.md) (외부 문서)
 - [HappyTree 게임 규칙](./HAPPYTREE_GUIDELINES.md) (외부 문서)
 
