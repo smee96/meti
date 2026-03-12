@@ -227,9 +227,12 @@ APP_URL=http://localhost:3000
 
 ## 🔗 관련 문서
 
-- [METI 기획문서](./METI_PLANNING.md)
-- [HappyTree 게임 규칙](./HAPPYTREE_GUIDELINES.md)
-- [API 상세 스펙](./API_SPEC.md) (작성 예정)
+- [API 상세 스펙](./API_SPEC.md) ✅
+- [Phase 1 완료 보고서](./PHASE1_COMPLETE.md) ✅
+- [디자인 가이드 v1.0](./docs/design/METI_DESIGN_GUIDE.md) - Warm Professional
+- [디자인 가이드 v2.0](./docs/design/METI_DESIGN_GUIDE_v2_Vibrant.md) - Vibrant Edition ⭐
+- [METI 기획문서](./METI_PLANNING.md) (외부 문서)
+- [HappyTree 게임 규칙](./HAPPYTREE_GUIDELINES.md) (외부 문서)
 
 ## 📈 진행 상황
 
