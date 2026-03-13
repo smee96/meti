@@ -361,13 +361,14 @@ const createDesignPage = (version: string, config: {
   `;
 };
 
-// Version 1: White Elegance
+// All design versions
 designVersions.get('/', (c) => {
   const version = c.req.path.split('/')[1]; // Get version from path
   
+  // V1: White Elegance
   if (version === 'v1') {
     return c.html(createDesignPage('v1', {
-      title: 'Version 1: White Elegance',
+      title: 'V1: White Elegance',
       bgColor: '#FFFFFF',
       primaryColor: '#0A2260',
       accentColor: '#D4AF37',
@@ -380,9 +381,10 @@ designVersions.get('/', (c) => {
     }));
   }
   
+  // V2: Soft Gradient
   if (version === 'v2') {
     return c.html(createDesignPage('v2', {
-      title: 'Version 2: Soft Gradient',
+      title: 'V2: Soft Gradient',
       bgColor: 'linear-gradient(135deg, #FFFFFF 0%, #E8EFF7 100%)',
       primaryColor: '#1E3A8A',
       accentColor: '#60A5FA',
@@ -395,9 +397,10 @@ designVersions.get('/', (c) => {
     }));
   }
   
+  // V3: Dark Premium
   if (version === 'v3') {
     return c.html(createDesignPage('v3', {
-      title: 'Version 3: Dark Premium',
+      title: 'V3: Dark Premium',
       bgColor: '#0F0F0F',
       primaryColor: '#60A5FA',
       accentColor: '#60A5FA',
@@ -410,9 +413,10 @@ designVersions.get('/', (c) => {
     }));
   }
   
+  // V4: Current Refined
   if (version === 'v4') {
     return c.html(createDesignPage('v4', {
-      title: 'Version 4: Current Refined',
+      title: 'V4: Current Refined',
       bgColor: '#0A2260',
       primaryColor: '#FFFFFF',
       accentColor: '#D4AF37',
@@ -422,6 +426,86 @@ designVersions.get('/', (c) => {
       secondaryTextColor: 'rgba(255, 255, 255, 0.7)',
       fontFamily: "'Cormorant Garamond', serif",
       description: '진한 네이비 배경에 우아한 세리프 폰트가 신뢰감과 우아함을 동시에 전달하는 클래식 디자인입니다.'
+    }));
+  }
+  
+  // V5: Deep Navy Glassmorphism
+  if (version === 'v5') {
+    return c.html(createDesignPage('v5', {
+      title: 'V5: Deep Navy Glassmorphism',
+      bgColor: '#0A2260',
+      primaryColor: '#FFFFFF',
+      accentColor: '#D4AF37',
+      cardBg: 'rgba(255, 255, 255, 0.10)',
+      cardBorder: 'rgba(255, 255, 255, 0.18)',
+      textColor: '#FFFFFF',
+      secondaryTextColor: 'rgba(255, 255, 255, 0.7)',
+      fontFamily: "'Tenor Sans', serif",
+      description: '진한 네이비 배경에 글래스모피즘 카드가 조화를 이루는 현대적이고 세련된 디자인입니다.'
+    }));
+  }
+  
+  // V6: Warm Professional (Teal)
+  if (version === 'v6') {
+    return c.html(createDesignPage('v6', {
+      title: 'V6: Warm Professional',
+      bgColor: 'linear-gradient(135deg, #0E1C22 0%, #1A3A4A 100%)',
+      primaryColor: '#2EC4A0',
+      accentColor: '#2EC4A0',
+      cardBg: 'rgba(46, 196, 160, 0.08)',
+      cardBorder: 'rgba(46, 196, 160, 0.2)',
+      textColor: '#F5F7F8',
+      secondaryTextColor: 'rgba(245, 247, 248, 0.7)',
+      fontFamily: "'DM Serif Display', serif",
+      description: '신뢰감 있는 틸 컬러와 민트 액센트가 전문성과 따뜻함을 동시에 전달하는 비즈니스 디자인입니다.'
+    }));
+  }
+  
+  // V7: Vibrant
+  if (version === 'v7') {
+    return c.html(createDesignPage('v7', {
+      title: 'V7: Vibrant',
+      bgColor: 'linear-gradient(135deg, #1E1B2E 0%, #2D2840 100%)',
+      primaryColor: '#FF6B6B',
+      accentColor: 'linear-gradient(90deg, #FF6B6B, #6C5CE7, #00CEC9)',
+      cardBg: 'rgba(255, 107, 107, 0.08)',
+      cardBorder: 'rgba(255, 107, 107, 0.2)',
+      textColor: '#FFF9F5',
+      secondaryTextColor: 'rgba(255, 249, 245, 0.7)',
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      description: '화사한 그라데이션과 생동감 있는 컬러로 개성과 에너지를 표현하는 크리에이터 디자인입니다.'
+    }));
+  }
+  
+  // V8: Aurum (Gold/Ivory)
+  if (version === 'v8') {
+    return c.html(createDesignPage('v8', {
+      title: 'V8: Aurum',
+      bgColor: 'linear-gradient(135deg, #12100E 0%, #1C1812 100%)',
+      primaryColor: '#C4A45A',
+      accentColor: '#E2C47A',
+      cardBg: 'rgba(196, 164, 90, 0.08)',
+      cardBorder: 'rgba(196, 164, 90, 0.2)',
+      textColor: '#FAF6EE',
+      secondaryTextColor: 'rgba(250, 246, 238, 0.7)',
+      fontFamily: "'Cormorant Garamond', serif",
+      description: '골드와 아이보리의 조화로 럭셔리하고 격조 있는 프리미엄 비즈니스 디자인입니다.'
+    }));
+  }
+  
+  // V9: Indigo Script
+  if (version === 'v9') {
+    return c.html(createDesignPage('v9', {
+      title: 'V9: Indigo Script',
+      bgColor: 'linear-gradient(135deg, #050C1A 0%, #091428 100%)',
+      primaryColor: '#4F8EF7',
+      accentColor: '#1455C8',
+      cardBg: 'rgba(79, 142, 247, 0.08)',
+      cardBorder: 'rgba(79, 142, 247, 0.2)',
+      textColor: '#EBF1FD',
+      secondaryTextColor: 'rgba(235, 241, 253, 0.7)',
+      fontFamily: "'Noto Serif KR', serif",
+      description: '깊은 네이비와 우아한 스크립트 폰트로 신뢰감과 품격을 동시에 표현하는 클래식 디자인입니다.'
     }));
   }
   

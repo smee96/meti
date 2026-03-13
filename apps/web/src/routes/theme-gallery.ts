@@ -404,10 +404,15 @@ themeGallery.get('/', (c) => {
 <body>
     <nav class="nav">
         <a href="/" class="nav-btn"><i class="fas fa-home"></i> 홈</a>
-        <a href="/v1" class="nav-btn">V1: White Elegance</a>
-        <a href="/v2" class="nav-btn">V2: Soft Gradient</a>
-        <a href="/v3" class="nav-btn">V3: Dark Premium</a>
-        <a href="/v4" class="nav-btn">V4: Current Refined</a>
+        <a href="/v1" class="nav-btn">V1</a>
+        <a href="/v2" class="nav-btn">V2</a>
+        <a href="/v3" class="nav-btn">V3</a>
+        <a href="/v4" class="nav-btn">V4</a>
+        <a href="/v5" class="nav-btn">V5</a>
+        <a href="/v6" class="nav-btn">V6</a>
+        <a href="/v7" class="nav-btn">V7</a>
+        <a href="/v8" class="nav-btn">V8</a>
+        <a href="/v9" class="nav-btn">V9</a>
     </nav>
     
     <div class="container">
@@ -422,7 +427,7 @@ themeGallery.get('/', (c) => {
         
         <div class="design-versions">
             <h2 class="section-title">디자인 버전</h2>
-            <p class="section-subtitle">4가지 디자인 스타일 중 선택하세요</p>
+            <p class="section-subtitle">9가지 디자인 스타일 중 선택하세요</p>
             
             <div class="version-grid">
                 <a href="/v1" class="version-card">
@@ -454,6 +459,46 @@ themeGallery.get('/', (c) => {
                     <div class="version-title">Current Refined</div>
                     <p class="version-description">
                         진한 네이비 배경에 우아한 세리프 폰트가 신뢰감과 우아함을 동시에 전달하는 클래식 디자인
+                    </p>
+                </a>
+                
+                <a href="/v5" class="version-card">
+                    <div class="version-number">V5</div>
+                    <div class="version-title">Deep Navy Glassmorphism</div>
+                    <p class="version-description">
+                        진한 네이비 배경에 글래스모피즘 카드가 조화를 이루는 현대적이고 세련된 디자인
+                    </p>
+                </a>
+                
+                <a href="/v6" class="version-card">
+                    <div class="version-number">V6</div>
+                    <div class="version-title">Warm Professional</div>
+                    <p class="version-description">
+                        신뢰감 있는 틸 컬러와 민트 액센트가 전문성과 따뜻함을 동시에 전달하는 비즈니스 디자인
+                    </p>
+                </a>
+                
+                <a href="/v7" class="version-card">
+                    <div class="version-number">V7</div>
+                    <div class="version-title">Vibrant</div>
+                    <p class="version-description">
+                        화사한 그라데이션과 생동감 있는 컬러로 개성과 에너지를 표현하는 크리에이터 디자인
+                    </p>
+                </a>
+                
+                <a href="/v8" class="version-card">
+                    <div class="version-number">V8</div>
+                    <div class="version-title">Aurum</div>
+                    <p class="version-description">
+                        골드와 아이보리의 조화로 럭셔리하고 격조 있는 프리미엄 비즈니스 디자인
+                    </p>
+                </a>
+                
+                <a href="/v9" class="version-card">
+                    <div class="version-number">V9</div>
+                    <div class="version-title">Indigo Script</div>
+                    <p class="version-description">
+                        깊은 네이비와 우아한 스크립트 폰트로 신뢰감과 품격을 동시에 표현하는 클래식 디자인
                     </p>
                 </a>
             </div>

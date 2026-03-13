@@ -38,6 +38,11 @@ app.route('/v1', designVersions);
 app.route('/v2', designVersions);
 app.route('/v3', designVersions);
 app.route('/v4', designVersions);
+app.route('/v5', designVersions);
+app.route('/v6', designVersions);
+app.route('/v7', designVersions);
+app.route('/v8', designVersions);
+app.route('/v9', designVersions);
 
 // Landing page (catch all root)
 app.route('/', landing);
