@@ -1,0 +1,10 @@
+{
+  "name": "@meti/shared-types",
+  "version": "0.2.0",
+  "description": "METI shared TypeScript types",
+  "type": "module",
+  "main": "index.ts",
+  "exports": {
+    ".": "./index.ts"
+  }
+}
