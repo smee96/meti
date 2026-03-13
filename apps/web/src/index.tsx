@@ -8,6 +8,7 @@ import auth from './routes/auth';
 import cards from './routes/cards';
 import game from './routes/game';
 import wallet from './routes/wallet';
+import publicCard from './routes/public-card';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -22,6 +23,9 @@ app.route('/api/auth', auth);
 app.route('/api/cards', cards);
 app.route('/api/game', game);
 app.route('/api/wallet', wallet);
+
+// Public card page
+app.route('/c', publicCard);
 
 // Health check
 app.get('/api/health', (c) => {

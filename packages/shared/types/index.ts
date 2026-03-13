@@ -13,6 +13,21 @@ export interface User {
 }
 
 /**
+ * Card Theme (V5 Design)
+ */
+export type CardTheme = 
+  | 'deep-navy'
+  | 'midnight-teal'
+  | 'forest-deep'
+  | 'royal-burgundy'
+  | 'charcoal-dark'
+  | 'slate-blue'
+  | 'deep-purple'
+  | 'warm-brown'
+  | 'olive-night'
+  | 'sunset-orange';
+
+/**
  * Card - Digital Business Card
  */
 export interface Card {
@@ -21,6 +36,7 @@ export interface Card {
   displayName: string;
   headline: string;
   avatarUrl?: string | null;
+  theme?: CardTheme; // V5 design theme
   links: CardLink[];
   contacts: CardContacts;
   visibility: CardVisibility;
