@@ -10,6 +10,8 @@ import game from './routes/game';
 import wallet from './routes/wallet';
 import publicCard from './routes/public-card';
 import landing from './routes/landing';
+import designVersions from './routes/design-versions';
+import themeGallery from './routes/theme-gallery';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -28,7 +30,16 @@ app.route('/api/wallet', wallet);
 // Public card page
 app.route('/c', publicCard);
 
-// Landing page
+// Theme gallery
+app.route('/themes', themeGallery);
+
+// Design versions (must be before landing to avoid conflicts)
+app.route('/v1', designVersions);
+app.route('/v2', designVersions);
+app.route('/v3', designVersions);
+app.route('/v4', designVersions);
+
+// Landing page (catch all root)
 app.route('/', landing);
 
 // Health check
