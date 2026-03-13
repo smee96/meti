@@ -158,10 +158,6 @@ themeGallery.get('/', (c) => {
         line-height: 1.7;
       }
       
-      .design-versions {
-        margin-bottom: 80px;
-      }
-      
       .section-title {
         font-size: 28px;
         font-weight: 600;
@@ -174,53 +170,6 @@ themeGallery.get('/', (c) => {
         opacity: 0.7;
         margin-bottom: 40px;
         font-size: 15px;
-      }
-      
-      .version-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 24px;
-        margin-bottom: 60px;
-      }
-      
-      .version-card {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
-        border-radius: 20px;
-        padding: 32px;
-        text-align: center;
-        transition: all 0.3s;
-        cursor: pointer;
-        text-decoration: none;
-        color: #fff;
-        display: block;
-      }
-      
-      .version-card:hover {
-        background: rgba(255,255,255,0.12);
-        transform: translateY(-8px);
-        box-shadow: 0 12px 32px rgba(0,0,0,0.3);
-      }
-      
-      .version-number {
-        font-family: 'Tenor Sans', serif;
-        font-size: 18px;
-        letter-spacing: 8px;
-        padding-left: 8px;
-        margin-bottom: 16px;
-        opacity: 0.7;
-      }
-      
-      .version-title {
-        font-size: 22px;
-        font-weight: 600;
-        margin-bottom: 12px;
-      }
-      
-      .version-description {
-        font-size: 14px;
-        opacity: 0.8;
-        line-height: 1.6;
       }
       
       .theme-grid {
@@ -394,20 +343,12 @@ themeGallery.get('/', (c) => {
         .theme-grid {
           grid-template-columns: 1fr;
         }
-        
-        .version-grid {
-          grid-template-columns: 1fr;
-        }
       }
     </style>
 </head>
 <body>
     <nav class="nav">
         <a href="/" class="nav-btn"><i class="fas fa-home"></i> 메인</a>
-        <a href="/v1" class="nav-btn">V1: Warm Professional</a>
-        <a href="/v2" class="nav-btn">V2: Vibrant</a>
-        <a href="/v3" class="nav-btn">V3: Aurum</a>
-        <a href="/v4" class="nav-btn">V4: Indigo Script</a>
     </nav>
     
     <div class="container">
@@ -415,48 +356,9 @@ themeGallery.get('/', (c) => {
             <div class="logo">METI</div>
             <div class="subtitle">테마 갤러리</div>
             <p class="description">
-                디자인 버전과 컬러 테마를 자유롭게 선택하여<br>
+                10가지 컬러 테마를 자유롭게 선택하여<br>
                 나만의 개성을 담은 디지털 명함을 만들어보세요
             </p>
-        </div>
-        
-        <div class="design-versions">
-            <h2 class="section-title">디자인 버전</h2>
-            <p class="section-subtitle">4가지 디자인 스타일 중 선택하세요</p>
-            
-            <div class="version-grid">
-                <a href="/v1" class="version-card">
-                    <div class="version-number">V1</div>
-                    <div class="version-title">Warm Professional</div>
-                    <p class="version-description">
-                        신뢰감 있는 틸 컬러와 민트 액센트. 30-40대 B2B 전문가를 위한 디자인
-                    </p>
-                </a>
-                
-                <a href="/v2" class="version-card">
-                    <div class="version-number">V2</div>
-                    <div class="version-title">Vibrant</div>
-                    <p class="version-description">
-                        화사한 그라데이션으로 개성과 에너지 표현. 20-30대 스타트업, 크리에이터를 위한 디자인
-                    </p>
-                </a>
-                
-                <a href="/v3" class="version-card">
-                    <div class="version-number">V3</div>
-                    <div class="version-title">Aurum</div>
-                    <p class="version-description">
-                        골드와 아이보리의 럭셔리 조화. 전문직, 임원, 고급 프리랜서를 위한 디자인
-                    </p>
-                </a>
-                
-                <a href="/v4" class="version-card">
-                    <div class="version-number">V4</div>
-                    <div class="version-title">Indigo Script</div>
-                    <p class="version-description">
-                        깊은 네이비와 우아한 세리프. 전 연령, 품격 있는 전문직을 위한 디자인
-                    </p>
-                </a>
-            </div>
         </div>
         
         <div class="theme-colors">
@@ -491,7 +393,7 @@ themeGallery.get('/', (c) => {
         </div>
         
         <div class="cta-section">
-            <div class="cta-title">마음에 드는 디자인을 찾으셨나요?</div>
+            <div class="cta-title">마음에 드는 테마를 찾으셨나요?</div>
             <p class="cta-text">
                 지금 바로 무료로 나만의 디지털 명함을 만들어보세요
             </p>
