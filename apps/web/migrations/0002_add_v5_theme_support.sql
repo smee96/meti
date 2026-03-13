@@ -5,7 +5,7 @@
 ALTER TABLE cards ADD COLUMN theme TEXT DEFAULT 'deep-navy';
 
 -- Add short_id column for URL sharing (/c/:shortId)
-ALTER TABLE cards ADD COLUMN short_id TEXT UNIQUE;
+ALTER TABLE cards ADD COLUMN short_id TEXT;
 
 -- Add headline column (one-line intro from v0.2 spec)
 ALTER TABLE cards ADD COLUMN headline TEXT;
@@ -42,3 +42,6 @@ CREATE INDEX IF NOT EXISTS idx_card_view_events_viewed_at ON card_view_events(vi
 
 -- Update existing cards with short_id if they don't have one
 UPDATE cards SET short_id = substr(id, 1, 8) WHERE short_id IS NULL;
+
+-- Create unique index on short_id (after data is populated)
+CREATE UNIQUE INDEX IF NOT EXISTS idx_cards_short_id ON cards(short_id);
