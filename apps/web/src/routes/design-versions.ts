@@ -14,6 +14,7 @@ const createDesignPage = (version: string, config: {
   textColor: string;
   secondaryTextColor: string;
   fontFamily: string;
+  fontImport: string;
   description: string;
 }) => {
   return `
@@ -26,7 +27,7 @@ const createDesignPage = (version: string, config: {
     <meta name="description" content="METI 디지털 명함 - ${config.description}">
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Noto+Sans+KR:wght@300;400;500;700&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    ${config.fontImport}
     
     <!-- Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
@@ -70,6 +71,8 @@ const createDesignPage = (version: string, config: {
         display: flex;
         gap: 12px;
         z-index: 100;
+        flex-wrap: wrap;
+        max-width: 300px;
       }
       
       .nav-btn {
@@ -149,7 +152,6 @@ const createDesignPage = (version: string, config: {
       .feature-icon {
         font-size: 40px;
         margin-bottom: 20px;
-        color: ${config.accentColor};
       }
       
       .feature-title {
@@ -271,8 +273,12 @@ const createDesignPage = (version: string, config: {
     <div class="version-badge">${config.title}</div>
     
     <nav class="nav">
-        <a href="/" class="nav-btn"><i class="fas fa-home"></i> 홈</a>
-        <a href="/themes" class="nav-btn"><i class="fas fa-palette"></i> 테마 갤러리</a>
+        <a href="/" class="nav-btn"><i class="fas fa-home"></i> 메인</a>
+        <a href="/themes" class="nav-btn"><i class="fas fa-palette"></i> 테마</a>
+        <a href="/v1" class="nav-btn">V1</a>
+        <a href="/v2" class="nav-btn">V2</a>
+        <a href="/v3" class="nav-btn">V3</a>
+        <a href="/v4" class="nav-btn">V4</a>
     </nav>
     
     <div class="container">
@@ -361,94 +367,14 @@ const createDesignPage = (version: string, config: {
   `;
 };
 
-// All design versions
+// All design versions handler
 designVersions.get('/', (c) => {
-  const version = c.req.path.split('/')[1]; // Get version from path
+  const version = c.req.path.split('/')[1];
   
-  // V1: White Elegance
+  // V1: Warm Professional (Teal & Mint)
   if (version === 'v1') {
     return c.html(createDesignPage('v1', {
-      title: 'V1: White Elegance',
-      bgColor: '#FFFFFF',
-      primaryColor: '#0A2260',
-      accentColor: '#D4AF37',
-      cardBg: 'rgba(10, 34, 96, 0.04)',
-      cardBorder: 'rgba(10, 34, 96, 0.12)',
-      textColor: '#0A2260',
-      secondaryTextColor: 'rgba(10, 34, 96, 0.6)',
-      fontFamily: "'Noto Sans KR', sans-serif",
-      description: '깔끔한 흰색 배경에 네이비 폰트와 골드 액센트가 어우러진 모던하고 프리미엄한 디자인입니다.'
-    }));
-  }
-  
-  // V2: Soft Gradient
-  if (version === 'v2') {
-    return c.html(createDesignPage('v2', {
-      title: 'V2: Soft Gradient',
-      bgColor: 'linear-gradient(135deg, #FFFFFF 0%, #E8EFF7 100%)',
-      primaryColor: '#1E3A8A',
-      accentColor: '#60A5FA',
-      cardBg: 'rgba(255, 255, 255, 0.7)',
-      cardBorder: 'rgba(30, 58, 138, 0.15)',
-      textColor: '#1E3A8A',
-      secondaryTextColor: 'rgba(30, 58, 138, 0.65)',
-      fontFamily: "'Noto Sans KR', sans-serif",
-      description: '부드러운 그라데이션 배경과 소프트 블루 컬러가 조화를 이루는 세련되고 고급스러운 디자인입니다.'
-    }));
-  }
-  
-  // V3: Dark Premium
-  if (version === 'v3') {
-    return c.html(createDesignPage('v3', {
-      title: 'V3: Dark Premium',
-      bgColor: '#0F0F0F',
-      primaryColor: '#60A5FA',
-      accentColor: '#60A5FA',
-      cardBg: 'rgba(255, 255, 255, 0.05)',
-      cardBorder: 'rgba(255, 255, 255, 0.1)',
-      textColor: '#E5E7EB',
-      secondaryTextColor: 'rgba(229, 231, 235, 0.6)',
-      fontFamily: "'Noto Sans KR', sans-serif",
-      description: '매트 블랙 배경과 브라이트 블루가 만나는 현대적이고 하이엔드 감성의 테크 디자인입니다.'
-    }));
-  }
-  
-  // V4: Current Refined
-  if (version === 'v4') {
-    return c.html(createDesignPage('v4', {
-      title: 'V4: Current Refined',
-      bgColor: '#0A2260',
-      primaryColor: '#FFFFFF',
-      accentColor: '#D4AF37',
-      cardBg: 'rgba(255, 255, 255, 0.08)',
-      cardBorder: 'rgba(255, 255, 255, 0.15)',
-      textColor: '#FFFFFF',
-      secondaryTextColor: 'rgba(255, 255, 255, 0.7)',
-      fontFamily: "'Cormorant Garamond', serif",
-      description: '진한 네이비 배경에 우아한 세리프 폰트가 신뢰감과 우아함을 동시에 전달하는 클래식 디자인입니다.'
-    }));
-  }
-  
-  // V5: Deep Navy Glassmorphism
-  if (version === 'v5') {
-    return c.html(createDesignPage('v5', {
-      title: 'V5: Deep Navy Glassmorphism',
-      bgColor: '#0A2260',
-      primaryColor: '#FFFFFF',
-      accentColor: '#D4AF37',
-      cardBg: 'rgba(255, 255, 255, 0.10)',
-      cardBorder: 'rgba(255, 255, 255, 0.18)',
-      textColor: '#FFFFFF',
-      secondaryTextColor: 'rgba(255, 255, 255, 0.7)',
-      fontFamily: "'Tenor Sans', serif",
-      description: '진한 네이비 배경에 글래스모피즘 카드가 조화를 이루는 현대적이고 세련된 디자인입니다.'
-    }));
-  }
-  
-  // V6: Warm Professional (Teal)
-  if (version === 'v6') {
-    return c.html(createDesignPage('v6', {
-      title: 'V6: Warm Professional',
+      title: 'V1: Warm Professional',
       bgColor: 'linear-gradient(135deg, #0E1C22 0%, #1A3A4A 100%)',
       primaryColor: '#2EC4A0',
       accentColor: '#2EC4A0',
@@ -456,31 +382,33 @@ designVersions.get('/', (c) => {
       cardBorder: 'rgba(46, 196, 160, 0.2)',
       textColor: '#F5F7F8',
       secondaryTextColor: 'rgba(245, 247, 248, 0.7)',
-      fontFamily: "'DM Serif Display', serif",
-      description: '신뢰감 있는 틸 컬러와 민트 액센트가 전문성과 따뜻함을 동시에 전달하는 비즈니스 디자인입니다.'
+      fontFamily: "'Pretendard', 'Noto Sans KR', sans-serif",
+      fontImport: '<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+KR:wght@300;400;500;700&family=Tenor+Sans&display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">',
+      description: '신뢰감 있는 틸 컬러와 민트 액센트가 전문성과 따뜻함을 동시에 전달합니다. 30-40대 B2B 전문가를 위한 디자인입니다.'
     }));
   }
   
-  // V7: Vibrant
-  if (version === 'v7') {
-    return c.html(createDesignPage('v7', {
-      title: 'V7: Vibrant',
+  // V2: Vibrant (Colorful Gradient)
+  if (version === 'v2') {
+    return c.html(createDesignPage('v2', {
+      title: 'V2: Vibrant',
       bgColor: 'linear-gradient(135deg, #1E1B2E 0%, #2D2840 100%)',
       primaryColor: '#FF6B6B',
-      accentColor: 'linear-gradient(90deg, #FF6B6B, #6C5CE7, #00CEC9)',
+      accentColor: '#FF6B6B',
       cardBg: 'rgba(255, 107, 107, 0.08)',
       cardBorder: 'rgba(255, 107, 107, 0.2)',
       textColor: '#FFF9F5',
       secondaryTextColor: 'rgba(255, 249, 245, 0.7)',
-      fontFamily: "'Plus Jakarta Sans', sans-serif",
-      description: '화사한 그라데이션과 생동감 있는 컬러로 개성과 에너지를 표현하는 크리에이터 디자인입니다.'
+      fontFamily: "'Plus Jakarta Sans', 'Noto Sans KR', sans-serif",
+      fontImport: '<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&family=Tenor+Sans&display=swap" rel="stylesheet">',
+      description: '화사한 그라데이션과 생동감 있는 컬러로 개성과 에너지를 표현합니다. 20-30대 스타트업, 프리랜서, 크리에이터를 위한 디자인입니다.'
     }));
   }
   
-  // V8: Aurum (Gold/Ivory)
-  if (version === 'v8') {
-    return c.html(createDesignPage('v8', {
-      title: 'V8: Aurum',
+  // V3: Aurum (Gold/Ivory)
+  if (version === 'v3') {
+    return c.html(createDesignPage('v3', {
+      title: 'V3: Aurum',
       bgColor: 'linear-gradient(135deg, #12100E 0%, #1C1812 100%)',
       primaryColor: '#C4A45A',
       accentColor: '#E2C47A',
@@ -488,15 +416,16 @@ designVersions.get('/', (c) => {
       cardBorder: 'rgba(196, 164, 90, 0.2)',
       textColor: '#FAF6EE',
       secondaryTextColor: 'rgba(250, 246, 238, 0.7)',
-      fontFamily: "'Cormorant Garamond', serif",
-      description: '골드와 아이보리의 조화로 럭셔리하고 격조 있는 프리미엄 비즈니스 디자인입니다.'
+      fontFamily: "'Cormorant Garamond', 'Noto Serif KR', serif",
+      fontImport: '<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@300;400;500;700&family=Tenor+Sans&display=swap" rel="stylesheet">',
+      description: '골드와 아이보리의 조화로 럭셔리하고 격조 있는 프리미엄을 표현합니다. 전문직, 임원, 고급 프리랜서를 위한 디자인입니다.'
     }));
   }
   
-  // V9: Indigo Script
-  if (version === 'v9') {
-    return c.html(createDesignPage('v9', {
-      title: 'V9: Indigo Script',
+  // V4: Indigo Script (Deep Navy)
+  if (version === 'v4') {
+    return c.html(createDesignPage('v4', {
+      title: 'V4: Indigo Script',
       bgColor: 'linear-gradient(135deg, #050C1A 0%, #091428 100%)',
       primaryColor: '#4F8EF7',
       accentColor: '#1455C8',
@@ -505,7 +434,8 @@ designVersions.get('/', (c) => {
       textColor: '#EBF1FD',
       secondaryTextColor: 'rgba(235, 241, 253, 0.7)',
       fontFamily: "'Noto Serif KR', serif",
-      description: '깊은 네이비와 우아한 스크립트 폰트로 신뢰감과 품격을 동시에 표현하는 클래식 디자인입니다.'
+      fontImport: '<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700&family=Tenor+Sans&display=swap" rel="stylesheet">',
+      description: '깊은 네이비와 우아한 세리프 폰트로 신뢰감과 품격을 동시에 표현합니다. 전 연령, 품격 있는 이미지를 원하는 전문직을 위한 디자인입니다.'
     }));
   }
   

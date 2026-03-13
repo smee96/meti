@@ -403,16 +403,11 @@ themeGallery.get('/', (c) => {
 </head>
 <body>
     <nav class="nav">
-        <a href="/" class="nav-btn"><i class="fas fa-home"></i> 홈</a>
-        <a href="/v1" class="nav-btn">V1</a>
-        <a href="/v2" class="nav-btn">V2</a>
-        <a href="/v3" class="nav-btn">V3</a>
-        <a href="/v4" class="nav-btn">V4</a>
-        <a href="/v5" class="nav-btn">V5</a>
-        <a href="/v6" class="nav-btn">V6</a>
-        <a href="/v7" class="nav-btn">V7</a>
-        <a href="/v8" class="nav-btn">V8</a>
-        <a href="/v9" class="nav-btn">V9</a>
+        <a href="/" class="nav-btn"><i class="fas fa-home"></i> 메인</a>
+        <a href="/v1" class="nav-btn">V1: Warm Professional</a>
+        <a href="/v2" class="nav-btn">V2: Vibrant</a>
+        <a href="/v3" class="nav-btn">V3: Aurum</a>
+        <a href="/v4" class="nav-btn">V4: Indigo Script</a>
     </nav>
     
     <div class="container">
@@ -427,78 +422,38 @@ themeGallery.get('/', (c) => {
         
         <div class="design-versions">
             <h2 class="section-title">디자인 버전</h2>
-            <p class="section-subtitle">9가지 디자인 스타일 중 선택하세요</p>
+            <p class="section-subtitle">4가지 디자인 스타일 중 선택하세요</p>
             
             <div class="version-grid">
                 <a href="/v1" class="version-card">
                     <div class="version-number">V1</div>
-                    <div class="version-title">White Elegance</div>
+                    <div class="version-title">Warm Professional</div>
                     <p class="version-description">
-                        깔끔한 흰색 배경에 네이비 폰트와 골드 액센트가 어우러진 모던하고 프리미엄한 디자인
+                        신뢰감 있는 틸 컬러와 민트 액센트. 30-40대 B2B 전문가를 위한 디자인
                     </p>
                 </a>
                 
                 <a href="/v2" class="version-card">
                     <div class="version-number">V2</div>
-                    <div class="version-title">Soft Gradient</div>
+                    <div class="version-title">Vibrant</div>
                     <p class="version-description">
-                        부드러운 그라데이션 배경과 소프트 블루 컬러가 조화를 이루는 세련되고 고급스러운 디자인
+                        화사한 그라데이션으로 개성과 에너지 표현. 20-30대 스타트업, 크리에이터를 위한 디자인
                     </p>
                 </a>
                 
                 <a href="/v3" class="version-card">
                     <div class="version-number">V3</div>
-                    <div class="version-title">Dark Premium</div>
+                    <div class="version-title">Aurum</div>
                     <p class="version-description">
-                        매트 블랙 배경과 브라이트 블루가 만나는 현대적이고 하이엔드 감성의 테크 디자인
+                        골드와 아이보리의 럭셔리 조화. 전문직, 임원, 고급 프리랜서를 위한 디자인
                     </p>
                 </a>
                 
                 <a href="/v4" class="version-card">
                     <div class="version-number">V4</div>
-                    <div class="version-title">Current Refined</div>
-                    <p class="version-description">
-                        진한 네이비 배경에 우아한 세리프 폰트가 신뢰감과 우아함을 동시에 전달하는 클래식 디자인
-                    </p>
-                </a>
-                
-                <a href="/v5" class="version-card">
-                    <div class="version-number">V5</div>
-                    <div class="version-title">Deep Navy Glassmorphism</div>
-                    <p class="version-description">
-                        진한 네이비 배경에 글래스모피즘 카드가 조화를 이루는 현대적이고 세련된 디자인
-                    </p>
-                </a>
-                
-                <a href="/v6" class="version-card">
-                    <div class="version-number">V6</div>
-                    <div class="version-title">Warm Professional</div>
-                    <p class="version-description">
-                        신뢰감 있는 틸 컬러와 민트 액센트가 전문성과 따뜻함을 동시에 전달하는 비즈니스 디자인
-                    </p>
-                </a>
-                
-                <a href="/v7" class="version-card">
-                    <div class="version-number">V7</div>
-                    <div class="version-title">Vibrant</div>
-                    <p class="version-description">
-                        화사한 그라데이션과 생동감 있는 컬러로 개성과 에너지를 표현하는 크리에이터 디자인
-                    </p>
-                </a>
-                
-                <a href="/v8" class="version-card">
-                    <div class="version-number">V8</div>
-                    <div class="version-title">Aurum</div>
-                    <p class="version-description">
-                        골드와 아이보리의 조화로 럭셔리하고 격조 있는 프리미엄 비즈니스 디자인
-                    </p>
-                </a>
-                
-                <a href="/v9" class="version-card">
-                    <div class="version-number">V9</div>
                     <div class="version-title">Indigo Script</div>
                     <p class="version-description">
-                        깊은 네이비와 우아한 스크립트 폰트로 신뢰감과 품격을 동시에 표현하는 클래식 디자인
+                        깊은 네이비와 우아한 세리프. 전 연령, 품격 있는 전문직을 위한 디자인
                     </p>
                 </a>
             </div>

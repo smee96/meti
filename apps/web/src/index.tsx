@@ -34,15 +34,11 @@ app.route('/c', publicCard);
 app.route('/themes', themeGallery);
 
 // Design versions (must be before landing to avoid conflicts)
+// Only V1-V4 from design guide
 app.route('/v1', designVersions);
 app.route('/v2', designVersions);
 app.route('/v3', designVersions);
 app.route('/v4', designVersions);
-app.route('/v5', designVersions);
-app.route('/v6', designVersions);
-app.route('/v7', designVersions);
-app.route('/v8', designVersions);
-app.route('/v9', designVersions);
 
 // Landing page (catch all root)
 app.route('/', landing);
