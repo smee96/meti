@@ -14,6 +14,10 @@ function getUserIdFromToken(authHeader: string | undefined): string | null {
   return token.replace('mock-token-', '');
 }
 
+// Constants
+const MAX_CARDS_PER_USER = 20; // System limit (backend)
+const DISPLAY_CARD_LIMIT = 5; // UI display limit (frontend can show this message)
+
 // Create a new card
 cards.post('/', async (c) => {
   try {
@@ -29,6 +33,17 @@ cards.post('/', async (c) => {
     }
 
     const db = new Database(c.env.DB);
+    
+    // Check card count limit
+    const userCards = await db.getCardsByUserId(userId);
+    if (userCards.length >= MAX_CARDS_PER_USER) {
+      return c.json({ 
+        success: false, 
+        error: `명함은 최대 ${MAX_CARDS_PER_USER}개까지 생성할 수 있습니다.`,
+        code: 'CARD_LIMIT_EXCEEDED'
+      }, 400);
+    }
+
     const card = await db.createCard(userId, cardData);
 
     // Record card creation reward
@@ -57,7 +72,13 @@ cards.get('/', async (c) => {
 
     return c.json({
       success: true,
-      data: { cards: userCards },
+      data: { 
+        cards: userCards,
+        total: userCards.length,
+        limit: MAX_CARDS_PER_USER,
+        displayLimit: DISPLAY_CARD_LIMIT,
+        canCreateMore: userCards.length < MAX_CARDS_PER_USER
+      },
     });
   } catch (error) {
     console.error('Get cards error:', error);
