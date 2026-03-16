@@ -527,7 +527,7 @@ export const landingPageHTML = `
         </p>
         
         <div class="cta-buttons">
-            <a href="/api/auth/register" class="btn-primary btn-large">
+            <a href="/auth/register" class="btn-primary btn-large">
                 <i class="fas fa-rocket" style="margin-right: 8px;"></i>
                 무료로 시작하기
             </a>
@@ -664,7 +664,7 @@ export const landingPageHTML = `
             30초 만에 가입하고, 첫 번째 디지털 명함을 만들어보세요. 
             신용카드 정보는 필요 없습니다.
         </p>
-        <a href="/api/auth/register" class="btn-primary btn-large">
+        <a href="/auth/register" class="btn-primary btn-large">
             <i class="fas fa-rocket" style="margin-right: 8px;"></i>
             무료로 시작하기
         </a>

@@ -5,6 +5,7 @@ import type { Env } from './types';
 
 // Import routes
 import auth from './routes/auth';
+import authPages from './routes/auth-pages';
 import cards from './routes/cards';
 import game from './routes/game';
 import wallet from './routes/wallet';
@@ -26,6 +27,9 @@ app.route('/api/auth', auth);
 app.route('/api/cards', cards);
 app.route('/api/game', game);
 app.route('/api/wallet', wallet);
+
+// Auth pages (login/register)
+app.route('/auth', authPages);
 
 // Public card page
 app.route('/c', publicCard);
