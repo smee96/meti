@@ -807,12 +807,23 @@ function getEditorHTML(mode: 'new' | 'edit', cardId: string | null) {
         function removeLink(index) {
             links.splice(index, 1);
             
-            // Rebuild links list
+            // Rebuild links list without adding to array again
             const linksList = document.getElementById('linksList');
             linksList.innerHTML = '';
             links.forEach((link, i) => {
-                addLink(link.title, link.url);
+                const linkItem = document.createElement('div');
+                linkItem.className = 'link-item';
+                linkItem.innerHTML = \`
+                    <input type="text" class="form-input" placeholder="링크 제목" value="\${link.title}" oninput="updateLink(\${i}, 'title', this.value)">
+                    <input type="url" class="form-input" placeholder="https://" value="\${link.url}" oninput="updateLink(\${i}, 'url', this.value)">
+                    <button class="link-remove" onclick="removeLink(\${i})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                \`;
+                linksList.appendChild(linkItem);
             });
+            
+            updatePreview();
         }
 
         // Select theme
