@@ -502,7 +502,7 @@ export const landingPageHTML = `
             <div class="nav-links">
                 <a href="#features">기능</a>
                 <a href="#about">소개</a>
-                <a href="/auth/login" class="btn-primary" style="background: #D4AF37; color: #0A2260;">시작하기</a>
+                <a href="/auth/login" class="btn-primary" style="background: white; color: #0A2260;">시작하기</a>
             </div>
             <button class="mobile-menu-btn" onclick="alert('모바일 메뉴 준비 중')">
                 <i class="fas fa-bars"></i>

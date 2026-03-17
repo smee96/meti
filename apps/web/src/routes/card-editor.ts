@@ -651,6 +651,13 @@ function getEditorHTML(mode: 'new' | 'edit', cardId: string | null) {
                 `).join('')}
             </div>
         </div>
+
+        <!-- Bottom Save Button -->
+        <div style="text-align: center; margin-top: 40px; padding-bottom: 40px;">
+            <button class="btn btn-primary" onclick="saveCard()" style="padding: 16px 48px; font-size: 18px;">
+                <i class="fas fa-save"></i> ${mode === 'new' ? '명함 만들기' : '명함 저장하기'}
+            </button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
@@ -937,10 +944,10 @@ function getEditorHTML(mode: 'new' | 'edit', cardId: string | null) {
                 return;
             }
 
-            const token = localStorage.getItem('meti_token');
+            const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
             if (!token) {
                 alert('로그인이 필요합니다.');
-                window.location.href = '/login';
+                window.location.href = '/auth/login';
                 return;
             }
 
