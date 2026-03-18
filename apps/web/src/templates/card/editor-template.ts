@@ -288,7 +288,7 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
                     currentAvatarUrl = resizedDataUrl;
                     avatarFile = null; // Clear file since we're using data URL now
                 };
-                img.src = e.target.result as string;
+                img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
