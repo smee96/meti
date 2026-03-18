@@ -497,9 +497,9 @@ myCardView.get('/:id', async (c) => {
         const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
         
         if (!token) {
-          // Save return URL and redirect to login
-          const returnUrl = encodeURIComponent(window.location.pathname);
-          window.location.href = '/auth/login?return=' + returnUrl;
+          // Redirect to login without return URL to avoid infinite loop
+          alert('로그인이 필요합니다.');
+          window.location.href = '/auth/login';
           return;
         }
         
@@ -509,8 +509,10 @@ myCardView.get('/:id', async (c) => {
           });
           
           if (!response.ok) {
-            const returnUrl = encodeURIComponent(window.location.pathname);
-            window.location.href = '/auth/login?return=' + returnUrl;
+            alert('로그인이 만료되었습니다.');
+            localStorage.removeItem('meti_token');
+            sessionStorage.removeItem('meti_token');
+            window.location.href = '/auth/login';
             return;
           }
           
@@ -524,8 +526,8 @@ myCardView.get('/:id', async (c) => {
           }
         } catch (error) {
           console.error('Auth error:', error);
-          const returnUrl = encodeURIComponent(window.location.pathname);
-          window.location.href = '/auth/login?return=' + returnUrl;
+          alert('인증 오류가 발생했습니다.');
+          window.location.href = '/my/cards';
         }
       }
       
