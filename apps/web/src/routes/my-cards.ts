@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../types';
+import { getShareModalHTML, getShareModalStyles, getShareModalScript } from '../utils/share-modal';
 
 const myCards = new Hono<{ Bindings: Env }>();
 
@@ -656,6 +657,8 @@ function getMyCardsHTML() {
         .modal-btn.confirm:hover {
             background: #c0392b;
         }
+        
+        ${getShareModalStyles()}
     </style>
 </head>
 <body>
@@ -904,23 +907,12 @@ function getMyCardsHTML() {
                     </div>
                 </div>
 
-                <div class="card-meta">
-                    <div class="card-meta-item">
-                        <i class="fas fa-eye"></i>
-                        <span>\${card.view_count || 0}회 조회</span>
-                    </div>
-                    <div class="card-meta-item">
-                        <i class="fas fa-clock"></i>
-                        <span>\${formatDate(card.created_at)}</span>
-                    </div>
-                </div>
-
                 <div class="card-actions">
                     <button class="card-btn" onclick="viewCard('\${card.id}')">
                         <i class="fas fa-eye"></i>
                         보기
                     </button>
-                    <button class="card-btn" onclick="shareCard('\${card.id}')">
+                    <button class="card-btn" onclick="shareCard('\${card.id}', '\${card.name}', '\${card.headline || ''}')">
                         <i class="fas fa-share-alt"></i>
                         공유
                     </button>
@@ -969,24 +961,18 @@ function getMyCardsHTML() {
         }
 
         // Share card
-        async function shareCard(cardId) {
-            const url = \`\${window.location.origin}/c/\${cardId}\`;
+        // Share card - use Remember-style modal
+        let currentShareCardId = null;
+        let currentShareCardName = '';
+        let currentShareCardHeadline = '';
+        
+        function shareCard(cardId, cardName, cardHeadline) {
+            currentShareCardId = cardId;
+            currentShareCardName = cardName || '명함';
+            currentShareCardHeadline = cardHeadline || '';
             
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'METI 명함',
-                        text: '내 디지털 명함을 확인하세요',
-                        url: url
-                    });
-                } catch (err) {
-                    if (err.name !== 'AbortError') {
-                        copyToClipboard(url);
-                    }
-                }
-            } else {
-                copyToClipboard(url);
-            }
+            // Open share modal
+            openShareModal();
         }
 
         // Copy to clipboard
@@ -1041,6 +1027,118 @@ function getMyCardsHTML() {
                 console.error('Delete error:', error);
                 alert('명함 삭제에 실패했습니다.');
             }
+        }
+    </script>
+    
+    ${getShareModalHTML()}
+    
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script>
+        // Share modal functions for my-cards page
+        let qrCodeInstance = null;
+
+        function openShareModal() {
+            document.getElementById('shareModalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close on overlay click
+        document.getElementById('shareModalOverlay')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeShareModal();
+            }
+        });
+
+        // Get current card URL
+        function getCurrentCardUrl() {
+            return window.location.origin + '/c/' + currentShareCardId;
+        }
+
+        // Share via SMS
+        function shareViaSMS() {
+            const text = currentShareCardName + '님의 METI 디지털 명함입니다: ' + getCurrentCardUrl();
+            window.location.href = 'sms:?body=' + encodeURIComponent(text);
+            closeShareModal();
+        }
+
+        // Share via KakaoTalk
+        function shareViaKakao() {
+            alert('카카오톡 공유 기능은 준비 중입니다.');
+            closeShareModal();
+        }
+
+        // Share via Copy Link
+        async function shareViaCopyLink() {
+            try {
+                await navigator.clipboard.writeText(getCurrentCardUrl());
+                alert('✅ 링크가 복사되었습니다!');
+                closeShareModal();
+            } catch (error) {
+                const textarea = document.createElement('textarea');
+                textarea.value = getCurrentCardUrl();
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('✅ 링크가 복사되었습니다!');
+                closeShareModal();
+            }
+        }
+
+        // Share via QR Code
+        function shareViaQR() {
+            closeShareModal();
+            
+            const qrModal = document.getElementById('qrModal');
+            const qrCanvas = document.getElementById('qrcodeCanvas');
+            
+            // Clear previous QR code
+            qrCanvas.innerHTML = '';
+            
+            // Generate new QR code
+            qrCodeInstance = new QRCode(qrCanvas, {
+                text: getCurrentCardUrl(),
+                width: 200,
+                height: 200,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            
+            qrModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close QR modal
+        function closeQRModal() {
+            document.getElementById('qrModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Share via More (Web Share API)
+        async function shareViaMore() {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: currentShareCardName + ' - METI',
+                        text: currentShareCardHeadline || '디지털 명함',
+                        url: getCurrentCardUrl()
+                    });
+                    closeShareModal();
+                } catch (error) {
+                    if (error.name !== 'AbortError') {
+                        console.error('Share failed:', error);
+                    }
+                }
+            } else {
+                alert('이 브라우저는 공유 기능을 지원하지 않습니다.');
+            }
+            closeShareModal();
         }
     </script>
 </body>
