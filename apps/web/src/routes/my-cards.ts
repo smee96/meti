@@ -435,35 +435,150 @@ function getMyCardsHTML() {
             display: none;
         }
 
-        /* Responsive */
+        /* Responsive - Mobile Optimized */
         @media (max-width: 768px) {
+            body {
+                padding-bottom: 20px;
+            }
+
             .header {
-                padding: 16px 20px;
+                padding: 12px 16px;
+                flex-wrap: wrap;
+            }
+
+            .header-left {
+                gap: 16px;
             }
 
             .logo {
-                font-size: 24px;
+                font-size: 20px;
+                letter-spacing: 4px;
             }
 
             .nav-links {
                 display: none;
             }
 
+            .container {
+                padding: 24px 16px;
+            }
+
+            .page-header {
+                margin-bottom: 24px;
+            }
+
             .page-title {
-                font-size: 24px;
+                font-size: 22px;
+            }
+
+            .page-subtitle {
+                font-size: 14px;
+                flex-wrap: wrap;
+            }
+
+            .limit-notice {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+
+            .limit-notice i {
+                font-size: 18px;
+            }
+
+            .limit-notice-title {
+                font-size: 15px;
+            }
+
+            .limit-notice-desc {
+                font-size: 13px;
             }
 
             .cards-grid {
                 grid-template-columns: 1fr;
+                gap: 16px;
             }
 
             .actions-bar {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 12px;
             }
 
             .search-box {
                 max-width: 100%;
+            }
+
+            .btn {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+
+            .card-item {
+                padding: 20px;
+            }
+
+            .card-header {
+                gap: 12px;
+            }
+
+            .card-avatar {
+                width: 56px;
+                height: 56px;
+            }
+
+            .card-avatar i {
+                font-size: 24px;
+            }
+
+            .card-name {
+                font-size: 18px;
+            }
+
+            .card-title {
+                font-size: 13px;
+            }
+
+            .card-company {
+                font-size: 12px;
+            }
+
+            .card-meta {
+                font-size: 12px;
+                gap: 12px;
+            }
+
+            .card-actions {
+                flex-wrap: wrap;
+            }
+
+            .card-btn {
+                font-size: 13px;
+                padding: 8px;
+            }
+
+            .user-info {
+                padding: 6px 12px;
+            }
+
+            .user-avatar {
+                width: 28px;
+                height: 28px;
+            }
+
+            .user-name {
+                font-size: 13px;
+            }
+
+            .empty-icon {
+                font-size: 64px;
+            }
+
+            .empty-title {
+                font-size: 20px;
+            }
+
+            .empty-desc {
+                font-size: 14px;
             }
         }
 
@@ -670,15 +785,23 @@ function getMyCardsHTML() {
             }
         }
 
+        // Check authentication
+        function checkAuth() {
+            const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
+            if (!token) {
+                console.log('No token found, redirecting to login...');
+                alert('로그인이 필요합니다.');
+                window.location.href = '/auth/login';
+                return null;
+            }
+            return token;
+        }
+
         // Load cards
         async function loadCards() {
             try {
-                const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
-                if (!token) {
-                    alert('로그인이 필요합니다.');
-                    window.location.href = '/auth/login';
-                    return;
-                }
+                const token = checkAuth();
+                if (!token) return;
 
                 const response = await axios.get('/api/cards', {
                     headers: { 'Authorization': \`Bearer \${token}\` }
@@ -723,7 +846,17 @@ function getMyCardsHTML() {
             } catch (error) {
                 console.error('Load cards error:', error);
                 document.getElementById('loadingState').classList.add('hidden');
-                alert('명함을 불러오는데 실패했습니다.');
+                
+                // Check if authentication error
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    localStorage.removeItem('meti_token');
+                    sessionStorage.removeItem('meti_token');
+                    localStorage.removeItem('meti_user');
+                    alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+                    window.location.href = '/auth/login';
+                } else {
+                    alert('명함을 불러오는데 실패했습니다.');
+                }
             }
         }
 
@@ -867,6 +1000,9 @@ function getMyCardsHTML() {
 
         // Edit card
         function editCard(cardId) {
+            // Verify token before redirect
+            const token = checkAuth();
+            if (!token) return;
             window.location.href = \`/my/card/\${cardId}/edit\`;
         }
 
@@ -887,7 +1023,9 @@ function getMyCardsHTML() {
             if (!currentDeleteCardId) return;
 
             try {
-                const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
+                const token = checkAuth();
+                if (!token) return;
+
                 const response = await axios.delete(\`/api/cards/\${currentDeleteCardId}\`, {
                     headers: { 'Authorization': \`Bearer \${token}\` }
                 });
