@@ -584,8 +584,15 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
         }
 
         // Go back
-        function goBack() {
-            if (confirm('작성 중인 내용이 저장되지 않습니다. 계속하시겠습니까?')) {
+        async function goBack() {
+            const confirmed = await window.modal.show({
+                message: '작성 중인 내용이 저장되지 않습니다. 계속하시겠습니까?',
+                type: 'confirm',
+                confirmText: '나가기',
+                cancelText: '취소'
+            });
+            
+            if (confirmed) {
                 window.location.href = '/my/cards';
             }
         }

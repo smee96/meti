@@ -349,13 +349,14 @@ publicCard.get('/:id', async (c) => {
       .actions {
         margin-top: 32px;
         display: flex;
+        flex-direction: column;
         gap: 12px;
         opacity: 0;
         animation: fadeInUp 0.7s ease 1.2s forwards;
       }
       
       .btn {
-        flex: 1;
+        width: 100%;
         padding: 16px;
         border-radius: 16px;
         font-size: 15px;
@@ -584,31 +585,59 @@ publicCard.get('/:id', async (c) => {
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     
     <script>
-      function saveContact() {
+      async function saveContact() {
         const cardData = {
           name: "${card.name}",
           email: "${showEmail && card.email ? card.email : ''}",
           phone: "${showPhone && card.phone ? card.phone : ''}",
+          company: "${card.company || ''}",
+          title: "${card.title || ''}",
           headline: "${card.headline || ''}",
           url: window.location.href
         };
         
-        // Create vCard
-        const vCard = \`BEGIN:VCARD
-VERSION:3.0
-FN:\${cardData.name}
-\${cardData.email ? \`EMAIL:\${cardData.email}\` : ''}
-\${cardData.phone ? \`TEL:\${cardData.phone}\` : ''}
-\${cardData.headline ? \`TITLE:\${cardData.headline}\` : ''}
-URL:\${cardData.url}
-END:VCARD\`;
+        // Try native contact API first (mobile)
+        if ('contacts' in navigator && 'ContactsManager' in window) {
+          try {
+            const contact = {
+              name: [cardData.name],
+              email: cardData.email ? [cardData.email] : [],
+              tel: cardData.phone ? [cardData.phone] : [],
+              url: [cardData.url]
+            };
+            await navigator.contacts.select(['name', 'email', 'tel'], { multiple: false });
+            alert('연락처가 저장되었습니다!');
+            return;
+          } catch (err) {
+            // Fall back to vCard download
+          }
+        }
         
-        const blob = new Blob([vCard], { type: 'text/vcard' });
+        // Create vCard for download
+        const vCardLines = [
+          'BEGIN:VCARD',
+          'VERSION:3.0',
+          \`FN:\${cardData.name}\`
+        ];
+        
+        if (cardData.email) vCardLines.push(\`EMAIL:\${cardData.email}\`);
+        if (cardData.phone) vCardLines.push(\`TEL:\${cardData.phone}\`);
+        if (cardData.company) vCardLines.push(\`ORG:\${cardData.company}\`);
+        if (cardData.title) vCardLines.push(\`TITLE:\${cardData.title}\`);
+        if (cardData.headline) vCardLines.push(\`NOTE:\${cardData.headline}\`);
+        vCardLines.push(\`URL:\${cardData.url}\`);
+        vCardLines.push('END:VCARD');
+        
+        const vCard = vCardLines.join('\\n');
+        
+        const blob = new Blob([vCard], { type: 'text/vcard;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = \`\${cardData.name}.vcf\`;
+        link.download = \`\${cardData.name}_명함.vcf\`;
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
         URL.revokeObjectURL(url);
         
         // Track save event
