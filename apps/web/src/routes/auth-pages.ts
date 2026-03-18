@@ -47,6 +47,34 @@ function getLoginHTML() {
             max-width: 440px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .back-button-auth {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: rgba(10, 34, 96, 0.1);
+            color: #0A2260;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        
+        .back-button-auth:hover {
+            background: rgba(10, 34, 96, 0.15);
+            transform: translateX(-2px);
+        }
+        
+        .back-button-auth:active {
+            transform: scale(0.95);
         }
 
         .logo {
@@ -300,6 +328,9 @@ function getLoginHTML() {
 </head>
 <body>
     <div class="auth-container">
+        <button class="back-button-auth" onclick="window.location.href='/'" aria-label="뒤로가기">
+            <i class="fas fa-arrow-left"></i>
+        </button>
         <div class="logo">METI</div>
         <div class="subtitle">디지털 명함의 새로운 기준</div>
 
@@ -515,6 +546,34 @@ function getRegisterHTML() {
             max-width: 440px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .back-button-auth {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: rgba(10, 34, 96, 0.1);
+            color: #0A2260;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        
+        .back-button-auth:hover {
+            background: rgba(10, 34, 96, 0.15);
+            transform: translateX(-2px);
+        }
+        
+        .back-button-auth:active {
+            transform: scale(0.95);
         }
 
         .logo {
@@ -820,6 +879,9 @@ function getRegisterHTML() {
 </head>
 <body>
     <div class="auth-container">
+        <button class="back-button-auth" onclick="window.location.href='/'" aria-label="뒤로가기">
+            <i class="fas fa-arrow-left"></i>
+        </button>
         <div class="logo">METI</div>
         <div class="subtitle">지금 바로 시작하세요</div>
 

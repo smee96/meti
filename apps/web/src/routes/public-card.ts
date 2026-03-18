@@ -142,6 +142,40 @@ publicCard.get('/:id', async (c) => {
         overflow-x: hidden;
       }
       
+      .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-bottom: 20px;
+      }
+      
+      .back-button {
+        position: absolute;
+        left: 0;
+        width: 40px;
+        height: 40px;
+        border: none;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 18px;
+      }
+      
+      .back-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateX(-2px);
+      }
+      
+      .back-button:active {
+        transform: scale(0.95);
+      }
+      
       .logo {
         font-family: 'Tenor Sans', serif;
         font-size: 32px;
@@ -538,7 +572,12 @@ publicCard.get('/:id', async (c) => {
 </head>
 <body>
     <div>
-        <div class="logo">METI</div>
+        <div class="header-top">
+            <button class="back-button" onclick="window.history.back()" aria-label="뒤로가기">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="logo">METI</div>
+        </div>
         
         <div class="divider">
             <div class="divider-line"></div>
