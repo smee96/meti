@@ -232,13 +232,19 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
 
             // Validate file type
             if (!file.type.startsWith('image/')) {
-                alert('이미지 파일만 업로드 가능합니다.');
+                window.modal.show({
+                    message: '이미지 파일만 업로드 가능합니다.',
+                    type: 'error'
+                });
                 return;
             }
 
             // Validate file size (2MB before resize)
             if (file.size > 2 * 1024 * 1024) {
-                alert('파일 크기는 2MB 이하여야 합니다.');
+                window.modal.show({
+                    message: '파일 크기는 2MB 이하여야 합니다.',
+                    type: 'error'
+                });
                 return;
             }
 
@@ -350,10 +356,16 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
             } catch (error) {
                 console.error('Failed to load card:', error);
                 if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                    alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+                    await window.modal.show({
+                        message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+                        type: 'warning'
+                    });
                     window.location.href = '/auth/login';
                 } else {
-                    alert('명함을 불러오는데 실패했습니다: ' + (error.response?.data?.error || error.message));
+                    await window.modal.show({
+                        message: '명함을 불러오는데 실패했습니다: ' + (error.response?.data?.error || error.message),
+                        type: 'error'
+                    });
                     window.location.href = '/my/cards';
                 }
             }
@@ -380,7 +392,10 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
         // Add link
         function addLink(label = '', url = '') {
             if (links.length >= MAX_LINKS) {
-                alert(\`최대 \${MAX_LINKS}개까지 링크를 추가할 수 있습니다.\`);
+                window.modal.show({
+                    message: \`최대 \${MAX_LINKS}개까지 링크를 추가할 수 있습니다.\`,
+                    type: 'warning'
+                });
                 return;
             }
 
@@ -507,7 +522,10 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
             const name = document.getElementById('name').value.trim();
             
             if (!name) {
-                alert('이름을 입력해주세요.');
+                window.modal.show({
+                    message: '이름을 입력해주세요.',
+                    type: 'warning'
+                });
                 document.getElementById('name').focus();
                 return;
             }
@@ -559,7 +577,10 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
                 }
 
                 if (response.data.success) {
-                    alert(MODE === 'new' ? '명함이 생성되었습니다!' : '명함이 수정되었습니다!');
+                    await window.modal.show({
+                        message: MODE === 'new' ? '명함이 생성되었습니다!' : '명함이 수정되었습니다!',
+                        type: 'success'
+                    });
                     window.location.href = '/my/cards';
                 } else {
                     throw new Error(response.data.error || '저장에 실패했습니다.');
@@ -574,11 +595,17 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
                 saveFooterBtnText.textContent = MODE === 'new' ? '명함 만들기' : '저장';
                 
                 if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-                    alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+                    await window.modal.show({
+                        message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+                        type: 'warning'
+                    });
                     window.location.href = '/auth/login';
                 } else {
                     const errorMsg = error.response?.data?.error || error.message || '저장에 실패했습니다.';
-                    alert('오류: ' + errorMsg);
+                    await window.modal.show({
+                        message: '오류: ' + errorMsg,
+                        type: 'error'
+                    });
                 }
             }
         }

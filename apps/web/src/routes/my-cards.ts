@@ -965,7 +965,7 @@ function getMyCardsHTML() {
 
         // View card
         function viewCard(cardId) {
-            window.open(\`/c/\${cardId}\`, '_blank');
+            window.location.href = '/c/' + cardId;
         }
 
         // Share card

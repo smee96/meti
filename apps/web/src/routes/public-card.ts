@@ -495,6 +495,45 @@ publicCard.get('/:id', async (c) => {
         cursor: pointer;
         font-size: 14px;
       }
+      
+      /* Share Options Grid */
+      .share-options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 20px 0;
+      }
+      
+      .share-option {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 12px;
+        padding: 20px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #fff;
+        font-size: 13px;
+      }
+      
+      .share-option:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+      }
+      
+      .share-option i {
+        font-size: 24px;
+        opacity: 0.9;
+      }
+      
+      @media (max-width: 480px) {
+        .share-options {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
     </style>
 </head>
 <body>
@@ -558,9 +597,9 @@ publicCard.get('/:id', async (c) => {
                 <i class="fas fa-user-plus"></i>
                 연락처 저장
             </button>
-            <button class="btn btn-secondary" onclick="showQR()">
-                <i class="fas fa-qrcode"></i>
-                QR 공유
+            <button class="btn btn-secondary" onclick="showShareOptions()">
+                <i class="fas fa-share-alt"></i>
+                공유하기
             </button>
         </div>
     </div>
@@ -571,12 +610,46 @@ publicCard.get('/:id', async (c) => {
         <div class="home-indicator"></div>
     </div>
     
-    <!-- QR Modal -->
-    <div id="qrModal" class="modal" onclick="closeModal()">
+    <!-- Share Options Modal -->
+    <div id="shareModal" class="modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <h2 style="font-size: 20px; margin-bottom: 10px;">QR 코드</h2>
-            <p style="font-size: 14px; opacity: 0.7; margin-bottom: 20px;">이 QR 코드를 스캔하여 명함을 공유하세요</p>
-            <div class="modal-qr" id="qrcode"></div>
+            <h2 style="font-size: 20px; margin-bottom: 10px;">명함 공유하기</h2>
+            <p style="font-size: 14px; opacity: 0.7; margin-bottom: 20px;">공유 방법을 선택하세요</p>
+            
+            <!-- Share Options Grid -->
+            <div class="share-options">
+                <button class="share-option" onclick="copyLink()">
+                    <i class="fas fa-link"></i>
+                    <span>링크 복사</span>
+                </button>
+                <button class="share-option" onclick="showQRCode()">
+                    <i class="fas fa-qrcode"></i>
+                    <span>QR 코드</span>
+                </button>
+                <button class="share-option" onclick="shareKakao()">
+                    <i class="fas fa-comment"></i>
+                    <span>카카오톡</span>
+                </button>
+                <button class="share-option" onclick="shareSMS()">
+                    <i class="fas fa-sms"></i>
+                    <span>문자</span>
+                </button>
+                <button class="share-option" onclick="shareWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>왓츠앱</span>
+                </button>
+                <button class="share-option" onclick="shareTelegram()">
+                    <i class="fab fa-telegram"></i>
+                    <span>텔레그램</span>
+                </button>
+            </div>
+            
+            <!-- QR Code Container (hidden initially) -->
+            <div id="qrContainer" style="display: none; margin-top: 20px;">
+                <div class="modal-qr" id="qrcode"></div>
+                <p style="font-size: 12px; opacity: 0.6; margin-top: 10px;">QR 코드를 스캔하여 명함 저장</p>
+            </div>
+            
             <button class="modal-close" onclick="closeModal()">닫기</button>
         </div>
     </div>
@@ -647,15 +720,41 @@ publicCard.get('/:id', async (c) => {
         }).catch(() => {});
       }
       
-      function showQR() {
-        const modal = document.getElementById('qrModal');
-        const qrContainer = document.getElementById('qrcode');
+      function showShareOptions() {
+        const modal = document.getElementById('shareModal');
+        const qrContainer = document.getElementById('qrContainer');
+        qrContainer.style.display = 'none';  // Hide QR initially
+        modal.classList.add('active');
+      }
+      
+      function copyLink() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+          alert('링크가 복사되었습니다!');
+        }).catch(() => {
+          // Fallback
+          const input = document.createElement('input');
+          input.value = url;
+          document.body.appendChild(input);
+          input.select();
+          document.execCommand('copy');
+          document.body.removeChild(input);
+          alert('링크가 복사되었습니다!');
+        });
+      }
+      
+      function showQRCode() {
+        const qrContainer = document.getElementById('qrContainer');
+        const qrcode = document.getElementById('qrcode');
+        
+        // Show QR container
+        qrContainer.style.display = 'block';
         
         // Clear previous QR
-        qrContainer.innerHTML = '';
+        qrcode.innerHTML = '';
         
         // Generate new QR
-        new QRCode(qrContainer, {
+        new QRCode(qrcode, {
           text: window.location.href,
           width: 200,
           height: 200,
@@ -663,31 +762,36 @@ publicCard.get('/:id', async (c) => {
           colorLight: "#ffffff",
           correctLevel: QRCode.CorrectLevel.M
         });
-        
-        modal.classList.add('active');
+      }
+      
+      function shareKakao() {
+        // Kakao share (requires Kakao SDK)
+        alert('카카오톡 공유는 준비 중입니다. 링크를 복사하여 카카오톡에 붙여넣어 주세요.');
+        copyLink();
+      }
+      
+      function shareSMS() {
+        const url = window.location.href;
+        const text = "${card.name}님의 명함을 확인하세요: " + url;
+        window.location.href = \`sms:?body=\${encodeURIComponent(text)}\`;
+      }
+      
+      function shareWhatsApp() {
+        const url = window.location.href;
+        const text = "${card.name}님의 명함을 확인하세요";
+        window.open(\`https://wa.me/?text=\${encodeURIComponent(text + " " + url)}\`, '_blank');
+      }
+      
+      function shareTelegram() {
+        const url = window.location.href;
+        const text = "${card.name}님의 명함을 확인하세요";
+        window.open(\`https://t.me/share/url?url=\${encodeURIComponent(url)}&text=\${encodeURIComponent(text)}\`, '_blank');
       }
       
       function closeModal() {
-        document.getElementById('qrModal').classList.remove('active');
-      }
-      
-      // Share button (if Web Share API is supported)
-      if (navigator.share) {
-        const shareBtn = document.createElement('button');
-        shareBtn.className = 'btn btn-secondary';
-        shareBtn.innerHTML = '<i class="fas fa-share-alt"></i> 공유하기';
-        shareBtn.onclick = async () => {
-          try {
-            await navigator.share({
-              title: "${card.name} - METI",
-              text: "${card.headline || '디지털 명함'}",
-              url: window.location.href
-            });
-          } catch (err) {
-            console.log('Share cancelled');
-          }
-        };
-        document.querySelector('.actions').appendChild(shareBtn);
+        document.getElementById('shareModal').classList.remove('active');
+        const qrContainer = document.getElementById('qrContainer');
+        qrContainer.style.display = 'none';
       }
     </script>
 </body>
