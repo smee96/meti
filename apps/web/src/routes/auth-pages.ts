@@ -441,6 +441,12 @@ function getLoginHTML() {
                 console.error('Login error:', error);
                 
                 if (error.response && error.response.data) {
+                    // If user not found (404), redirect to register with email prefilled
+                    if (error.response.status === 404) {
+                        const email = document.getElementById('email').value.trim();
+                        window.location.href = '/auth/register?email=' + encodeURIComponent(email);
+                        return;
+                    }
                     showError(error.response.data.error || '로그인에 실패했습니다.');
                 } else {
                     showError('서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.');
@@ -1082,6 +1088,18 @@ function getRegisterHTML() {
                     .every(item => item.checked);
                 agreeAll.checked = allChecked;
             });
+        });
+
+        // Prefill email from URL query parameter
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const emailParam = urlParams.get('email');
+            if (emailParam) {
+                const emailInput = document.getElementById('email');
+                if (emailInput) {
+                    emailInput.value = decodeURIComponent(emailParam);
+                }
+            }
         });
     </script>
 </body>

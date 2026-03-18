@@ -1,5 +1,6 @@
 import { THEMES } from '../../utils/card/themes';
 import { editorStyles } from './editor-styles';
+import { getModalHTML } from '../../utils/modal';
 
 export function getEditorHTML(mode: 'new' | 'edit', cardId: string | null): string {
   return `
@@ -13,6 +14,7 @@ export function getEditorHTML(mode: 'new' | 'edit', cardId: string | null): stri
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>${editorStyles}</style>
+    ${getModalHTML()}
 </head>
 <body>
     <!-- Header -->
@@ -207,7 +209,10 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
             // Check auth
             const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
             if (!token) {
-                alert('로그인이 필요합니다.');
+                await window.modal.show({
+                    message: '로그인이 필요합니다.',
+                    type: 'warning'
+                });
                 window.location.href = '/auth/login';
                 return;
             }
