@@ -201,6 +201,34 @@ cards.put('/:id', async (c) => {
       fields.push('company = ?');
       values.push(updates.company);
     }
+    if (updates.headline !== undefined) {
+      fields.push('headline = ?');
+      values.push(updates.headline);
+    }
+    if (updates.phone !== undefined) {
+      fields.push('phone = ?');
+      values.push(updates.phone);
+    }
+    if (updates.email !== undefined) {
+      fields.push('email = ?');
+      values.push(updates.email);
+    }
+    if (updates.avatar_url !== undefined) {
+      fields.push('avatar = ?');
+      values.push(updates.avatar_url);
+    }
+    if (updates.theme !== undefined) {
+      fields.push('theme = ?');
+      values.push(updates.theme);
+    }
+    if (updates.status !== undefined) {
+      fields.push('status = ?');
+      values.push(updates.status);
+    }
+    if (updates.links !== undefined) {
+      fields.push('links = ?');
+      values.push(JSON.stringify(updates.links));
+    }
     if (updates.bio !== undefined) {
       fields.push('bio = ?');
       values.push(updates.bio);

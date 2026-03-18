@@ -87,16 +87,18 @@ export class Database {
   async createCard(userId: string, cardData: any): Promise<Card> {
     const id = generateId();
     const shareUrl = generateShareUrl(userId, id);
+    const shortId = id.split('-')[1] || id.substr(0, 8);
     const now = new Date().toISOString();
 
     await this.db
       .prepare(`
         INSERT INTO cards (
           id, user_id, name, title, company, company_logo, bio,
+          headline, phone, email, avatar, theme, status, links,
           contacts, social_links, design, is_default, is_public,
-          share_url, created_at, updated_at
+          share_url, short_id, created_at, updated_at
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
       .bind(
         id,
@@ -106,12 +108,20 @@ export class Database {
         cardData.company || null,
         cardData.companyLogo || null,
         cardData.bio || null,
+        cardData.headline || null,
+        cardData.phone || null,
+        cardData.email || null,
+        cardData.avatar_url || null,
+        cardData.theme || 'deep-navy',
+        cardData.status || 'public',
+        JSON.stringify(cardData.links || []),
         JSON.stringify(cardData.contacts || []),
         JSON.stringify(cardData.socialLinks || []),
-        JSON.stringify(cardData.design || { theme: 'clean-white' }),
+        JSON.stringify(cardData.design || { theme: cardData.theme || 'deep-navy' }),
         cardData.isDefault ? 1 : 0,
         cardData.isPublic !== false ? 1 : 0,
         shareUrl,
+        shortId,
         now,
         now
       )
@@ -128,6 +138,14 @@ export class Database {
 
     if (!result) return null;
 
+    // Parse links safely
+    let links = [];
+    try {
+      links = result.links ? JSON.parse(result.links as string) : [];
+    } catch (e) {
+      console.error('Failed to parse links:', e);
+    }
+
     return {
       id: result.id as string,
       userId: result.user_id as string,
@@ -136,6 +154,13 @@ export class Database {
       company: result.company as string | undefined,
       companyLogo: result.company_logo as string | undefined,
       bio: result.bio as string | undefined,
+      headline: result.headline as string | undefined,
+      phone: result.phone as string | undefined,
+      email: result.email as string | undefined,
+      avatar_url: result.avatar as string | undefined,
+      theme: result.theme as string | undefined,
+      status: result.status as string | undefined,
+      links: links,
       contacts: JSON.parse(result.contacts as string),
       socialLinks: JSON.parse(result.social_links as string),
       design: JSON.parse(result.design as string),

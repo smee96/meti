@@ -220,7 +220,7 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
             updatePreview();
         });
 
-        // Handle image upload
+        // Handle image upload with auto-resize
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -231,23 +231,64 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
                 return;
             }
 
-            // Validate file size (2MB)
+            // Validate file size (2MB before resize)
             if (file.size > 2 * 1024 * 1024) {
                 alert('파일 크기는 2MB 이하여야 합니다.');
                 return;
             }
 
-            avatarFile = file;
-
-            // Preview image
+            // Load and resize image
             const reader = new FileReader();
             reader.onload = (e) => {
-                const preview = document.getElementById('avatarPreview');
-                preview.innerHTML = \`<img src="\${e.target.result}" alt="Avatar">\`;
-                
-                // Update preview card
-                const previewAvatar = document.getElementById('previewAvatarWrapper');
-                previewAvatar.innerHTML = \`<img src="\${e.target.result}" alt="Avatar">\`;
+                const img = new Image();
+                img.onload = () => {
+                    // Resize image to 400x400
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    const size = 400; // Target size
+                    canvas.width = size;
+                    canvas.height = size;
+                    
+                    // Calculate dimensions to maintain aspect ratio and cover the square
+                    let sourceWidth = img.width;
+                    let sourceHeight = img.height;
+                    let sourceX = 0;
+                    let sourceY = 0;
+                    
+                    if (img.width > img.height) {
+                        // Landscape: crop width
+                        sourceWidth = img.height;
+                        sourceX = (img.width - img.height) / 2;
+                    } else if (img.height > img.width) {
+                        // Portrait: crop height
+                        sourceHeight = img.width;
+                        sourceY = (img.height - img.width) / 2;
+                    }
+                    
+                    // Draw image centered and cropped
+                    ctx.drawImage(
+                        img,
+                        sourceX, sourceY, sourceWidth, sourceHeight,
+                        0, 0, size, size
+                    );
+                    
+                    // Convert to data URL
+                    const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+                    
+                    // Update preview
+                    const preview = document.getElementById('avatarPreview');
+                    preview.innerHTML = \`<img src="\${resizedDataUrl}" alt="Avatar">\`;
+                    
+                    // Update preview card
+                    const previewAvatar = document.getElementById('previewAvatarWrapper');
+                    previewAvatar.innerHTML = \`<img src="\${resizedDataUrl}" alt="Avatar">\`;
+                    
+                    // Store resized image data
+                    currentAvatarUrl = resizedDataUrl;
+                    avatarFile = null; // Clear file since we're using data URL now
+                };
+                img.src = e.target.result as string;
             };
             reader.readAsDataURL(file);
         }
@@ -483,8 +524,8 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
                 status: 'public'
             };
 
-            // Add avatar_url if exists
-            if (currentAvatarUrl && !avatarFile) {
+            // Add avatar_url if exists (either existing or newly uploaded)
+            if (currentAvatarUrl) {
                 cardData.avatar_url = currentAvatarUrl;
             }
 
