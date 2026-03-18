@@ -302,7 +302,9 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
                 });
 
                 if (response.data.success) {
-                    const card = response.data.data;
+                    const card = response.data.data.card || response.data.data;
+                    
+                    console.log('Loaded card data:', card);
                     
                     // Fill form
                     document.getElementById('name').value = card.name || '';
@@ -328,15 +330,12 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
                     }
                     
                     // Load links
-                    if (card.links) {
-                        try {
-                            links = typeof card.links === 'string' ? JSON.parse(card.links) : card.links;
-                            links.forEach((link, index) => {
+                    if (card.links && Array.isArray(card.links)) {
+                        card.links.forEach((link) => {
+                            if (link.label && link.url) {
                                 addLink(link.label, link.url);
-                            });
-                        } catch (e) {
-                            console.error('Failed to parse links:', e);
-                        }
+                            }
+                        });
                     }
                     
                     updatePreview();
