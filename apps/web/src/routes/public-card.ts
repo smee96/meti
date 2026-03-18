@@ -482,92 +482,6 @@ publicCard.get('/:id', async (c) => {
       }
       
       /* Modal styles */
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.8);
-        backdrop-filter: blur(10px);
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-      }
-      
-      .modal.active {
-        display: flex;
-      }
-      
-      .modal-content {
-        background: ${bgColor};
-        border: 1px solid rgba(255,255,255,0.2);
-        border-radius: 20px;
-        padding: 32px;
-        max-width: 400px;
-        width: 100%;
-        text-align: center;
-      }
-      
-      .modal-qr {
-        background: #fff;
-        padding: 20px;
-        border-radius: 12px;
-        display: inline-block;
-        margin: 20px 0;
-      }
-      
-      .modal-close {
-        margin-top: 20px;
-        padding: 14px 28px;
-        background: rgba(255,255,255,0.15);
-        border: 1px solid rgba(255,255,255,0.25);
-        border-radius: 12px;
-        color: #fff;
-        cursor: pointer;
-        font-size: 14px;
-      }
-      
-      /* Share Options Grid */
-      .share-options {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin: 20px 0;
-      }
-      
-      .share-option {
-        background: rgba(255,255,255,0.1);
-        border: 1px solid rgba(255,255,255,0.2);
-        border-radius: 12px;
-        padding: 20px 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        transition: all 0.2s;
-        color: #fff;
-        font-size: 13px;
-      }
-      
-      .share-option:hover {
-        background: rgba(255,255,255,0.2);
-        transform: translateY(-2px);
-      }
-      
-      .share-option i {
-        font-size: 24px;
-        opacity: 0.9;
-      }
-      
-      @media (max-width: 480px) {
-        .share-options {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
     </style>
 </head>
 <body>
@@ -636,9 +550,9 @@ publicCard.get('/:id', async (c) => {
                 <i class="fas fa-user-plus"></i>
                 연락처 저장
             </button>
-            <button class="btn btn-secondary" onclick="showShareOptions()">
-                <i class="fas fa-share-alt"></i>
-                공유하기
+            <button class="btn btn-secondary" onclick="addToWallet()">
+                <i class="fas fa-wallet"></i>
+                명함 지갑에 추가
             </button>
         </div>
     </div>
@@ -650,48 +564,6 @@ publicCard.get('/:id', async (c) => {
     </div>
     
     <!-- Share Options Modal -->
-    <div id="shareModal" class="modal" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h2 style="font-size: 20px; margin-bottom: 10px;">명함 공유하기</h2>
-            <p style="font-size: 14px; opacity: 0.7; margin-bottom: 20px;">공유 방법을 선택하세요</p>
-            
-            <!-- Share Options Grid -->
-            <div class="share-options">
-                <button class="share-option" onclick="copyLink()">
-                    <i class="fas fa-link"></i>
-                    <span>링크 복사</span>
-                </button>
-                <button class="share-option" onclick="showQRCode()">
-                    <i class="fas fa-qrcode"></i>
-                    <span>QR 코드</span>
-                </button>
-                <button class="share-option" onclick="shareKakao()">
-                    <i class="fas fa-comment"></i>
-                    <span>카카오톡</span>
-                </button>
-                <button class="share-option" onclick="shareSMS()">
-                    <i class="fas fa-sms"></i>
-                    <span>문자</span>
-                </button>
-                <button class="share-option" onclick="shareWhatsApp()">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>왓츠앱</span>
-                </button>
-                <button class="share-option" onclick="shareTelegram()">
-                    <i class="fab fa-telegram"></i>
-                    <span>텔레그램</span>
-                </button>
-            </div>
-            
-            <!-- QR Code Container (hidden initially) -->
-            <div id="qrContainer" style="display: none; margin-top: 20px;">
-                <div class="modal-qr" id="qrcode"></div>
-                <p style="font-size: 12px; opacity: 0.6; margin-top: 10px;">QR 코드를 스캔하여 명함 저장</p>
-            </div>
-            
-            <button class="modal-close" onclick="closeModal()">닫기</button>
-        </div>
-    </div>
     
     <!-- QR Code Library -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -759,78 +631,40 @@ publicCard.get('/:id', async (c) => {
         }).catch(() => {});
       }
       
-      function showShareOptions() {
-        const modal = document.getElementById('shareModal');
-        const qrContainer = document.getElementById('qrContainer');
-        qrContainer.style.display = 'none';  // Hide QR initially
-        modal.classList.add('active');
-      }
       
-      function copyLink() {
-        const url = window.location.href;
-        navigator.clipboard.writeText(url).then(() => {
-          alert('링크가 복사되었습니다!');
-        }).catch(() => {
-          // Fallback
-          const input = document.createElement('input');
-          input.value = url;
-          document.body.appendChild(input);
-          input.select();
-          document.execCommand('copy');
-          document.body.removeChild(input);
-          alert('링크가 복사되었습니다!');
-        });
-      }
-      
-      function showQRCode() {
-        const qrContainer = document.getElementById('qrContainer');
-        const qrcode = document.getElementById('qrcode');
+      // Add to wallet (save to user's card collection)
+      async function addToWallet() {
+        const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
         
-        // Show QR container
-        qrContainer.style.display = 'block';
+        if (!token) {
+          // Redirect to login with return URL
+          const returnUrl = encodeURIComponent(window.location.href);
+          window.location.href = '/auth/login?return=' + returnUrl;
+          return;
+        }
         
-        // Clear previous QR
-        qrcode.innerHTML = '';
-        
-        // Generate new QR
-        new QRCode(qrcode, {
-          text: window.location.href,
-          width: 200,
-          height: 200,
-          colorDark: "${bgColor}",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.M
-        });
-      }
-      
-      function shareKakao() {
-        // Kakao share (requires Kakao SDK)
-        alert('카카오톡 공유는 준비 중입니다. 링크를 복사하여 카카오톡에 붙여넣어 주세요.');
-        copyLink();
-      }
-      
-      function shareSMS() {
-        const url = window.location.href;
-        const text = "${card.name}님의 명함을 확인하세요: " + url;
-        window.location.href = \`sms:?body=\${encodeURIComponent(text)}\`;
-      }
-      
-      function shareWhatsApp() {
-        const url = window.location.href;
-        const text = "${card.name}님의 명함을 확인하세요";
-        window.open(\`https://wa.me/?text=\${encodeURIComponent(text + " " + url)}\`, '_blank');
-      }
-      
-      function shareTelegram() {
-        const url = window.location.href;
-        const text = "${card.name}님의 명함을 확인하세요";
-        window.open(\`https://t.me/share/url?url=\${encodeURIComponent(url)}&text=\${encodeURIComponent(text)}\`, '_blank');
-      }
-      
-      function closeModal() {
-        document.getElementById('shareModal').classList.remove('active');
-        const qrContainer = document.getElementById('qrContainer');
-        qrContainer.style.display = 'none';
+        try {
+          const response = await fetch('/api/wallet/add', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+              card_id: "${card.id}"
+            })
+          });
+          
+          if (response.ok) {
+            alert('✅ 명함이 지갑에 추가되었습니다!');
+          } else {
+            const error = await response.json();
+            alert('❌ ' + (error.message || '명함 추가에 실패했습니다.'));
+          }
+        } catch (error) {
+          console.error('Failed to add to wallet:', error);
+          alert('❌ 명함 추가 중 오류가 발생했습니다.');
+        }
       }
     </script>
 </body>
