@@ -25,7 +25,6 @@ cardEditor.get('/new', (c) => {
 // Card editor page (edit existing)
 cardEditor.get('/:id/edit', async (c) => {
   const cardId = c.req.param('id');
-  // TODO: Fetch card data from DB
   return c.html(getEditorHTML('edit', cardId));
 });
 
@@ -35,7 +34,7 @@ function getEditorHTML(mode: 'new' | 'edit', cardId: string | null) {
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>${mode === 'new' ? '명함 만들기' : '명함 수정'} - METI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
@@ -54,44 +53,102 @@ function getEditorHTML(mode: 'new' | 'edit', cardId: string | null) {
             color: white;
         }
 
+        /* Header */
         .header {
             background: rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px 40px;
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 12px;
         }
 
         .logo {
             font-family: 'Tenor Sans', serif;
-            font-size: 28px;
-            letter-spacing: 8px;
+            font-size: 24px;
+            letter-spacing: 6px;
             color: white;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            flex-direction: row;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-family: 'Noto Sans KR', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background: white;
+            color: #0A2260;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px;
         }
 
+        /* Mobile-first layout */
         .editor-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .form-section, .preview-section {
+        .form-section {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 30px;
+            padding: 24px;
+        }
+
+        .preview-section {
+            position: sticky;
+            top: 80px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            max-height: 500px;
         }
 
         .section-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 20px;
             display: flex;
@@ -111,742 +168,685 @@ function getEditorHTML(mode: 'new' | 'edit', cardId: string | null) {
             opacity: 0.9;
         }
 
-        .form-input {
+        .form-label .required {
+            color: #ff6b6b;
+        }
+
+        .form-input, .form-textarea {
             width: 100%;
+            padding: 12px 16px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            padding: 12px 16px;
             color: white;
             font-size: 14px;
             font-family: 'Noto Sans KR', sans-serif;
             transition: all 0.3s;
         }
 
-        .form-input:focus {
+        .form-input:focus, .form-textarea:focus {
             outline: none;
             background: rgba(255, 255, 255, 0.15);
             border-color: rgba(255, 255, 255, 0.4);
         }
 
-        .form-input::placeholder {
+        .form-input::placeholder, .form-textarea::placeholder {
             color: rgba(255, 255, 255, 0.5);
         }
 
-        textarea.form-input {
-            min-height: 100px;
+        .form-textarea {
             resize: vertical;
+            min-height: 80px;
         }
 
-        .image-upload {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .image-preview {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .image-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .image-preview i {
-            font-size: 32px;
-            opacity: 0.5;
-        }
-
-        .upload-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            padding: 10px 20px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-
-        .upload-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .toggle-group {
-            display: flex;
-            gap: 20px;
-        }
-
-        .toggle-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 48px;
-            height: 24px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .toggle-switch.active {
-            background: #4F8EF7;
-        }
-
-        .toggle-switch::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: all 0.3s;
-        }
-
-        .toggle-switch.active::after {
-            left: 26px;
-        }
-
-        .links-list {
-            display: flex;
-            flex-direction: column;
+        /* Theme selector */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .theme-item {
+            padding: 12px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .theme-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-item.active {
+            border-color: white;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .theme-color {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            margin: 0 auto 8px;
+        }
+
+        .theme-name {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Links section */
+        .links-section {
+            margin-top: 20px;
         }
 
         .link-item {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            margin-bottom: 12px;
+            align-items: center;
         }
 
         .link-item input {
             flex: 1;
         }
 
-        .link-remove {
-            background: rgba(255, 0, 0, 0.2);
-            border: 1px solid rgba(255, 0, 0, 0.3);
-            border-radius: 8px;
-            padding: 0 12px;
+        .btn-icon {
+            padding: 10px;
+            min-width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-danger {
+            background: rgba(255, 107, 107, 0.2);
             color: #ff6b6b;
-            cursor: pointer;
-            transition: all 0.3s;
+            border: 1px solid rgba(255, 107, 107, 0.3);
         }
 
-        .link-remove:hover {
-            background: rgba(255, 0, 0, 0.3);
+        .btn-danger:hover {
+            background: rgba(255, 107, 107, 0.3);
         }
 
-        .add-link-btn {
+        .btn-add {
             background: rgba(255, 255, 255, 0.1);
-            border: 1px dashed rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            padding: 12px;
             color: white;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.3s;
-            font-size: 14px;
+            border: 1px dashed rgba(255, 255, 255, 0.3);
         }
 
-        .add-link-btn:hover {
+        .btn-add:hover {
             background: rgba(255, 255, 255, 0.15);
             border-color: rgba(255, 255, 255, 0.5);
         }
 
-        /* Preview Card Styles */
+        /* Preview card */
         .preview-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            color: #333;
-            position: sticky;
-            top: 20px;
+            background: #0A2260;
+            border-radius: 16px;
+            padding: 24px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            margin: 0 auto;
         }
 
         .preview-header {
-            text-align: center;
-            margin-bottom: 30px;
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .preview-avatar {
-            width: 120px;
-            height: 120px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
-            background: #f0f0f0;
-            margin: 0 auto 20px;
+            background: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            font-size: 24px;
         }
 
-        .preview-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .preview-avatar i {
-            font-size: 48px;
-            color: #ccc;
+        .preview-info {
+            flex: 1;
         }
 
         .preview-name {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .preview-title {
-            font-size: 16px;
-            opacity: 0.7;
             margin-bottom: 4px;
         }
 
-        .preview-company {
+        .preview-title {
             font-size: 14px;
-            opacity: 0.6;
-        }
-
-        .preview-bio {
-            font-size: 14px;
-            line-height: 1.6;
             opacity: 0.8;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            margin-bottom: 2px;
         }
 
-        .preview-contact {
-            margin-top: 30px;
+        .preview-company {
+            font-size: 13px;
+            opacity: 0.7;
         }
 
-        .contact-item {
+        .preview-contacts {
+            margin-bottom: 20px;
+        }
+
+        .preview-contact-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.03);
-            border-radius: 10px;
+            gap: 8px;
             margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .contact-item i {
-            width: 20px;
-            text-align: center;
-            opacity: 0.6;
+            font-size: 13px;
+            opacity: 0.9;
         }
 
         .preview-links {
-            margin-top: 20px;
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 8px;
         }
 
         .preview-link {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            font-size: 12px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
-            text-decoration: none;
-            color: inherit;
-            font-size: 14px;
-            transition: all 0.3s;
+            gap: 6px;
         }
 
-        .preview-link:hover {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        /* Theme Selector */
-        .theme-selector {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-        }
-
-        .theme-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 16px;
-        }
-
-        .theme-item {
-            cursor: pointer;
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .theme-item:hover {
-            transform: translateY(-4px);
-        }
-
-        .theme-item.active {
-            border-color: white;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-        }
-
-        .theme-color {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .theme-name {
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-
-        .theme-desc {
-            font-size: 11px;
-            opacity: 0.7;
-        }
-
-        /* Action Buttons */
-        .action-buttons {
+        .save-footer {
+            position: sticky;
+            bottom: 0;
+            background: rgba(10, 34, 96, 0.95);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 20px;
             display: flex;
-            gap: 16px;
+            justify-content: center;
+            backdrop-filter: blur(10px);
         }
 
-        .btn {
-            padding: 12px 32px;
-            border-radius: 10px;
+        .save-footer .btn-primary {
+            min-width: 200px;
+            justify-content: center;
             font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            font-family: 'Noto Sans KR', sans-serif;
+            padding: 14px 32px;
         }
 
-        .btn-primary {
-            background: white;
-            color: #0A2260;
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(10, 34, 96, 0.3);
+            border-top-color: #0A2260;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
         }
 
-        .btn-primary:hover {
-            background: #f0f0f0;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Responsive */
-        @media (max-width: 968px) {
+        /* Desktop layout */
+        @media (min-width: 1024px) {
             .editor-layout {
-                grid-template-columns: 1fr;
+                flex-direction: row;
+                gap: 40px;
+            }
+
+            .form-section {
+                flex: 1;
             }
 
             .preview-section {
-                order: -1;
+                width: 450px;
+                flex-shrink: 0;
+            }
+
+            .theme-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .save-footer {
+                padding: 0;
+                background: transparent;
+                border: none;
+                position: static;
+                margin-top: 20px;
+            }
+
+            .save-footer .btn-primary {
+                width: 100%;
+            }
+
+            .header-actions {
+                display: flex;
+            }
+        }
+
+        /* Tablet */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .theme-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
 
             .preview-card {
-                position: static;
+                max-width: 100%;
             }
         }
 
-        /* Loading State */
-        .loading {
-            text-align: center;
-            padding: 40px;
-            opacity: 0.7;
-        }
+        /* Mobile */
+        @media (max-width: 767px) {
+            .header {
+                padding: 12px 16px;
+                flex-wrap: nowrap;
+            }
 
-        .hidden {
-            display: none;
+            .logo {
+                font-size: 18px;
+                letter-spacing: 3px;
+            }
+
+            .header-actions {
+                display: flex;
+                flex-direction: row;
+                gap: 6px;
+            }
+
+            .header-actions .btn {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+
+            .header-actions .btn span {
+                display: none;
+            }
+
+            .header-actions .btn i {
+                margin: 0;
+            }
+
+            .container {
+                padding: 16px;
+            }
+
+            .form-section, .preview-section {
+                padding: 20px 16px;
+            }
+
+            .section-title {
+                font-size: 16px;
+            }
+
+            .theme-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .theme-color {
+                width: 50px;
+                height: 50px;
+            }
+
+            .theme-name {
+                font-size: 11px;
+            }
+
+            .preview-section {
+                position: relative;
+                top: 0;
+                max-height: none;
+                padding: 12px;
+            }
+
+            .preview-card {
+                padding: 16px;
+                max-width: 100%;
+                transform: scale(0.85);
+                transform-origin: top center;
+                margin: -10px auto 0;
+            }
+
+            .preview-avatar {
+                width: 48px;
+                height: 48px;
+                font-size: 18px;
+            }
+
+            .preview-name {
+                font-size: 16px;
+            }
+
+            .preview-title {
+                font-size: 13px;
+            }
+
+            .preview-company {
+                font-size: 12px;
+            }
+
+            .preview-contact-item {
+                font-size: 12px;
+            }
+
+            .preview-link {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+
+            .btn {
+                font-size: 13px;
+                padding: 8px 16px;
+            }
+
+            .form-input, .form-textarea {
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <div class="header">
         <div class="logo">METI</div>
-        <div class="action-buttons">
+        <div class="header-actions">
             <button class="btn btn-secondary" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i> 취소
+                <i class="fas fa-arrow-left"></i>
+                <span>취소</span>
             </button>
-            <button class="btn btn-primary" onclick="saveCard()">
-                <i class="fas fa-save"></i> ${mode === 'new' ? '명함 만들기' : '저장'}
+            <button class="btn btn-primary" id="saveBtn" onclick="saveCard()">
+                <i class="fas fa-save"></i>
+                <span id="saveBtnText">${mode === 'new' ? '명함 만들기' : '저장'}</span>
             </button>
         </div>
     </div>
 
     <div class="container">
         <div class="editor-layout">
-            <!-- Left: Form -->
+            <!-- Form Section -->
             <div class="form-section">
                 <div class="section-title">
                     <i class="fas fa-edit"></i>
                     명함 정보 입력
                 </div>
 
-                <!-- Profile Image -->
+                <!-- 기본 정보 (우선순위 높음) -->
                 <div class="form-group">
-                    <label class="form-label">프로필 사진</label>
-                    <div class="image-upload">
-                        <div class="image-preview" id="imagePreview">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <input type="file" id="imageInput" accept="image/*" style="display: none" onchange="handleImageUpload(event)">
-                        <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
-                            <i class="fas fa-upload"></i> 사진 업로드
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Name -->
-                <div class="form-group">
-                    <label class="form-label">이름 *</label>
+                    <label class="form-label">
+                        이름 <span class="required">*</span>
+                    </label>
                     <input type="text" class="form-input" id="name" placeholder="홍길동" oninput="updatePreview()">
                 </div>
 
-                <!-- Title -->
-                <div class="form-group">
-                    <label class="form-label">직책</label>
-                    <input type="text" class="form-input" id="title" placeholder="Product Manager" oninput="updatePreview()">
-                </div>
-
-                <!-- Company -->
-                <div class="form-group">
-                    <label class="form-label">회사명</label>
-                    <input type="text" class="form-input" id="company" placeholder="METI Inc." oninput="updatePreview()">
-                </div>
-
-                <!-- Bio -->
-                <div class="form-group">
-                    <label class="form-label">소개</label>
-                    <textarea class="form-input" id="bio" placeholder="간단한 자기소개를 작성해주세요" oninput="updatePreview()"></textarea>
-                </div>
-
-                <!-- Phone -->
                 <div class="form-group">
                     <label class="form-label">전화번호</label>
                     <input type="tel" class="form-input" id="phone" placeholder="010-1234-5678" oninput="updatePreview()">
                 </div>
 
-                <!-- Email -->
                 <div class="form-group">
                     <label class="form-label">이메일</label>
-                    <input type="email" class="form-input" id="email" placeholder="hello@meti.com" oninput="updatePreview()">
+                    <input type="email" class="form-input" id="email" placeholder="hello@example.com" oninput="updatePreview()">
                 </div>
 
-                <!-- Website -->
+                <!-- 부가 정보 (선택) -->
                 <div class="form-group">
-                    <label class="form-label">웹사이트</label>
-                    <input type="url" class="form-input" id="website" placeholder="https://meti.com" oninput="updatePreview()">
+                    <label class="form-label">직책</label>
+                    <input type="text" class="form-input" id="title" placeholder="예: 대표이사, 프리랜서 디자이너" oninput="updatePreview()">
                 </div>
 
-                <!-- Address -->
                 <div class="form-group">
-                    <label class="form-label">주소</label>
-                    <input type="text" class="form-input" id="address" placeholder="서울시 강남구" oninput="updatePreview()">
+                    <label class="form-label">회사명</label>
+                    <input type="text" class="form-input" id="company" placeholder="회사명 (선택)" oninput="updatePreview()">
                 </div>
 
-                <!-- Visibility Toggles -->
                 <div class="form-group">
-                    <label class="form-label">공개 설정</label>
-                    <div class="toggle-group">
-                        <div class="toggle-item">
-                            <div class="toggle-switch active" id="showPhone" onclick="toggleSwitch('showPhone')"></div>
-                            <span>전화번호 공개</span>
-                        </div>
-                        <div class="toggle-item">
-                            <div class="toggle-switch active" id="showEmail" onclick="toggleSwitch('showEmail')"></div>
-                            <span>이메일 공개</span>
-                        </div>
-                    </div>
+                    <label class="form-label">한 줄 소개</label>
+                    <textarea class="form-textarea" id="headline" placeholder="자신을 표현하는 한 줄 소개" oninput="updatePreview()"></textarea>
                 </div>
 
-                <!-- Social Links -->
-                <div class="form-group">
-                    <label class="form-label">소셜 링크</label>
-                    <div class="links-list" id="linksList">
+                <!-- Links Section -->
+                <div class="links-section">
+                    <label class="form-label">
+                        소셜 링크
+                        <span style="opacity: 0.7; font-weight: 400; font-size: 12px;">(최대 5개)</span>
+                    </label>
+                    <div id="linksContainer">
                         <!-- Links will be added here -->
                     </div>
-                    <button class="add-link-btn" onclick="addLink()">
-                        <i class="fas fa-plus"></i> 링크 추가
+                    <button class="btn btn-add" onclick="addLink()" id="addLinkBtn" style="width: 100%; margin-top: 8px;">
+                        <i class="fas fa-plus"></i>
+                        링크 추가
                     </button>
+                </div>
+
+                <!-- Theme Selection -->
+                <div style="margin-top: 32px;">
+                    <label class="form-label">
+                        <i class="fas fa-palette"></i>
+                        테마 선택
+                    </label>
+                    <div class="theme-grid" id="themeGrid">
+                        ${THEMES.map(theme => `
+                            <div class="theme-item ${theme.id === 'deep-navy' ? 'active' : ''}" 
+                                 data-theme="${theme.id}" 
+                                 onclick="selectTheme('${theme.id}')">
+                                <div class="theme-color" style="background: ${theme.color};"></div>
+                                <div class="theme-name">${theme.name}</div>
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
             </div>
 
-            <!-- Right: Preview -->
+            <!-- Preview Section -->
             <div class="preview-section">
                 <div class="section-title">
                     <i class="fas fa-eye"></i>
                     실시간 미리보기
                 </div>
-                
-                <div class="preview-card" id="previewCard" style="background: #0A2260;">
+
+                <div class="preview-card" id="previewCard">
                     <div class="preview-header">
-                        <div class="preview-avatar" id="previewAvatar">
+                        <div class="preview-avatar">
                             <i class="fas fa-user"></i>
                         </div>
-                        <div class="preview-name" id="previewName" style="color: white;">이름을 입력하세요</div>
-                        <div class="preview-title" id="previewTitle" style="color: rgba(255,255,255,0.8);"></div>
-                        <div class="preview-company" id="previewCompany" style="color: rgba(255,255,255,0.7);"></div>
-                        <div class="preview-bio" id="previewBio" style="color: rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.2);"></div>
+                        <div class="preview-info">
+                            <div class="preview-name" id="previewName">이름을 입력하세요</div>
+                            <div class="preview-title" id="previewTitle"></div>
+                            <div class="preview-company" id="previewCompany"></div>
+                        </div>
                     </div>
 
-                    <div class="preview-contact" id="previewContact">
-                        <!-- Contact items will be added here -->
+                    <div class="preview-contacts" id="previewContacts">
+                        <!-- Contacts will be shown here -->
                     </div>
 
                     <div class="preview-links" id="previewLinks">
-                        <!-- Links will be added here -->
+                        <!-- Links will be shown here -->
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Theme Selector -->
-        <div class="theme-selector">
-            <div class="section-title">
-                <i class="fas fa-palette"></i>
-                컬러 테마 선택
-            </div>
-            <div class="theme-grid" id="themeGrid">
-                ${THEMES.map((theme, index) => `
-                    <div class="theme-item ${index === 0 ? 'active' : ''}" data-theme="${theme.id}" onclick="selectTheme('${theme.id}', '${theme.color}')">
-                        <div class="theme-color" style="background: ${theme.color};"></div>
-                        <div class="theme-name">${theme.name}</div>
-                        <div class="theme-desc">${theme.description}</div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>
-
-        <!-- Bottom Save Button -->
-        <div style="text-align: center; margin-top: 40px; padding-bottom: 40px;">
-            <button class="btn btn-primary" onclick="saveCard()" style="padding: 16px 48px; font-size: 18px;">
-                <i class="fas fa-save"></i> ${mode === 'new' ? '명함 만들기' : '명함 저장하기'}
-            </button>
-        </div>
+    <!-- Save Footer (Mobile) -->
+    <div class="save-footer">
+        <button class="btn btn-primary" id="saveFooterBtn" onclick="saveCard()">
+            <i class="fas fa-save"></i>
+            <span id="saveFooterBtnText">${mode === 'new' ? '명함 만들기' : '저장'}</span>
+        </button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
     <script>
-        // State
+        const MODE = '${mode}';
+        const CARD_ID = ${cardId ? `'${cardId}'` : 'null'};
+        const MAX_LINKS = 5;
         let currentTheme = 'deep-navy';
-        let currentThemeColor = '#0A2260';
-        let uploadedImage = null;
         let links = [];
 
+        // Theme colors
+        const THEME_COLORS = {
+            'deep-navy': '#0A2260',
+            'midnight-teal': '#0D3D4D',
+            'forest-deep': '#1A3D2E',
+            'royal-burgundy': '#4A1E2E',
+            'charcoal-dark': '#1C1C1E',
+            'slate-blue': '#2C3E50',
+            'deep-purple': '#3D2857',
+            'warm-brown': '#3E2723',
+            'olive-night': '#3D4A2C',
+            'sunset-orange': '#8B4513'
+        };
+
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            ${mode === 'edit' && cardId ? `loadCard('${cardId}');` : ''}
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check auth
+            const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                window.location.href = '/auth/login';
+                return;
+            }
+
+            // Load card data if editing
+            if (MODE === 'edit' && CARD_ID) {
+                await loadCardData();
+            }
+
             updatePreview();
         });
 
-        // Load existing card data (for edit mode)
-        async function loadCard(cardId) {
+        // Load card data for editing
+        async function loadCardData() {
             try {
-                const token = localStorage.getItem('meti_token');
-                if (!token) {
-                    alert('로그인이 필요합니다.');
-                    window.location.href = '/login';
-                    return;
-                }
-
-                const response = await axios.get(\`/api/cards/\${cardId}\`, {
+                const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
+                const response = await axios.get(\`/api/cards/\${CARD_ID}\`, {
                     headers: { 'Authorization': \`Bearer \${token}\` }
                 });
 
                 if (response.data.success) {
-                    const card = response.data.data.card;
+                    const card = response.data.data;
                     
                     // Fill form
                     document.getElementById('name').value = card.name || '';
-                    document.getElementById('title').value = card.title || '';
-                    document.getElementById('company').value = card.company || '';
-                    document.getElementById('bio').value = card.bio || '';
                     document.getElementById('phone').value = card.phone || '';
                     document.getElementById('email').value = card.email || '';
-                    document.getElementById('website').value = card.website || '';
-                    document.getElementById('address').value = card.address || '';
-
-                    // Set image
-                    if (card.avatar_url) {
-                        const preview = document.getElementById('imagePreview');
-                        preview.innerHTML = \`<img src="\${card.avatar_url}" alt="Profile">\`;
-                        const previewAvatar = document.getElementById('previewAvatar');
-                        previewAvatar.innerHTML = \`<img src="\${card.avatar_url}" alt="Profile">\`;
-                    }
-
-                    // Set toggles
-                    if (!card.show_phone) {
-                        document.getElementById('showPhone').classList.remove('active');
-                    }
-                    if (!card.show_email) {
-                        document.getElementById('showEmail').classList.remove('active');
-                    }
-
-                    // Set theme
+                    document.getElementById('title').value = card.title || '';
+                    document.getElementById('company').value = card.company || '';
+                    document.getElementById('headline').value = card.headline || '';
+                    
+                    // Load theme
                     if (card.theme) {
-                        const themeData = ${JSON.stringify(THEMES)}.find(t => t.id === card.theme);
-                        if (themeData) {
-                            selectTheme(themeData.id, themeData.color);
-                        }
+                        selectTheme(card.theme);
                     }
-
-                    // Set links
+                    
+                    // Load links
                     if (card.links) {
                         try {
                             links = typeof card.links === 'string' ? JSON.parse(card.links) : card.links;
-                            links.forEach((link, index) => {
-                                addLink(link.title, link.url);
+                            links.forEach(link => {
+                                addLink(link.label, link.url);
                             });
                         } catch (e) {
                             console.error('Failed to parse links:', e);
                         }
                     }
-
+                    
                     updatePreview();
                 }
             } catch (error) {
-                console.error('Load card error:', error);
-                alert('명함을 불러오는데 실패했습니다.');
+                console.error('Failed to load card:', error);
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    alert('로그인이 만료되었습니다.');
+                    window.location.href = '/auth/login';
+                } else {
+                    alert('명함을 불러오는데 실패했습니다.');
+                }
             }
-        }
-
-        // Image upload
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            if (!file.type.startsWith('image/')) {
-                alert('이미지 파일만 업로드 가능합니다.');
-                return;
-            }
-
-            if (file.size > 5 * 1024 * 1024) {
-                alert('파일 크기는 5MB 이하여야 합니다.');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                uploadedImage = e.target.result;
-                
-                // Update form preview
-                const preview = document.getElementById('imagePreview');
-                preview.innerHTML = \`<img src="\${uploadedImage}" alt="Profile">\`;
-                
-                // Update card preview
-                const previewAvatar = document.getElementById('previewAvatar');
-                previewAvatar.innerHTML = \`<img src="\${uploadedImage}" alt="Profile">\`;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Toggle switch
-        function toggleSwitch(id) {
-            const toggle = document.getElementById(id);
-            toggle.classList.toggle('active');
-            updatePreview();
-        }
-
-        // Add link
-        function addLink(title = '', url = '') {
-            const index = links.length;
-            links.push({ title, url });
-
-            const linksList = document.getElementById('linksList');
-            const linkItem = document.createElement('div');
-            linkItem.className = 'link-item';
-            linkItem.innerHTML = \`
-                <input type="text" class="form-input" placeholder="링크 제목" value="\${title}" oninput="updateLink(\${index}, 'title', this.value)">
-                <input type="url" class="form-input" placeholder="https://" value="\${url}" oninput="updateLink(\${index}, 'url', this.value)">
-                <button class="link-remove" onclick="removeLink(\${index})">
-                    <i class="fas fa-times"></i>
-                </button>
-            \`;
-            linksList.appendChild(linkItem);
-            
-            updatePreview();
-        }
-
-        // Update link
-        function updateLink(index, field, value) {
-            if (links[index]) {
-                links[index][field] = value;
-                updatePreview();
-            }
-        }
-
-        // Remove link
-        function removeLink(index) {
-            links.splice(index, 1);
-            
-            // Rebuild links list without adding to array again
-            const linksList = document.getElementById('linksList');
-            linksList.innerHTML = '';
-            links.forEach((link, i) => {
-                const linkItem = document.createElement('div');
-                linkItem.className = 'link-item';
-                linkItem.innerHTML = \`
-                    <input type="text" class="form-input" placeholder="링크 제목" value="\${link.title}" oninput="updateLink(\${i}, 'title', this.value)">
-                    <input type="url" class="form-input" placeholder="https://" value="\${link.url}" oninput="updateLink(\${i}, 'url', this.value)">
-                    <button class="link-remove" onclick="removeLink(\${i})">
-                        <i class="fas fa-times"></i>
-                    </button>
-                \`;
-                linksList.appendChild(linkItem);
-            });
-            
-            updatePreview();
         }
 
         // Select theme
-        function selectTheme(themeId, color) {
+        function selectTheme(themeId) {
             currentTheme = themeId;
-            currentThemeColor = color;
-
+            
             // Update active state
             document.querySelectorAll('.theme-item').forEach(item => {
                 item.classList.remove('active');
             });
             document.querySelector(\`[data-theme="\${themeId}"]\`).classList.add('active');
+            
+            // Update preview card color
+            const color = THEME_COLORS[themeId];
+            document.getElementById('previewCard').style.background = color;
+        }
 
-            // Update preview
-            const previewCard = document.getElementById('previewCard');
-            previewCard.style.background = color;
+        // Add link
+        function addLink(label = '', url = '') {
+            if (links.length >= MAX_LINKS) {
+                alert(\`최대 \${MAX_LINKS}개까지 링크를 추가할 수 있습니다.\`);
+                return;
+            }
+
+            const linkId = Date.now();
+            links.push({ id: linkId, label, url });
+
+            const container = document.getElementById('linksContainer');
+            const linkDiv = document.createElement('div');
+            linkDiv.className = 'link-item';
+            linkDiv.dataset.linkId = linkId;
+            linkDiv.innerHTML = \`
+                <input type="text" class="form-input" placeholder="레이블 (예: Instagram)" 
+                       value="\${label}" oninput="updateLinkLabel(\${linkId}, this.value)">
+                <input type="url" class="form-input" placeholder="URL" 
+                       value="\${url}" oninput="updateLinkUrl(\${linkId}, this.value)">
+                <button class="btn btn-icon btn-danger" onclick="removeLink(\${linkId})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            \`;
+            container.appendChild(linkDiv);
+
+            // Update add button state
+            if (links.length >= MAX_LINKS) {
+                document.getElementById('addLinkBtn').disabled = true;
+                document.getElementById('addLinkBtn').style.opacity = '0.5';
+            }
+
+            updatePreview();
+        }
+
+        // Update link label
+        function updateLinkLabel(linkId, label) {
+            const link = links.find(l => l.id === linkId);
+            if (link) {
+                link.label = label;
+                updatePreview();
+            }
+        }
+
+        // Update link URL
+        function updateLinkUrl(linkId, url) {
+            const link = links.find(l => l.id === linkId);
+            if (link) {
+                link.url = url;
+                updatePreview();
+            }
+        }
+
+        // Remove link
+        function removeLink(linkId) {
+            links = links.filter(l => l.id !== linkId);
+            document.querySelector(\`[data-link-id="\${linkId}"]\`).remove();
+            
+            // Update add button state
+            document.getElementById('addLinkBtn').disabled = false;
+            document.getElementById('addLinkBtn').style.opacity = '1';
             
             updatePreview();
         }
@@ -856,142 +856,139 @@ function getEditorHTML(mode: 'new' | 'edit', cardId: string | null) {
             const name = document.getElementById('name').value || '이름을 입력하세요';
             const title = document.getElementById('title').value;
             const company = document.getElementById('company').value;
-            const bio = document.getElementById('bio').value;
             const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
-            const website = document.getElementById('website').value;
-            const address = document.getElementById('address').value;
 
-            const showPhone = document.getElementById('showPhone').classList.contains('active');
-            const showEmail = document.getElementById('showEmail').classList.contains('active');
-
-            // Update header
+            // Update name
             document.getElementById('previewName').textContent = name;
-            document.getElementById('previewTitle').textContent = title;
-            document.getElementById('previewCompany').textContent = company;
-            
-            const previewBio = document.getElementById('previewBio');
-            if (bio) {
-                previewBio.textContent = bio;
-                previewBio.style.display = 'block';
+
+            // Update title
+            const titleEl = document.getElementById('previewTitle');
+            if (title) {
+                titleEl.textContent = title;
+                titleEl.style.display = 'block';
             } else {
-                previewBio.style.display = 'none';
+                titleEl.style.display = 'none';
             }
 
-            // Update contact
-            const previewContact = document.getElementById('previewContact');
-            let contactHTML = '';
-            
-            if (showPhone && phone) {
-                contactHTML += \`
-                    <div class="contact-item" style="background: rgba(255,255,255,0.1); color: white;">
+            // Update company
+            const companyEl = document.getElementById('previewCompany');
+            if (company) {
+                companyEl.textContent = company;
+                companyEl.style.display = 'block';
+            } else {
+                companyEl.style.display = 'none';
+            }
+
+            // Update contacts
+            const contactsHtml = [];
+            if (phone) {
+                contactsHtml.push(\`
+                    <div class="preview-contact-item">
                         <i class="fas fa-phone"></i>
                         <span>\${phone}</span>
                     </div>
-                \`;
+                \`);
             }
-            
-            if (showEmail && email) {
-                contactHTML += \`
-                    <div class="contact-item" style="background: rgba(255,255,255,0.1); color: white;">
+            if (email) {
+                contactsHtml.push(\`
+                    <div class="preview-contact-item">
                         <i class="fas fa-envelope"></i>
                         <span>\${email}</span>
                     </div>
-                \`;
+                \`);
             }
-            
-            if (website) {
-                contactHTML += \`
-                    <div class="contact-item" style="background: rgba(255,255,255,0.1); color: white;">
-                        <i class="fas fa-globe"></i>
-                        <span>\${website}</span>
-                    </div>
-                \`;
-            }
-            
-            if (address) {
-                contactHTML += \`
-                    <div class="contact-item" style="background: rgba(255,255,255,0.1); color: white;">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>\${address}</span>
-                    </div>
-                \`;
-            }
-            
-            previewContact.innerHTML = contactHTML;
+            document.getElementById('previewContacts').innerHTML = contactsHtml.join('');
 
             // Update links
-            const previewLinks = document.getElementById('previewLinks');
-            let linksHTML = '';
-            
-            links.filter(link => link.title && link.url).forEach(link => {
-                linksHTML += \`
-                    <a href="\${link.url}" class="preview-link" target="_blank" style="background: rgba(255,255,255,0.1); color: white;">
+            const linksHtml = links
+                .filter(link => link.label && link.url)
+                .map(link => \`
+                    <div class="preview-link">
                         <i class="fas fa-link"></i>
-                        <span>\${link.title}</span>
-                    </a>
-                \`;
-            });
-            
-            previewLinks.innerHTML = linksHTML;
+                        <span>\${link.label}</span>
+                    </div>
+                \`).join('');
+            document.getElementById('previewLinks').innerHTML = linksHtml;
         }
 
         // Save card
         async function saveCard() {
             const name = document.getElementById('name').value.trim();
+            
             if (!name) {
-                alert('이름은 필수 입력 항목입니다.');
+                alert('이름을 입력해주세요.');
+                document.getElementById('name').focus();
                 return;
             }
 
-            const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
-            if (!token) {
-                alert('로그인이 필요합니다.');
-                window.location.href = '/auth/login';
-                return;
-            }
-
+            // Prepare data
             const cardData = {
                 name: name,
-                title: document.getElementById('title').value.trim(),
-                company: document.getElementById('company').value.trim(),
-                bio: document.getElementById('bio').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                website: document.getElementById('website').value.trim(),
-                address: document.getElementById('address').value.trim(),
+                phone: document.getElementById('phone').value.trim() || null,
+                email: document.getElementById('email').value.trim() || null,
+                title: document.getElementById('title').value.trim() || null,
+                company: document.getElementById('company').value.trim() || null,
+                headline: document.getElementById('headline').value.trim() || null,
                 theme: currentTheme,
-                links: JSON.stringify(links.filter(link => link.title && link.url)),
-                show_phone: document.getElementById('showPhone').classList.contains('active'),
-                show_email: document.getElementById('showEmail').classList.contains('active'),
-                avatar_url: uploadedImage || null
+                links: links.filter(link => link.label && link.url).map(link => ({
+                    label: link.label,
+                    url: link.url
+                })),
+                status: 'public'
             };
 
-            try {
-                const mode = '${mode}';
-                const url = mode === 'new' ? '/api/cards' : \`/api/cards/${cardId}\`;
-                const method = mode === 'new' ? 'post' : 'put';
+            // Disable buttons
+            const saveBtn = document.getElementById('saveBtn');
+            const saveFooterBtn = document.getElementById('saveFooterBtn');
+            const saveBtnText = document.getElementById('saveBtnText');
+            const saveFooterBtnText = document.getElementById('saveFooterBtnText');
+            
+            saveBtn.disabled = true;
+            saveFooterBtn.disabled = true;
+            saveBtnText.innerHTML = '<span class="loading-spinner"></span> 저장 중...';
+            saveFooterBtnText.innerHTML = '<span class="loading-spinner"></span> 저장 중...';
 
-                const response = await axios[method](url, cardData, {
-                    headers: { 'Authorization': \`Bearer \${token}\` }
-                });
+            try {
+                const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
+                
+                let response;
+                if (MODE === 'edit' && CARD_ID) {
+                    response = await axios.put(\`/api/cards/\${CARD_ID}\`, cardData, {
+                        headers: { 'Authorization': \`Bearer \${token}\` }
+                    });
+                } else {
+                    response = await axios.post('/api/cards', cardData, {
+                        headers: { 'Authorization': \`Bearer \${token}\` }
+                    });
+                }
 
                 if (response.data.success) {
-                    alert(mode === 'new' ? '명함이 생성되었습니다!' : '명함이 수정되었습니다!');
+                    alert(MODE === 'new' ? '명함이 생성되었습니다!' : '명함이 수정되었습니다!');
                     window.location.href = '/my/cards';
                 } else {
-                    alert('저장에 실패했습니다: ' + response.data.error);
+                    throw new Error(response.data.error || 'Failed to save card');
                 }
             } catch (error) {
                 console.error('Save error:', error);
-                alert('저장 중 오류가 발생했습니다.');
+                
+                if (error.response && error.response.data) {
+                    alert(error.response.data.error || '저장에 실패했습니다.');
+                } else {
+                    alert('저장에 실패했습니다. 다시 시도해주세요.');
+                }
+                
+                saveBtn.disabled = false;
+                saveFooterBtn.disabled = false;
+                saveBtnText.textContent = MODE === 'new' ? '명함 만들기' : '저장';
+                saveFooterBtnText.textContent = MODE === 'new' ? '명함 만들기' : '저장';
             }
         }
 
         // Go back
         function goBack() {
-            if (confirm('작성 중인 내용이 사라집니다. 정말 나가시겠습니까?')) {
-                window.history.back();
+            if (confirm('작성 중인 내용이 저장되지 않습니다. 나가시겠습니까?')) {
+                window.location.href = '/my/cards';
             }
         }
     </script>
