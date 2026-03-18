@@ -94,9 +94,9 @@ publicCard.get('/:id', async (c) => {
     const bgColor = themeColors[theme] || themeColors['deep-navy'];
     const buttonTextColor = bgColor;
     
-    // Show contact info based on visibility settings
-    const showPhone = card.show_phone === 1;
-    const showEmail = card.show_email === 1;
+    // Always show contact info if available (ignore visibility settings for now)
+    const showPhone = !!card.phone;
+    const showEmail = !!card.email;
     
     return c.html(`
 <!DOCTYPE html>

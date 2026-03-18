@@ -497,7 +497,6 @@ myCardView.get('/:id', async (c) => {
         const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
         
         if (!token) {
-          // Redirect to login without return URL to avoid infinite loop
           alert('로그인이 필요합니다.');
           window.location.href = '/auth/login';
           return;
@@ -516,9 +515,20 @@ myCardView.get('/:id', async (c) => {
             return;
           }
           
-          const data = await response.json();
-          const userId = data.user.id;
+          const result = await response.json();
+          
+          // Check response structure
+          if (!result.success || !result.data || !result.data.user) {
+            console.error('Invalid response structure:', result);
+            alert('인증 정보를 확인할 수 없습니다.');
+            window.location.href = '/my/cards';
+            return;
+          }
+          
+          const userId = result.data.user.id;
           const cardOwnerId = "${card.user_id}";
+          
+          console.log('User ID:', userId, 'Card Owner:', cardOwnerId);
           
           if (userId !== cardOwnerId) {
             alert('본인의 명함만 볼 수 있습니다.');
@@ -526,7 +536,7 @@ myCardView.get('/:id', async (c) => {
           }
         } catch (error) {
           console.error('Auth error:', error);
-          alert('인증 오류가 발생했습니다.');
+          alert('인증 오류가 발생했습니다: ' + error.message);
           window.location.href = '/my/cards';
         }
       }
