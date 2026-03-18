@@ -543,7 +543,7 @@ export const landingPageHTML = `
         <div class="card-shadow"></div>
         <div class="preview-card">
             <div class="card-logo">METI</div>
-            <div class="card-name">홍길동</div>
+            <div class="card-name">박상현</div>
             <div class="card-title">Product Manager · METI</div>
             
             <div style="display: flex; gap: 12px; font-size: 14px; opacity: 0.7; margin-top: 16px;">

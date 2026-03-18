@@ -461,8 +461,10 @@ function getLoginHTML() {
                     // Store user info
                     localStorage.setItem('meti_user', JSON.stringify(user));
 
-                    // Redirect to card editor or my cards
-                    window.location.href = '/my/cards';
+                    // Redirect to return URL or default to my cards
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const returnUrl = urlParams.get('return');
+                    window.location.href = returnUrl || '/my/cards';
                 } else {
                     showError(response.data.error || '로그인에 실패했습니다.');
                     loginBtn.disabled = false;
@@ -497,7 +499,10 @@ function getLoginHTML() {
                     headers: { 'Authorization': 'Bearer ' + token }
                 }).then(response => {
                     if (response.data.success) {
-                        window.location.href = '/my/cards';
+                        // Redirect to return URL or default to my cards
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const returnUrl = urlParams.get('return');
+                        window.location.href = returnUrl || '/my/cards';
                     }
                 }).catch(() => {
                     // Token invalid, clear it

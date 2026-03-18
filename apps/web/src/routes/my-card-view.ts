@@ -497,7 +497,9 @@ myCardView.get('/:id', async (c) => {
         const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
         
         if (!token) {
-          window.location.href = '/auth/login';
+          // Save return URL and redirect to login
+          const returnUrl = encodeURIComponent(window.location.pathname);
+          window.location.href = '/auth/login?return=' + returnUrl;
           return;
         }
         
@@ -507,7 +509,8 @@ myCardView.get('/:id', async (c) => {
           });
           
           if (!response.ok) {
-            window.location.href = '/auth/login';
+            const returnUrl = encodeURIComponent(window.location.pathname);
+            window.location.href = '/auth/login?return=' + returnUrl;
             return;
           }
           
@@ -516,12 +519,13 @@ myCardView.get('/:id', async (c) => {
           const cardOwnerId = "${card.user_id}";
           
           if (userId !== cardOwnerId) {
-            alert('본인의 명함만 수정할 수 있습니다.');
+            alert('본인의 명함만 볼 수 있습니다.');
             window.location.href = '/my/cards';
           }
         } catch (error) {
           console.error('Auth error:', error);
-          window.location.href = '/auth/login';
+          const returnUrl = encodeURIComponent(window.location.pathname);
+          window.location.href = '/auth/login?return=' + returnUrl;
         }
       }
       
