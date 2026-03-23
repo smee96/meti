@@ -27,6 +27,7 @@ publicCard.get('/:id', async (c) => {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>METI - 명함을 찾을 수 없습니다</title>
+    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
             <script src="https://cdn.tailwindcss.com"></script>
         </head>
         <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
@@ -51,6 +52,7 @@ publicCard.get('/:id', async (c) => {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>METI - 비공개 명함</title>
+    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
             <script src="https://cdn.tailwindcss.com"></script>
         </head>
         <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
@@ -105,6 +107,7 @@ publicCard.get('/:id', async (c) => {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>${card.name} - METI 디지털 명함</title>
+    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="description" content="${card.headline || card.name + '의 디지털 명함'}">
     
     <!-- Open Graph / SNS 공유 -->
@@ -130,7 +133,7 @@ publicCard.get('/:id', async (c) => {
         src: url('/static/fonts/Montserrat-Bold.woff2') format('woff2');
         font-weight: 700;
         font-style: normal;
-        font-display: swap;
+        font-display: block;
       }
 
       * {
@@ -689,6 +692,7 @@ publicCard.get('/:id', async (c) => {
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>METI - 오류</title>
+    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
           <script src="https://cdn.tailwindcss.com"></script>
       </head>
       <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">

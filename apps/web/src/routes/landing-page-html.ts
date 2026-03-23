@@ -6,6 +6,7 @@ export const landingPageHTML = `
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>METI - 디지털 명함의 새로운 기준</title>
+    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="description" content="종이 명함은 이제 그만. QR 코드로 간편하게 공유하고, 언제 어디서나 명함을 관리하세요.">
     
     <!-- Favicon -->
@@ -24,7 +25,7 @@ export const landingPageHTML = `
         src: url('/static/fonts/Montserrat-Bold.woff2') format('woff2');
         font-weight: 700;
         font-style: normal;
-        font-display: swap;
+        font-display: block;
       }
 
       * {

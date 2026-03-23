@@ -75,6 +75,7 @@ themeGallery.get('/', (c) => {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>METI - 테마 갤러리</title>
+    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <meta name="description" content="METI 디지털 명함의 10가지 컬러 테마를 둘러보세요">
     
     <!-- Fonts -->
@@ -93,7 +94,7 @@ themeGallery.get('/', (c) => {
         src: url('/static/fonts/Montserrat-Bold.woff2') format('woff2');
         font-weight: 700;
         font-style: normal;
-        font-display: swap;
+        font-display: block;
       }
 
       * {

@@ -16,6 +16,7 @@ function getMyProfileHTML() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이 - METI</title>
+    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -25,7 +26,7 @@ function getMyProfileHTML() {
             src: url('/static/fonts/Montserrat-Bold.woff2') format('woff2');
             font-weight: 700;
             font-style: normal;
-            font-display: swap;
+            font-display: block;
         }
 
         * {
@@ -66,7 +67,7 @@ function getMyProfileHTML() {
             letter-spacing: 8px;
             color: white;
             cursor: pointer;
-            font-display: swap;
+            font-display: block;
         }
 
         .nav-links {

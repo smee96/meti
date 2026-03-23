@@ -23,6 +23,7 @@ myCardView.get('/:id', async (c) => {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>METI - 명함을 찾을 수 없습니다</title>
+    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
             <script src="https://cdn.tailwindcss.com"></script>
         </head>
         <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
@@ -68,6 +69,7 @@ myCardView.get('/:id', async (c) => {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>내 명함 - ${card.name} - METI</title>
+    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -85,7 +87,7 @@ myCardView.get('/:id', async (c) => {
         src: url('/static/fonts/Montserrat-Bold.woff2') format('woff2');
         font-weight: 700;
         font-style: normal;
-        font-display: swap;
+        font-display: block;
       }
 
       * {
@@ -572,6 +574,7 @@ myCardView.get('/:id', async (c) => {
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>오류 - METI</title>
+    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
           <script src="https://cdn.tailwindcss.com"></script>
       </head>
       <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
