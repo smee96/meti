@@ -115,7 +115,7 @@ publicCard.get('/:id', async (c) => {
     ${card.avatar ? `<meta property="og:image" content="${card.avatar}">` : ''}
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
@@ -124,6 +124,15 @@ publicCard.get('/:id', async (c) => {
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>">
     
     <style>
+      /* Local Font - Tenor Sans */
+      @font-face {
+        font-family: 'Tenor Sans';
+        src: url('/static/fonts/TenorSans-Regular.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+
       * {
         margin: 0;
         padding: 0;
