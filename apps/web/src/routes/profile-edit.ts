@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import type { Env } from '../types';
+import { getModalHTML } from '../utils/modal';
 
 const profileEdit = new Hono<{ Bindings: Env }>();
 
@@ -15,6 +16,7 @@ profileEdit.get('/name', (c) => {
     <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    ${getModalHTML()}
     <style>
         @font-face {
             font-family: 'Montserrat';
@@ -217,7 +219,10 @@ profileEdit.get('/name', (c) => {
             const newName = nameInput.value.trim();
             
             if (!newName) {
-                alert('이름을 입력해주세요.');
+                await window.modal.show({
+                    message: '이름을 입력해주세요.',
+                    type: 'warning'
+                });
                 return;
             }
             
@@ -244,7 +249,10 @@ profileEdit.get('/name', (c) => {
                         localStorage.setItem('meti_user', JSON.stringify(user));
                     }
                     
-                    alert('이름이 변경되었습니다!');
+                    await window.modal.show({
+                        message: '이름이 변경되었습니다!',
+                        type: 'success'
+                    });
                     window.location.href = '/my/profile';
                 } else {
                     throw new Error(response.data.error || '이름 변경에 실패했습니다.');
@@ -253,11 +261,17 @@ profileEdit.get('/name', (c) => {
                 console.error('Name update error:', error);
                 
                 if (error.response && error.response.status === 401) {
-                    alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+                    await window.modal.show({
+                        message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+                        type: 'warning'
+                    });
                     window.location.href = '/auth/login';
                 } else {
                     const errorMsg = error.response?.data?.error || error.message || '이름 변경에 실패했습니다.';
-                    alert('오류: ' + errorMsg);
+                    await window.modal.show({
+                        message: '오류: ' + errorMsg,
+                        type: 'error'
+                    });
                 }
             } finally {
                 saveBtn.disabled = false;
@@ -282,6 +296,7 @@ profileEdit.get('/password', (c) => {
     <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    ${getModalHTML()}
     <style>
         @font-face {
             font-family: 'Montserrat';
@@ -632,7 +647,10 @@ profileEdit.get('/password', (c) => {
                 });
                 
                 if (response.data.success) {
-                    alert('비밀번호가 변경되었습니다!');
+                    await window.modal.show({
+                        message: '비밀번호가 변경되었습니다!',
+                        type: 'success'
+                    });
                     window.location.href = '/my/profile';
                 } else {
                     throw new Error(response.data.error || '비밀번호 변경에 실패했습니다.');
@@ -641,13 +659,22 @@ profileEdit.get('/password', (c) => {
                 console.error('Password change error:', error);
                 
                 if (error.response && error.response.status === 401) {
-                    alert('현재 비밀번호가 일치하지 않습니다.');
+                    await window.modal.show({
+                        message: '현재 비밀번호가 일치하지 않습니다.',
+                        type: 'error'
+                    });
                 } else if (error.response && error.response.status === 403) {
-                    alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+                    await window.modal.show({
+                        message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+                        type: 'warning'
+                    });
                     window.location.href = '/auth/login';
                 } else {
                     const errorMsg = error.response?.data?.error || error.message || '비밀번호 변경에 실패했습니다.';
-                    alert('오류: ' + errorMsg);
+                    await window.modal.show({
+                        message: '오류: ' + errorMsg,
+                        type: 'error'
+                    });
                 }
             } finally {
                 saveBtn.disabled = false;
