@@ -19,17 +19,9 @@ export function getEditorHTML(mode: 'new' | 'edit', cardId: string | null): stri
 <body>
     <!-- Header -->
     <div class="header">
-        <div class="logo">METI</div>
-        <div class="header-actions">
-            <button class="btn btn-secondary" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i>
-                <span>취소</span>
-            </button>
-            <button class="btn btn-primary" id="saveBtn" onclick="saveCard()">
-                <i class="fas fa-save"></i>
-                <span id="saveBtnText">${mode === 'new' ? '명함 만들기' : '저장'}</span>
-            </button>
-        </div>
+        <button class="back-btn" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
     </div>
 
     <div class="container">
@@ -551,16 +543,12 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
                 cardData.avatar_url = currentAvatarUrl;
             }
 
-            // Disable buttons
-            const saveBtn = document.getElementById('saveBtn');
+            // Disable button
             const saveFooterBtn = document.getElementById('saveFooterBtn');
-            const saveBtnText = document.getElementById('saveBtnText');
             const saveFooterBtnText = document.getElementById('saveFooterBtnText');
             
-            saveBtn.disabled = true;
             saveFooterBtn.disabled = true;
-            saveBtnText.innerHTML = '<span class="loading-spinner"></span>';
-            saveFooterBtnText.innerHTML = '<span class="loading-spinner"></span>';
+            saveFooterBtnText.innerHTML = '<span class="loading-spinner"></span> 저장 중...';
 
             try {
                 const token = localStorage.getItem('meti_token') || sessionStorage.getItem('meti_token');
@@ -588,10 +576,8 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
             } catch (error) {
                 console.error('Save error:', error);
                 
-                // Re-enable buttons
-                saveBtn.disabled = false;
+                // Re-enable button
                 saveFooterBtn.disabled = false;
-                saveBtnText.textContent = MODE === 'new' ? '명함 만들기' : '저장';
                 saveFooterBtnText.textContent = MODE === 'new' ? '명함 만들기' : '저장';
                 
                 if (error.response && (error.response.status === 401 || error.response.status === 403)) {

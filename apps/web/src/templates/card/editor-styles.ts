@@ -17,24 +17,34 @@ export const editorStyles = `
         .header {
             background: rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 16px 20px;
+            padding: 20px 40px;
+            min-height: 80px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
         }
 
-        .logo {
-            font-family: 'Tenor Sans', serif;
-            font-size: 24px;
-            letter-spacing: 6px;
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
             color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
         }
 
-        .header-actions {
-            display: flex;
-            gap: 8px;
-            flex-direction: row;
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
 
         .btn {
@@ -388,19 +398,37 @@ export const editorStyles = `
         .save-footer {
             position: sticky;
             bottom: 0;
-            background: rgba(10, 34, 96, 0.95);
+            background: linear-gradient(to top, rgba(10, 34, 96, 1) 0%, rgba(10, 34, 96, 0.98) 100%);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 16px 20px;
+            padding: 20px;
             display: flex;
             justify-content: center;
             backdrop-filter: blur(10px);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .save-footer .btn-primary {
-            min-width: 200px;
+            width: 100%;
+            max-width: 400px;
             justify-content: center;
-            font-size: 16px;
-            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 16px 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%);
+            color: #0A2260;
+            box-shadow: 0 4px 16px rgba(255, 193, 7, 0.4);
+        }
+
+        .save-footer .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.6);
+        }
+
+        .save-footer .btn-primary:disabled {
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
         }
 
         .loading-spinner {

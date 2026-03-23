@@ -43,9 +43,7 @@ infoPages.get('/notices', (c) => {
             padding: 20px 40px;
             min-height: 80px;
             display: flex;
-            justify-content: flex-start;
             align-items: center;
-            gap: 20px;
             backdrop-filter: blur(10px);
         }
 
@@ -62,20 +60,11 @@ infoPages.get('/notices', (c) => {
             justify-content: center;
             font-size: 18px;
             transition: all 0.3s;
-            flex-shrink: 0;
         }
 
         .back-btn:hover {
             background: rgba(255, 255, 255, 0.2);
-        }
-
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 20px;
-            letter-spacing: 4px;
-            color: white;
-            cursor: pointer;
-            font-weight: 700;
+            transform: scale(1.05);
         }
 
         .container {
@@ -160,7 +149,6 @@ infoPages.get('/notices', (c) => {
         <button class="back-btn" onclick="window.history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <div class="logo" onclick="window.location.href='/'">METI</div>
     </div>
 
     <div class="container">
@@ -231,14 +219,6 @@ infoPages.get('/events', (c) => {
             backdrop-filter: blur(10px);
         }
 
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 20px;
-            letter-spacing: 4px;
-            color: white;
-            cursor: pointer;
-            font-weight: 700;
-        }
 
         .back-btn {
             background: rgba(255, 255, 255, 0.1);
@@ -297,7 +277,6 @@ infoPages.get('/events', (c) => {
         <button class="back-btn" onclick="window.history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <div class="logo" onclick="window.location.href='/'">METI</div>
     </div>
 
     <div class="container">
@@ -355,14 +334,6 @@ infoPages.get('/contact', (c) => {
             backdrop-filter: blur(10px);
         }
 
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 20px;
-            letter-spacing: 4px;
-            color: white;
-            cursor: pointer;
-            font-weight: 700;
-        }
 
         .back-btn {
             background: rgba(255, 255, 255, 0.1);
@@ -448,7 +419,6 @@ infoPages.get('/contact', (c) => {
         <button class="back-btn" onclick="window.history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <div class="logo" onclick="window.location.href='/'">METI</div>
     </div>
 
     <div class="container">
@@ -533,14 +503,6 @@ infoPages.get('/terms', (c) => {
             backdrop-filter: blur(10px);
         }
 
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 20px;
-            letter-spacing: 4px;
-            color: white;
-            cursor: pointer;
-            font-weight: 700;
-        }
 
         .back-btn {
             background: rgba(255, 255, 255, 0.1);
@@ -607,7 +569,6 @@ infoPages.get('/terms', (c) => {
         <button class="back-btn" onclick="window.history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <div class="logo" onclick="window.location.href='/'">METI</div>
     </div>
 
     <div class="container">
@@ -685,14 +646,6 @@ infoPages.get('/privacy', (c) => {
             backdrop-filter: blur(10px);
         }
 
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 20px;
-            letter-spacing: 4px;
-            color: white;
-            cursor: pointer;
-            font-weight: 700;
-        }
 
         .back-btn {
             background: rgba(255, 255, 255, 0.1);
@@ -769,7 +722,6 @@ infoPages.get('/privacy', (c) => {
         <button class="back-btn" onclick="window.history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <div class="logo" onclick="window.location.href='/'">METI</div>
     </div>
 
     <div class="container">
