@@ -15,6 +15,7 @@ import themeGallery from './routes/theme-gallery';
 import cardEditor from './routes/card-editor';
 import myCards from './routes/my-cards';
 import myCardView from './routes/my-card-view';
+import myWallet from './routes/my-wallet';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -47,6 +48,9 @@ app.route('/my/card', myCardView);
 
 // My cards list
 app.route('/my/cards', myCards);
+
+// My wallet page
+app.route('/my/wallet', myWallet);
 
 // Landing page (catch all root)
 app.route('/', landing);
