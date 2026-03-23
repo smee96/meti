@@ -829,6 +829,67 @@ function getMyProfileHTML() {
         </div>
     </div>
 
+    <!-- Logout Confirmation Modal -->
+    <div class="modal" id="logoutModal" onclick="closeLogoutModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-sign-out-alt"></i> 로그아웃
+                </div>
+                <button class="modal-close" onclick="closeLogoutModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div style="padding: 20px 0;">
+                <p style="font-size: 16px; line-height: 1.6; opacity: 0.9;">
+                    로그아웃 하시겠습니까?
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+                <button onclick="closeLogoutModal()" style="flex: 1; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; cursor: pointer; font-size: 15px; font-weight: 600; transition: all 0.3s;">
+                    취소
+                </button>
+                <button onclick="confirmLogout()" style="flex: 1; padding: 14px; border-radius: 12px; border: none; background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%); color: #0A2260; cursor: pointer; font-size: 15px; font-weight: 600; transition: all 0.3s;">
+                    로그아웃
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Account Confirmation Modal -->
+    <div class="modal" id="deleteAccountModal" onclick="closeDeleteAccountModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title" style="color: #f44336;">
+                    <i class="fas fa-exclamation-triangle"></i> 회원 탈퇴
+                </div>
+                <button class="modal-close" onclick="closeDeleteAccountModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div style="padding: 20px 0;">
+                <p style="font-size: 16px; line-height: 1.8; opacity: 0.9; margin-bottom: 16px;">
+                    정말로 회원 탈퇴하시겠습니까?
+                </p>
+                <p style="font-size: 14px; line-height: 1.6; opacity: 0.7; color: #f44336;">
+                    ⚠️ 탈퇴 시 모든 데이터가 영구 삭제되며<br>복구할 수 없습니다.
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+                <button onclick="closeDeleteAccountModal()" style="flex: 1; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: white; cursor: pointer; font-size: 15px; font-weight: 600; transition: all 0.3s;">
+                    취소
+                </button>
+                <button onclick="confirmDeleteAccount()" style="flex: 1; padding: 14px; border-radius: 12px; border: none; background: linear-gradient(135deg, #f44336 0%, #e57373 100%); color: white; cursor: pointer; font-size: 15px; font-weight: 600; transition: all 0.3s;">
+                    탈퇴하기
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Bottom Navigation Bar (Mobile Only) -->
     <div class="bottom-nav">
         <div class="bottom-nav-container">
@@ -1048,26 +1109,38 @@ function getMyProfileHTML() {
         }
 
         function logout() {
-            if (confirm('로그아웃 하시겠습니까?')) {
-                localStorage.removeItem('meti_token');
-                localStorage.removeItem('meti_user');
-                sessionStorage.removeItem('meti_token');
-                alert('로그아웃되었습니다.');
-                window.location.href = '/auth/login';
-            }
+            document.getElementById('logoutModal').classList.add('active');
+        }
+
+        function closeLogoutModal() {
+            document.getElementById('logoutModal').classList.remove('active');
+        }
+
+        function confirmLogout() {
+            localStorage.removeItem('meti_token');
+            localStorage.removeItem('meti_user');
+            sessionStorage.removeItem('meti_token');
+            closeLogoutModal();
+            // Redirect to main page instead of login
+            window.location.href = '/';
         }
 
         function deleteAccount() {
-            const confirmed = confirm('정말로 회원 탈퇴하시겠습니까?\\n\\n탈퇴 시 모든 데이터가 영구 삭제되며 복구할 수 없습니다.');
-            if (confirmed) {
-                const doubleConfirm = confirm('다시 한 번 확인합니다. 정말 탈퇴하시겠습니까?');
-                if (doubleConfirm) {
-                    alert('회원 탈퇴가 완료되었습니다.\\n그동안 METI를 이용해 주셔서 감사합니다.');
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    window.location.href = '/';
-                }
-            }
+            document.getElementById('deleteAccountModal').classList.add('active');
+        }
+
+        function closeDeleteAccountModal() {
+            document.getElementById('deleteAccountModal').classList.remove('active');
+        }
+
+        function confirmDeleteAccount() {
+            // TODO: Call API to delete account
+            localStorage.clear();
+            sessionStorage.clear();
+            closeDeleteAccountModal();
+            // Show success message and redirect to main page
+            alert('회원 탈퇴가 완료되었습니다.\\n그동안 METI를 이용해 주셔서 감사합니다.');
+            window.location.href = '/';
         }
     </script>
 </body>
