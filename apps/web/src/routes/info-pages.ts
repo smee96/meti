@@ -50,8 +50,8 @@ infoPages.get('/notices', (c) => {
 
         .logo {
             font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            letter-spacing: 6px;
+            font-size: 20px;
+            letter-spacing: 4px;
             color: white;
             cursor: pointer;
             font-weight: 700;
@@ -231,8 +231,8 @@ infoPages.get('/events', (c) => {
 
         .logo {
             font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            letter-spacing: 6px;
+            font-size: 20px;
+            letter-spacing: 4px;
             color: white;
             cursor: pointer;
             font-weight: 700;
@@ -355,8 +355,8 @@ infoPages.get('/contact', (c) => {
 
         .logo {
             font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            letter-spacing: 6px;
+            font-size: 20px;
+            letter-spacing: 4px;
             color: white;
             cursor: pointer;
             font-weight: 700;
@@ -533,8 +533,8 @@ infoPages.get('/terms', (c) => {
 
         .logo {
             font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            letter-spacing: 6px;
+            font-size: 20px;
+            letter-spacing: 4px;
             color: white;
             cursor: pointer;
             font-weight: 700;
@@ -685,8 +685,8 @@ infoPages.get('/privacy', (c) => {
 
         .logo {
             font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            letter-spacing: 6px;
+            font-size: 20px;
+            letter-spacing: 4px;
             color: white;
             cursor: pointer;
             font-weight: 700;
