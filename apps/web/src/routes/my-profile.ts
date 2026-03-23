@@ -605,27 +605,27 @@ function getMyProfileHTML() {
         <!-- Account Section -->
         <div class="menu-section">
             <div class="menu-section-title">계정</div>
-            <a href="#" class="menu-item" onclick="editProfile(); return false;">
+            <a href="/my/profile/name" class="menu-item">
                 <div class="menu-item-left">
                     <div class="menu-item-icon primary">
-                        <i class="fas fa-user-edit"></i>
+                        <i class="fas fa-user"></i>
                     </div>
                     <div class="menu-item-text">
-                        <div class="menu-item-title">회원정보 수정</div>
-                        <div class="menu-item-subtitle">이름, 이메일 변경</div>
+                        <div class="menu-item-title" id="menuName">이름</div>
+                        <div class="menu-item-subtitle" id="menuEmail">이메일</div>
                     </div>
                 </div>
                 <div class="menu-item-arrow">
                     <i class="fas fa-chevron-right"></i>
                 </div>
             </a>
-            <a href="#" class="menu-item" onclick="changePassword(); return false;">
+            <a href="/my/profile/password" class="menu-item">
                 <div class="menu-item-left">
                     <div class="menu-item-icon info">
                         <i class="fas fa-key"></i>
                     </div>
                     <div class="menu-item-text">
-                        <div class="menu-item-title">비밀번호 변경</div>
+                        <div class="menu-item-title">비밀번호</div>
                         <div class="menu-item-subtitle">보안을 위해 주기적으로 변경하세요</div>
                     </div>
                 </div>
@@ -935,6 +935,10 @@ function getMyProfileHTML() {
                     document.getElementById('profileName').textContent = user.name || '사용자';
                     document.getElementById('profileEmail').textContent = user.email || 'user@example.com';
                     
+                    // Update menu items with user info
+                    document.getElementById('menuName').textContent = user.name || '이름';
+                    document.getElementById('menuEmail').textContent = user.email || '이메일';
+                    
                     // Load avatar
                     const savedAvatar = localStorage.getItem('profile_avatar');
                     const avatarContainer = document.getElementById('profileAvatar');
@@ -1072,20 +1076,6 @@ function getMyProfileHTML() {
             toggle.classList.toggle('active');
             const enabled = toggle.classList.contains('active');
             localStorage.setItem('marketing_enabled', enabled);
-        }
-
-        // Menu functions
-        function editProfile() {
-            alert('회원정보 수정 기능은 준비 중입니다.');
-        }
-
-        function changePassword() {
-            const newPassword = prompt('새 비밀번호를 입력하세요:');
-            if (newPassword && newPassword.length >= 6) {
-                alert('비밀번호가 변경되었습니다.');
-            } else if (newPassword) {
-                alert('비밀번호는 6자 이상이어야 합니다.');
-            }
         }
 
         function showNotices() {

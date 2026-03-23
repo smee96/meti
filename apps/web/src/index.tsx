@@ -17,6 +17,7 @@ import myCards from './routes/my-cards';
 import myCardView from './routes/my-card-view';
 import myWallet from './routes/my-wallet';
 import myProfile from './routes/my-profile';
+import profileEdit from './routes/profile-edit';
 import infoPages from './routes/info-pages';
 
 const app = new Hono<{ Bindings: Env }>();
@@ -56,6 +57,9 @@ app.route('/my/wallet', myWallet);
 
 // My profile page
 app.route('/my/profile', myProfile);
+
+// Profile edit pages (name, password)
+app.route('/my/profile', profileEdit);
 
 // Info pages (notices, events, contact, terms, privacy)
 app.route('/info', infoPages);
