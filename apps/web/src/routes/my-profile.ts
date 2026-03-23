@@ -16,11 +16,18 @@ function getMyProfileHTML() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이 - METI</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Local Font - Tenor Sans */
+        @font-face {
+            font-family: 'Tenor Sans';
+            src: url('/static/fonts/TenorSans-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: block;
+        }
+
         * {
             margin: 0;
             padding: 0;
