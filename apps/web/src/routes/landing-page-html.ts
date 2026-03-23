@@ -56,7 +56,7 @@ export const landingPageHTML = `
         font-size: 120px;
         font-weight: 700;
         letter-spacing: 20px;
-        margin-bottom: 60px;
+        margin-bottom: 120px;
         color: white;
         text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         animation: fadeInUp 0.8s ease;
@@ -67,7 +67,7 @@ export const landingPageHTML = `
         font-size: 18px;
         font-weight: 300;
         opacity: 0.9;
-        margin-bottom: 60px;
+        margin-bottom: 80px;
         line-height: 1.6;
         animation: fadeInUp 1s ease 0.2s both;
       }
@@ -134,12 +134,12 @@ export const landingPageHTML = `
         .logo {
           font-size: 80px;
           letter-spacing: 12px;
-          margin-bottom: 40px;
+          margin-bottom: 80px;
         }
         
         .tagline {
           font-size: 16px;
-          margin-bottom: 40px;
+          margin-bottom: 60px;
         }
         
         .btn {
@@ -152,10 +152,12 @@ export const landingPageHTML = `
         .logo {
           font-size: 60px;
           letter-spacing: 8px;
+          margin-bottom: 60px;
         }
         
         .tagline {
           font-size: 14px;
+          margin-bottom: 50px;
         }
       }
       
