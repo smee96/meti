@@ -577,7 +577,14 @@ profileEdit.get('/password', (c) => {
             
             // Validate confirm password
             if (confirmPassword.length > 0) {
-                if (confirmPassword === newPassword && isNewPasswordValid) {
+                // Only show green when:
+                // 1. New password is fully valid
+                // 2. Confirm password matches completely
+                // 3. Both passwords have same length (fully typed)
+                if (confirmPassword === newPassword && 
+                    isNewPasswordValid && 
+                    confirmPassword.length === newPassword.length &&
+                    newPassword.length >= 8) {
                     confirmPasswordInput.classList.remove('invalid');
                     confirmPasswordInput.classList.add('valid');
                     confirmPasswordIcon.classList.remove('invalid');

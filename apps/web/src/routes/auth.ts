@@ -95,4 +95,101 @@ auth.get('/me', async (c) => {
   }
 });
 
+// Update user profile (name)
+auth.put('/profile', async (c) => {
+  try {
+    const authHeader = c.req.header('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return c.json({ success: false, error: 'Unauthorized' }, 401);
+    }
+
+    // Extract user ID from mock token
+    const token = authHeader.substring(7);
+    const userId = token.replace('mock-token-', '');
+
+    const { name } = await c.req.json();
+    
+    if (!name || !name.trim()) {
+      return c.json({ success: false, error: 'Name is required' }, 400);
+    }
+
+    const db = new Database(c.env.DB);
+    const user = await db.getUserById(userId);
+
+    if (!user) {
+      return c.json({ success: false, error: 'User not found' }, 404);
+    }
+
+    // Update user name
+    await db.updateUserName(userId, name.trim());
+    
+    // Get updated user
+    const updatedUser = await db.getUserById(userId);
+
+    return c.json({
+      success: true,
+      data: { user: updatedUser },
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    return c.json({ success: false, error: 'Internal server error' }, 500);
+  }
+});
+
+// Change password
+auth.put('/password', async (c) => {
+  try {
+    const authHeader = c.req.header('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return c.json({ success: false, error: 'Unauthorized' }, 401);
+    }
+
+    // Extract user ID from mock token
+    const token = authHeader.substring(7);
+    const userId = token.replace('mock-token-', '');
+
+    const { currentPassword, newPassword } = await c.req.json();
+    
+    if (!currentPassword || !newPassword) {
+      return c.json({ success: false, error: 'Both passwords are required' }, 400);
+    }
+    
+    // Validate new password
+    if (newPassword.length < 8) {
+      return c.json({ success: false, error: 'Password must be at least 8 characters' }, 400);
+    }
+    
+    if (!/[a-zA-Z]/.test(newPassword)) {
+      return c.json({ success: false, error: 'Password must contain letters' }, 400);
+    }
+    
+    if (!/[0-9]/.test(newPassword)) {
+      return c.json({ success: false, error: 'Password must contain numbers' }, 400);
+    }
+
+    const db = new Database(c.env.DB);
+    const user = await db.getUserById(userId);
+
+    if (!user) {
+      return c.json({ success: false, error: 'User not found' }, 404);
+    }
+
+    // TODO: Verify current password when password authentication is implemented
+    // For now, we'll just update the password
+    // In real implementation: const isValid = await verifyPassword(user, currentPassword);
+    // if (!isValid) return c.json({ success: false, error: 'Current password is incorrect' }, 401);
+
+    // Update password
+    await db.updateUserPassword(userId, newPassword);
+
+    return c.json({
+      success: true,
+      message: 'Password updated successfully',
+    });
+  } catch (error) {
+    console.error('Change password error:', error);
+    return c.json({ success: false, error: 'Internal server error' }, 500);
+  }
+});
+
 export default auth;

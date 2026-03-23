@@ -209,37 +209,6 @@ function getMyProfileHTML() {
             border-radius: 50%;
         }
 
-        .avatar-camera-btn {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%);
-            border: 2px solid #0A2260;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 3px 8px rgba(255, 193, 7, 0.4);
-        }
-
-        .avatar-camera-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.6);
-        }
-
-        .avatar-camera-btn i {
-            color: #0A2260;
-            font-size: 14px;
-        }
-
-        .avatar-upload-input {
-            display: none;
-        }
-
         .upload-options {
             display: flex;
             flex-direction: column;
@@ -551,23 +520,6 @@ function getMyProfileHTML() {
                 font-size: 40px;
             }
 
-            .avatar-camera-btn {
-                width: 28px;
-                height: 28px;
-            }
-
-            .avatar-camera-btn i {
-                font-size: 12px;
-            }
-
-            .profile-name {
-                font-size: 24px;
-            }
-
-            .modal-content {
-                padding: 24px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -593,11 +545,7 @@ function getMyProfileHTML() {
         <div class="profile-header">
             <div class="profile-avatar" id="profileAvatar">
                 <span id="avatarInitial">?</span>
-                <div class="avatar-camera-btn" onclick="openAvatarUpload()">
-                    <i class="fas fa-camera"></i>
-                </div>
             </div>
-            <input type="file" id="avatarInput" class="avatar-upload-input" accept="image/*" onchange="handleAvatarUpload(event)">
             <div class="profile-name" id="profileName">사용자</div>
             <div class="profile-email" id="profileEmail">user@example.com</div>
         </div>
@@ -960,82 +908,6 @@ function getMyProfileHTML() {
                     console.error('Parse user error:', e);
                 }
             }
-        }
-
-        // Avatar upload functions
-        function openAvatarUpload() {
-            // Check if camera is available on mobile
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                // Show modal with options
-                document.getElementById('avatarUploadModal').classList.add('active');
-            } else {
-                // Desktop - just open file picker
-                document.getElementById('avatarInput').click();
-            }
-        }
-
-        function closeAvatarModal() {
-            document.getElementById('avatarUploadModal').classList.remove('active');
-        }
-
-        function selectCamera() {
-            closeAvatarModal();
-            const input = document.getElementById('avatarInput');
-            // Set capture attribute for mobile camera
-            input.setAttribute('capture', 'user'); // 'user' for front camera
-            input.click();
-            // Remove capture after use
-            setTimeout(() => input.removeAttribute('capture'), 1000);
-        }
-
-        function selectGallery() {
-            closeAvatarModal();
-            document.getElementById('avatarInput').click();
-        }
-
-        function handleAvatarUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                alert('이미지 파일만 업로드 가능합니다.');
-                return;
-            }
-
-            // Validate file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('파일 크기는 5MB 이하여야 합니다.');
-                return;
-            }
-
-            // Read and display image
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Image = e.target.result;
-                
-                // Save to localStorage
-                localStorage.setItem('profile_avatar', base64Image);
-                
-                // Update UI
-                const avatarContainer = document.getElementById('profileAvatar');
-                const avatarInitial = document.getElementById('avatarInitial');
-                
-                // Remove old image if exists
-                const oldImg = avatarContainer.querySelector('img');
-                if (oldImg) oldImg.remove();
-                
-                // Add new image
-                const img = document.createElement('img');
-                img.src = base64Image;
-                img.alt = 'Profile';
-                avatarContainer.insertBefore(img, avatarContainer.firstChild);
-                avatarInitial.style.display = 'none';
-                
-                // TODO: Upload to server API
-                // uploadAvatarToServer(base64Image);
-            };
-            reader.readAsDataURL(file);
         }
 
         function loadSettings() {

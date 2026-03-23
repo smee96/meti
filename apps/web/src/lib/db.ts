@@ -80,6 +80,22 @@ export class Database {
     return this.getUserById(result.id as string);
   }
 
+  async updateUserName(userId: string, name: string): Promise<void> {
+    await this.db
+      .prepare('UPDATE users SET name = ? WHERE id = ?')
+      .bind(name, userId)
+      .run();
+  }
+
+  async updateUserPassword(userId: string, password: string): Promise<void> {
+    // Note: In production, password should be hashed before storing
+    // For now, storing as plain text (MVP only)
+    await this.db
+      .prepare('UPDATE users SET password = ? WHERE id = ?')
+      .bind(password, userId)
+      .run();
+  }
+
   // ============================================
   // Card Operations
   // ============================================
