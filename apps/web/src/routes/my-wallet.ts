@@ -515,7 +515,7 @@ function getMyWalletHTML() {
     <!-- Header -->
     <div class="header">
         <div class="header-left">
-            <div class="logo" onclick="window.location.href='/'">METI</div>
+            <div class="logo" onclick="window.location.href='/my/cards'">METI</div>
             <nav class="nav-links">
                 <a href="/my/cards" class="nav-link">내 명함</a>
                 <a href="/my/wallet" class="nav-link active">명함 지갑</a>
