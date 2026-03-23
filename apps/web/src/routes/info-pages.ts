@@ -142,6 +142,11 @@ infoPages.get('/notices', (c) => {
             font-size: 16px;
             opacity: 0.6;
         }
+        @media (max-width: 767px) {
+            .header {
+                padding: 12px 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -269,6 +274,11 @@ infoPages.get('/events', (c) => {
         .empty-text {
             font-size: 16px;
             opacity: 0.6;
+        }
+        @media (max-width: 767px) {
+            .header {
+                padding: 12px 16px;
+            }
         }
     </style>
 </head>
@@ -411,6 +421,11 @@ infoPages.get('/contact', (c) => {
         .contact-text p {
             font-size: 14px;
             opacity: 0.7;
+        }
+        @media (max-width: 767px) {
+            .header {
+                padding: 12px 16px;
+            }
         }
     </style>
 </head>
@@ -561,6 +576,11 @@ infoPages.get('/terms', (c) => {
             font-size: 14px;
             opacity: 0.8;
             margin-bottom: 16px;
+        }
+        @media (max-width: 767px) {
+            .header {
+                padding: 12px 16px;
+            }
         }
     </style>
 </head>
@@ -714,6 +734,11 @@ infoPages.get('/privacy', (c) => {
             font-size: 14px;
             opacity: 0.8;
             margin-bottom: 8px;
+        }
+        @media (max-width: 767px) {
+            .header {
+                padding: 12px 16px;
+            }
         }
     </style>
 </head>

@@ -181,6 +181,10 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
         let links = [];
         let avatarFile = null;
         let currentAvatarUrl = null;
+        
+        // Track initial state for change detection
+        let initialState = null;
+        let hasChanges = false;
 
         // Theme colors
         const THEME_COLORS = {
@@ -213,9 +217,46 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
             if (MODE === 'edit' && CARD_ID) {
                 await loadCardData();
             }
+            
+            // Save initial state after loading
+            saveInitialState();
 
             updatePreview();
         });
+        
+        // Save initial state for change detection
+        function saveInitialState() {
+            initialState = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                title: document.getElementById('title').value,
+                company: document.getElementById('company').value,
+                headline: document.getElementById('headline').value,
+                theme: currentTheme,
+                links: JSON.stringify(links),
+                avatar: currentAvatarUrl
+            };
+        }
+        
+        // Check if form has changes
+        function checkForChanges() {
+            if (!initialState) return false;
+            
+            const currentState = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                title: document.getElementById('title').value,
+                company: document.getElementById('company').value,
+                headline: document.getElementById('headline').value,
+                theme: currentTheme,
+                links: JSON.stringify(links),
+                avatar: currentAvatarUrl
+            };
+            
+            return JSON.stringify(initialState) !== JSON.stringify(currentState);
+        }
 
         // Handle image upload with auto-resize
         function handleImageUpload(event) {
@@ -598,14 +639,20 @@ function getEditorScript(mode: 'new' | 'edit', cardId: string | null): string {
 
         // Go back
         async function goBack() {
-            const confirmed = await window.modal.show({
-                message: '작성 중인 내용이 저장되지 않습니다. 계속하시겠습니까?',
-                type: 'confirm',
-                confirmText: '나가기',
-                cancelText: '취소'
-            });
-            
-            if (confirmed) {
+            // Check if there are any changes
+            if (checkForChanges()) {
+                const confirmed = await window.modal.show({
+                    message: '작성 중인 내용이 저장되지 않습니다. 계속하시겠습니까?',
+                    type: 'confirm',
+                    confirmText: '나가기',
+                    cancelText: '취소'
+                });
+                
+                if (confirmed) {
+                    window.location.href = '/my/cards';
+                }
+            } else {
+                // No changes, go back directly
                 window.location.href = '/my/cards';
             }
         }
