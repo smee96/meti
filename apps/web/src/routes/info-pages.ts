@@ -43,18 +43,10 @@ infoPages.get('/notices', (c) => {
             padding: 20px 40px;
             min-height: 80px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
+            gap: 20px;
             backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 20px;
-            letter-spacing: 4px;
-            color: white;
-            cursor: pointer;
-            font-weight: 700;
         }
 
         .back-btn {
@@ -70,10 +62,20 @@ infoPages.get('/notices', (c) => {
             justify-content: center;
             font-size: 18px;
             transition: all 0.3s;
+            flex-shrink: 0;
         }
 
         .back-btn:hover {
             background: rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            letter-spacing: 4px;
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
         }
 
         .container {
@@ -155,10 +157,10 @@ infoPages.get('/notices', (c) => {
 </head>
 <body>
     <div class="header">
-        <div class="logo" onclick="window.location.href='/'">METI</div>
         <button class="back-btn" onclick="window.history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
+        <div class="logo" onclick="window.location.href='/'">METI</div>
     </div>
 
     <div class="container">
@@ -292,10 +294,10 @@ infoPages.get('/events', (c) => {
 </head>
 <body>
     <div class="header">
-        <div class="logo" onclick="window.location.href='/'">METI</div>
         <button class="back-btn" onclick="window.history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
+        <div class="logo" onclick="window.location.href='/'">METI</div>
     </div>
 
     <div class="container">
@@ -443,10 +445,10 @@ infoPages.get('/contact', (c) => {
 </head>
 <body>
     <div class="header">
-        <div class="logo" onclick="window.location.href='/'">METI</div>
         <button class="back-btn" onclick="window.history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
+        <div class="logo" onclick="window.location.href='/'">METI</div>
     </div>
 
     <div class="container">
@@ -602,10 +604,10 @@ infoPages.get('/terms', (c) => {
 </head>
 <body>
     <div class="header">
-        <div class="logo" onclick="window.location.href='/'">METI</div>
         <button class="back-btn" onclick="window.history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
+        <div class="logo" onclick="window.location.href='/'">METI</div>
     </div>
 
     <div class="container">
@@ -764,10 +766,10 @@ infoPages.get('/privacy', (c) => {
 </head>
 <body>
     <div class="header">
-        <div class="logo" onclick="window.location.href='/'">METI</div>
         <button class="back-btn" onclick="window.history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
+        <div class="logo" onclick="window.location.href='/'">METI</div>
     </div>
 
     <div class="container">
