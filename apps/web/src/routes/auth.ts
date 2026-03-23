@@ -141,36 +141,49 @@ auth.put('/password', async (c) => {
   try {
     const authHeader = c.req.header('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.error('Password change: No authorization header');
       return c.json({ success: false, error: 'Unauthorized' }, 401);
     }
 
     // Extract user ID from mock token
     const token = authHeader.substring(7);
     const userId = token.replace('mock-token-', '');
+    
+    console.log('Password change request for user:', userId);
 
-    const { currentPassword, newPassword } = await c.req.json();
+    const body = await c.req.json();
+    const { currentPassword, newPassword } = body;
+    
+    console.log('Password change body:', { hasCurrentPwd: !!currentPassword, hasNewPwd: !!newPassword });
     
     if (!currentPassword || !newPassword) {
+      console.error('Password change: Missing passwords');
       return c.json({ success: false, error: 'Both passwords are required' }, 400);
     }
     
     // Validate new password
     if (newPassword.length < 8) {
+      console.error('Password change: Password too short');
       return c.json({ success: false, error: 'Password must be at least 8 characters' }, 400);
     }
     
     if (!/[a-zA-Z]/.test(newPassword)) {
+      console.error('Password change: Missing letters');
       return c.json({ success: false, error: 'Password must contain letters' }, 400);
     }
     
     if (!/[0-9]/.test(newPassword)) {
+      console.error('Password change: Missing numbers');
       return c.json({ success: false, error: 'Password must contain numbers' }, 400);
     }
 
     const db = new Database(c.env.DB);
+    console.log('Fetching user:', userId);
     const user = await db.getUserById(userId);
+    console.log('User found:', user ? user.email : 'null');
 
     if (!user) {
+      console.error('Password change: User not found:', userId);
       return c.json({ success: false, error: 'User not found' }, 404);
     }
 
@@ -180,7 +193,9 @@ auth.put('/password', async (c) => {
     // if (!isValid) return c.json({ success: false, error: 'Current password is incorrect' }, 401);
 
     // Update password
+    console.log('Updating password for user:', userId);
     await db.updateUserPassword(userId, newPassword);
+    console.log('Password updated successfully');
 
     return c.json({
       success: true,
@@ -188,7 +203,12 @@ auth.put('/password', async (c) => {
     });
   } catch (error) {
     console.error('Change password error:', error);
-    return c.json({ success: false, error: 'Internal server error' }, 500);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+    return c.json({ 
+      success: false, 
+      error: 'Internal server error',
+      details: error instanceof Error ? error.message : String(error)
+    }, 500);
   }
 });
 

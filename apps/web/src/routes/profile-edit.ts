@@ -433,17 +433,20 @@ profileEdit.get('/password', (c) => {
         }
 
         .password-requirements {
-            font-size: 13px;
+            font-size: 12px;
             margin-top: 8px;
-            padding: 12px;
+            padding: 10px 12px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
-            line-height: 1.6;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .requirement-item {
             opacity: 0.7;
-            margin-bottom: 4px;
+            white-space: nowrap;
         }
 
         .requirement-item.met {
@@ -520,17 +523,6 @@ profileEdit.get('/password', (c) => {
                 <input type="password" class="form-input" id="newPassword" placeholder="새 비밀번호를 입력하세요" oninput="validatePasswords()">
                 <i class="fas fa-check-circle validation-icon" id="newPasswordIcon"></i>
             </div>
-            <div class="password-requirements">
-                <div class="requirement-item" id="req-length">
-                    <i class="fas fa-circle"></i> 8자 이상
-                </div>
-                <div class="requirement-item" id="req-letter">
-                    <i class="fas fa-circle"></i> 영문 포함
-                </div>
-                <div class="requirement-item" id="req-number">
-                    <i class="fas fa-circle"></i> 숫자 포함
-                </div>
-            </div>
         </div>
 
         <div class="form-group">
@@ -538,6 +530,18 @@ profileEdit.get('/password', (c) => {
             <div class="input-wrapper">
                 <input type="password" class="form-input" id="confirmPassword" placeholder="새 비밀번호를 다시 입력하세요" oninput="validatePasswords()">
                 <i class="fas fa-check-circle validation-icon" id="confirmPasswordIcon"></i>
+            </div>
+        </div>
+
+        <div class="password-requirements">
+            <div class="requirement-item" id="req-length">
+                <i class="fas fa-circle"></i> 8자 이상
+            </div>
+            <div class="requirement-item" id="req-letter">
+                <i class="fas fa-circle"></i> 영문 포함
+            </div>
+            <div class="requirement-item" id="req-number">
+                <i class="fas fa-circle"></i> 숫자 포함
             </div>
         </div>
     </div>
