@@ -46,6 +46,7 @@ function getMyWalletHTML() {
             background: rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 20px 40px;
+            min-height: 80px;
             display: flex;
             justify-content: space-between;
             align-items: center;

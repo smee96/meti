@@ -46,6 +46,7 @@ function getMyProfileHTML() {
             background: rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 20px 40px;
+            min-height: 80px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -532,7 +533,7 @@ function getMyProfileHTML() {
         <!-- Information Section -->
         <div class="menu-section">
             <div class="menu-section-title">정보</div>
-            <a href="#" class="menu-item" onclick="showNotices(); return false;">
+            <a href="/info/notices" class="menu-item">
                 <div class="menu-item-left">
                     <div class="menu-item-icon info">
                         <i class="fas fa-bullhorn"></i>
@@ -546,7 +547,7 @@ function getMyProfileHTML() {
                     <i class="fas fa-chevron-right"></i>
                 </div>
             </a>
-            <a href="#" class="menu-item" onclick="showEvents(); return false;">
+            <a href="/info/events" class="menu-item">
                 <div class="menu-item-left">
                     <div class="menu-item-icon success">
                         <i class="fas fa-gift"></i>
@@ -560,7 +561,7 @@ function getMyProfileHTML() {
                     <i class="fas fa-chevron-right"></i>
                 </div>
             </a>
-            <a href="#" class="menu-item" onclick="showContact(); return false;">
+            <a href="/info/contact" class="menu-item">
                 <div class="menu-item-left">
                     <div class="menu-item-icon">
                         <i class="fas fa-envelope"></i>
@@ -579,7 +580,7 @@ function getMyProfileHTML() {
         <!-- Terms Section -->
         <div class="menu-section">
             <div class="menu-section-title">약관 및 정책</div>
-            <a href="#" class="menu-item" onclick="showTerms(); return false;">
+            <a href="/info/terms" class="menu-item">
                 <div class="menu-item-left">
                     <div class="menu-item-icon">
                         <i class="fas fa-file-alt"></i>
@@ -592,7 +593,7 @@ function getMyProfileHTML() {
                     <i class="fas fa-chevron-right"></i>
                 </div>
             </a>
-            <a href="#" class="menu-item" onclick="showPrivacy(); return false;">
+            <a href="/info/privacy" class="menu-item">
                 <div class="menu-item-left">
                     <div class="menu-item-icon">
                         <i class="fas fa-shield-alt"></i>
