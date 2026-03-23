@@ -736,14 +736,6 @@ function getMyCardsHTML() {
                 <a href="/game" class="nav-link">HappyTree</a>
             </nav>
         </div>
-        <div class="header-right">
-            <div class="user-info" onclick="window.location.href='/my/profile'">
-                <div class="user-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="user-name" id="userName">사용자</div>
-            </div>
-        </div>
     </div>
 
     <div class="container">
