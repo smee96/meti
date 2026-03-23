@@ -65,6 +65,102 @@ function getMyCardsHTML() {
             gap: 24px;
         }
 
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+
+        .mobile-nav-overlay.active {
+            display: block;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -280px;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            z-index: 999;
+            transition: right 0.3s ease;
+            padding: 24px;
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-nav-logo {
+            font-family: 'Tenor Sans', serif;
+            font-size: 24px;
+            letter-spacing: 6px;
+            color: white;
+        }
+
+        .mobile-nav-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile-nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 18px;
+            padding: 16px 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .mobile-nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
         .nav-link {
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
@@ -460,6 +556,10 @@ function getMyCardsHTML() {
                 display: none;
             }
 
+            .mobile-menu-btn {
+                display: block;
+            }
+
             .container {
                 padding: 24px 16px;
             }
@@ -669,16 +769,48 @@ function getMyCardsHTML() {
             <nav class="nav-links">
                 <a href="/my/cards" class="nav-link active">내 명함</a>
                 <a href="/my/wallet" class="nav-link">명함 지갑</a>
-                <a href="/game" class="nav-link">행복나무</a>
+                <a href="/game" class="nav-link">HappyTree</a>
             </nav>
         </div>
         <div class="header-right">
+            <button class="mobile-menu-btn" onclick="openMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="user-info" onclick="window.location.href='/my/profile'">
                 <div class="user-avatar">
                     <i class="fas fa-user"></i>
                 </div>
                 <div class="user-name" id="userName">사용자</div>
             </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileMenu()"></div>
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-header">
+            <div class="mobile-nav-logo">METI</div>
+            <button class="mobile-nav-close" onclick="closeMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-nav-links">
+            <a href="/my/cards" class="mobile-nav-link active">
+                <i class="fas fa-address-card"></i>
+                <span>내 명함</span>
+            </a>
+            <a href="/my/wallet" class="mobile-nav-link">
+                <i class="fas fa-wallet"></i>
+                <span>명함 지갑</span>
+            </a>
+            <a href="/game" class="mobile-nav-link">
+                <i class="fas fa-tree"></i>
+                <span>HappyTree</span>
+            </a>
+            <a href="/my/profile" class="mobile-nav-link">
+                <i class="fas fa-user"></i>
+                <span>프로필</span>
+            </a>
         </div>
     </div>
 
@@ -754,6 +886,19 @@ function getMyCardsHTML() {
         let allCards = [];
         let currentDeleteCardId = null;
         const DISPLAY_LIMIT = 5; // Frontend display limit
+
+        // Mobile menu functions
+        function openMobileMenu() {
+            document.getElementById('mobileNav').classList.add('active');
+            document.getElementById('mobileNavOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileNav').classList.remove('active');
+            document.getElementById('mobileNavOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
 
         // Theme colors
         const THEME_COLORS = {
