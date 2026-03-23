@@ -606,22 +606,8 @@ function getMyWalletHTML() {
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadUserInfo();
             await loadSavedCards();
         });
-
-        // Load user info
-        async function loadUserInfo() {
-            const userStr = localStorage.getItem('meti_user');
-            if (userStr) {
-                try {
-                    const user = JSON.parse(userStr);
-                    document.getElementById('userName').textContent = user.name || '사용자';
-                } catch (e) {
-                    console.error('Parse user error:', e);
-                }
-            }
-        }
 
         // Check authentication
         function checkAuth() {

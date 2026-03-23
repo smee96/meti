@@ -835,22 +835,8 @@ function getMyCardsHTML() {
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadUserInfo();
             await loadCards();
         });
-
-        // Load user info
-        async function loadUserInfo() {
-            const userStr = localStorage.getItem('meti_user');
-            if (userStr) {
-                try {
-                    const user = JSON.parse(userStr);
-                    document.getElementById('userName').textContent = user.name || '사용자';
-                } catch (e) {
-                    console.error('Failed to parse user:', e);
-                }
-            }
-        }
 
         // Check authentication
         function checkAuth() {
