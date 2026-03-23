@@ -124,11 +124,11 @@ publicCard.get('/:id', async (c) => {
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>">
     
     <style>
-      /* Local Font - Tenor Sans */
+      /* Local Font - Montserrat Bold */
       @font-face {
-        font-family: 'Tenor Sans';
-        src: url('/static/fonts/TenorSans-Regular.woff2') format('woff2');
-        font-weight: normal;
+        font-family: 'Montserrat';
+        src: url('/static/fonts/Montserrat-Bold.woff2') format('woff2');
+        font-weight: 700;
         font-style: normal;
         font-display: swap;
       }
@@ -186,7 +186,7 @@ publicCard.get('/:id', async (c) => {
       }
       
       .logo {
-        font-family: 'Tenor Sans', serif;
+        font-family: 'Montserrat', sans-serif;
         font-size: 32px;
         letter-spacing: 12px;
         padding-left: 12px;
@@ -280,7 +280,7 @@ publicCard.get('/:id', async (c) => {
       }
       
       .card-logo {
-        font-family: 'Tenor Sans', serif;
+        font-family: 'Montserrat', sans-serif;
         font-size: 14px;
         letter-spacing: 6px;
         padding-left: 6px;
@@ -448,7 +448,7 @@ publicCard.get('/:id', async (c) => {
       }
       
       .footer-logo {
-        font-family: 'Tenor Sans', serif;
+        font-family: 'Montserrat', sans-serif;
         font-size: 18px;
         letter-spacing: 8px;
         padding-left: 8px;

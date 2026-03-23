@@ -19,11 +19,11 @@ function getMyWalletHTML() {
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Local Font - Tenor Sans */
+        /* Local Font - Montserrat Bold */
         @font-face {
-            font-family: 'Tenor Sans';
-            src: url('/static/fonts/TenorSans-Regular.woff2') format('woff2');
-            font-weight: normal;
+            font-family: 'Montserrat';
+            src: url('/static/fonts/Montserrat-Bold.woff2') format('woff2');
+            font-weight: 700;
             font-style: normal;
             font-display: swap;
         }
@@ -61,7 +61,7 @@ function getMyWalletHTML() {
         }
 
         .logo {
-            font-family: 'Tenor Sans', serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 28px;
             letter-spacing: 8px;
             color: white;

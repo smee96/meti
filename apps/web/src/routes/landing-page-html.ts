@@ -18,11 +18,11 @@ export const landingPageHTML = `
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     
     <style>
-      /* Local Font - Tenor Sans */
+      /* Local Font - Montserrat Bold */
       @font-face {
-        font-family: 'Tenor Sans';
-        src: url('/static/fonts/TenorSans-Regular.woff2') format('woff2');
-        font-weight: normal;
+        font-family: 'Montserrat';
+        src: url('/static/fonts/Montserrat-Bold.woff2') format('woff2');
+        font-weight: 700;
         font-style: normal;
         font-display: swap;
       }
@@ -62,7 +62,7 @@ export const landingPageHTML = `
       }
       
       .logo {
-        font-family: 'Tenor Sans', serif;
+        font-family: 'Montserrat', sans-serif;
         font-size: 28px;
         letter-spacing: 10px;
         padding-left: 10px;
@@ -114,7 +114,7 @@ export const landingPageHTML = `
       }
       
       .hero h1 {
-        font-family: 'Tenor Sans', serif;
+        font-family: 'Montserrat', sans-serif;
         font-size: 56px;
         letter-spacing: 16px;
         padding-left: 16px;
@@ -226,7 +226,7 @@ export const landingPageHTML = `
       }
       
       .card-logo {
-        font-family: 'Tenor Sans', serif;
+        font-family: 'Montserrat', sans-serif;
         font-size: 14px;
         letter-spacing: 6px;
         padding-left: 6px;
@@ -398,7 +398,7 @@ export const landingPageHTML = `
       }
       
       .footer-logo {
-        font-family: 'Tenor Sans', serif;
+        font-family: 'Montserrat', sans-serif;
         font-size: 24px;
         letter-spacing: 10px;
         padding-left: 10px;

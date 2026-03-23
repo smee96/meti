@@ -65,7 +65,7 @@ function getEditorHTML(mode: 'new' | 'edit', cardId: string | null) {
         }
 
         .logo {
-            font-family: 'Tenor Sans', serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 24px;
             letter-spacing: 6px;
             color: white;
