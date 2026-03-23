@@ -198,14 +198,8 @@ function getMyProfileHTML() {
             margin: 0 auto 24px;
             border: 4px solid rgba(255, 255, 255, 0.2);
             position: relative;
-            cursor: pointer;
             transition: all 0.3s;
-            overflow: hidden;
-        }
-
-        .profile-avatar:hover {
-            transform: scale(1.05);
-            border-color: rgba(255, 193, 7, 0.5);
+            overflow: visible;
         }
 
         .profile-avatar img {
@@ -215,28 +209,84 @@ function getMyProfileHTML() {
             border-radius: 50%;
         }
 
-        .avatar-upload-overlay {
+        .avatar-camera-btn {
             position: absolute;
             bottom: 0;
-            left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 8px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%);
+            border: 3px solid #0A2260;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.3s;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
         }
 
-        .profile-avatar:hover .avatar-upload-overlay {
-            opacity: 1;
+        .avatar-camera-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.6);
+        }
+
+        .avatar-camera-btn i {
+            color: #0A2260;
+            font-size: 18px;
         }
 
         .avatar-upload-input {
             display: none;
+        }
+
+        .upload-options {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .upload-option-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: white;
+        }
+
+        .upload-option-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 193, 7, 0.5);
+            transform: translateX(4px);
+        }
+
+        .upload-option-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #0A2260;
+        }
+
+        .upload-option-text h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .upload-option-text p {
+            font-size: 13px;
+            opacity: 0.6;
         }
 
         .profile-name {
@@ -501,6 +551,15 @@ function getMyProfileHTML() {
                 font-size: 40px;
             }
 
+            .avatar-camera-btn {
+                width: 36px;
+                height: 36px;
+            }
+
+            .avatar-camera-btn i {
+                font-size: 16px;
+            }
+
             .profile-name {
                 font-size: 24px;
             }
@@ -532,11 +591,10 @@ function getMyProfileHTML() {
     <div class="container">
         <!-- Profile Header -->
         <div class="profile-header">
-            <div class="profile-avatar" id="profileAvatar" onclick="openAvatarUpload()">
+            <div class="profile-avatar" id="profileAvatar">
                 <span id="avatarInitial">?</span>
-                <div class="avatar-upload-overlay">
+                <div class="avatar-camera-btn" onclick="openAvatarUpload()">
                     <i class="fas fa-camera"></i>
-                    <span>사진 변경</span>
                 </div>
             </div>
             <input type="file" id="avatarInput" class="avatar-upload-input" accept="image/*" onchange="handleAvatarUpload(event)">
@@ -666,6 +724,42 @@ function getMyProfileHTML() {
                     <div class="menu-item-text">
                         <div class="menu-item-title">버전 정보</div>
                         <div class="menu-item-subtitle">v1.0.0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Avatar Upload Modal -->
+    <div class="modal" id="avatarUploadModal" onclick="closeAvatarModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-camera"></i> 프로필 사진 변경
+                </div>
+                <button class="modal-close" onclick="closeAvatarModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="upload-options">
+                <div class="upload-option-btn" onclick="selectCamera()">
+                    <div class="upload-option-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="upload-option-text">
+                        <h3>카메라로 촬영</h3>
+                        <p>지금 바로 사진을 촬영합니다</p>
+                    </div>
+                </div>
+
+                <div class="upload-option-btn" onclick="selectGallery()">
+                    <div class="upload-option-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <div class="upload-option-text">
+                        <h3>갤러리에서 선택</h3>
+                        <p>저장된 사진에서 선택합니다</p>
                     </div>
                 </div>
             </div>
@@ -809,27 +903,31 @@ function getMyProfileHTML() {
         function openAvatarUpload() {
             // Check if camera is available on mobile
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                // Show options: Camera or Gallery
-                const useCamera = confirm('카메라로 촬영하시겠습니까?\\n\\n확인: 카메라 촬영\\n취소: 갤러리에서 선택');
-                
-                if (useCamera) {
-                    openCamera();
-                } else {
-                    document.getElementById('avatarInput').click();
-                }
+                // Show modal with options
+                document.getElementById('avatarUploadModal').classList.add('active');
             } else {
-                // Desktop or no camera - just open file picker
+                // Desktop - just open file picker
                 document.getElementById('avatarInput').click();
             }
         }
 
-        function openCamera() {
+        function closeAvatarModal() {
+            document.getElementById('avatarUploadModal').classList.remove('active');
+        }
+
+        function selectCamera() {
+            closeAvatarModal();
             const input = document.getElementById('avatarInput');
             // Set capture attribute for mobile camera
-            input.setAttribute('capture', 'user'); // 'user' for front camera, 'environment' for back
+            input.setAttribute('capture', 'user'); // 'user' for front camera
             input.click();
             // Remove capture after use
             setTimeout(() => input.removeAttribute('capture'), 1000);
+        }
+
+        function selectGallery() {
+            closeAvatarModal();
+            document.getElementById('avatarInput').click();
         }
 
         function handleAvatarUpload(event) {
