@@ -197,6 +197,46 @@ function getMyProfileHTML() {
             color: white;
             margin: 0 auto 24px;
             border: 4px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 193, 7, 0.5);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .avatar-upload-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .profile-avatar:hover .avatar-upload-overlay {
+            opacity: 1;
+        }
+
+        .avatar-upload-input {
+            display: none;
         }
 
         .profile-name {
@@ -492,7 +532,14 @@ function getMyProfileHTML() {
     <div class="container">
         <!-- Profile Header -->
         <div class="profile-header">
-            <div class="profile-avatar" id="profileAvatar">?</div>
+            <div class="profile-avatar" id="profileAvatar" onclick="openAvatarUpload()">
+                <span id="avatarInitial">?</span>
+                <div class="avatar-upload-overlay">
+                    <i class="fas fa-camera"></i>
+                    <span>사진 변경</span>
+                </div>
+            </div>
+            <input type="file" id="avatarInput" class="avatar-upload-input" accept="image/*" onchange="handleAvatarUpload(event)">
             <div class="profile-name" id="profileName">사용자</div>
             <div class="profile-email" id="profileEmail">user@example.com</div>
         </div>
@@ -735,12 +782,99 @@ function getMyProfileHTML() {
                     document.getElementById('profileName').textContent = user.name || '사용자';
                     document.getElementById('profileEmail').textContent = user.email || 'user@example.com';
                     
-                    const initial = user.name ? user.name.charAt(0) : '?';
-                    document.getElementById('profileAvatar').textContent = initial;
+                    // Load avatar
+                    const savedAvatar = localStorage.getItem('profile_avatar');
+                    const avatarContainer = document.getElementById('profileAvatar');
+                    const avatarInitial = document.getElementById('avatarInitial');
+                    
+                    if (savedAvatar) {
+                        // Show image
+                        const img = document.createElement('img');
+                        img.src = savedAvatar;
+                        img.alt = 'Profile';
+                        avatarContainer.insertBefore(img, avatarContainer.firstChild);
+                        avatarInitial.style.display = 'none';
+                    } else {
+                        // Show initial
+                        const initial = user.name ? user.name.charAt(0) : '?';
+                        avatarInitial.textContent = initial;
+                    }
                 } catch (e) {
                     console.error('Parse user error:', e);
                 }
             }
+        }
+
+        // Avatar upload functions
+        function openAvatarUpload() {
+            // Check if camera is available on mobile
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Show options: Camera or Gallery
+                const useCamera = confirm('카메라로 촬영하시겠습니까?\n\n확인: 카메라 촬영\n취소: 갤러리에서 선택');
+                
+                if (useCamera) {
+                    openCamera();
+                } else {
+                    document.getElementById('avatarInput').click();
+                }
+            } else {
+                // Desktop or no camera - just open file picker
+                document.getElementById('avatarInput').click();
+            }
+        }
+
+        function openCamera() {
+            const input = document.getElementById('avatarInput');
+            // Set capture attribute for mobile camera
+            input.setAttribute('capture', 'user'); // 'user' for front camera, 'environment' for back
+            input.click();
+            // Remove capture after use
+            setTimeout(() => input.removeAttribute('capture'), 1000);
+        }
+
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('이미지 파일만 업로드 가능합니다.');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('파일 크기는 5MB 이하여야 합니다.');
+                return;
+            }
+
+            // Read and display image
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Image = e.target.result;
+                
+                // Save to localStorage
+                localStorage.setItem('profile_avatar', base64Image);
+                
+                // Update UI
+                const avatarContainer = document.getElementById('profileAvatar');
+                const avatarInitial = document.getElementById('avatarInitial');
+                
+                // Remove old image if exists
+                const oldImg = avatarContainer.querySelector('img');
+                if (oldImg) oldImg.remove();
+                
+                // Add new image
+                const img = document.createElement('img');
+                img.src = base64Image;
+                img.alt = 'Profile';
+                avatarContainer.insertBefore(img, avatarContainer.firstChild);
+                avatarInitial.style.display = 'none';
+                
+                // TODO: Upload to server API
+                // uploadAvatarToServer(base64Image);
+            };
+            reader.readAsDataURL(file);
         }
 
         function loadSettings() {
