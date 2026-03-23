@@ -213,27 +213,27 @@ function getMyProfileHTML() {
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%);
-            border: 3px solid #0A2260;
+            border: 2px solid #0A2260;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+            box-shadow: 0 3px 8px rgba(255, 193, 7, 0.4);
         }
 
         .avatar-camera-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.6);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.6);
         }
 
         .avatar-camera-btn i {
             color: #0A2260;
-            font-size: 18px;
+            font-size: 14px;
         }
 
         .avatar-upload-input {
@@ -552,12 +552,12 @@ function getMyProfileHTML() {
             }
 
             .avatar-camera-btn {
-                width: 36px;
-                height: 36px;
+                width: 28px;
+                height: 28px;
             }
 
             .avatar-camera-btn i {
-                font-size: 16px;
+                font-size: 12px;
             }
 
             .profile-name {
@@ -748,8 +748,7 @@ function getMyProfileHTML() {
                         <i class="fas fa-camera"></i>
                     </div>
                     <div class="upload-option-text">
-                        <h3>카메라로 촬영</h3>
-                        <p>지금 바로 사진을 촬영합니다</p>
+                        <h3>카메라 촬영</h3>
                     </div>
                 </div>
 
@@ -758,8 +757,7 @@ function getMyProfileHTML() {
                         <i class="fas fa-images"></i>
                     </div>
                     <div class="upload-option-text">
-                        <h3>갤러리에서 선택</h3>
-                        <p>저장된 사진에서 선택합니다</p>
+                        <h3>갤러리 선택</h3>
                     </div>
                 </div>
             </div>

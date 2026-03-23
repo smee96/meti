@@ -248,45 +248,31 @@ function getMyCardsHTML() {
 
         .actions-bar {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             margin-bottom: 32px;
-            gap: 16px;
         }
 
-        .search-box {
-            flex: 1;
-            max-width: 400px;
-            position: relative;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 12px 16px 12px 44px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            color: white;
-            font-size: 14px;
+        .btn-create {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%);
+            color: #0A2260;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
             transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+            text-decoration: none;
         }
 
-        .search-box input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .search-box input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .search-box i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0.5;
+        .btn-create:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.6);
         }
 
         .btn {
@@ -770,13 +756,8 @@ function getMyCardsHTML() {
 
         <!-- Actions Bar -->
         <div class="actions-bar">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="명함 검색..." id="searchInput" oninput="filterCards()">
-            </div>
-            <a href="/my/card/new" class="btn btn-primary" id="createBtn">
+            <a href="/my/card/new" class="btn-create" id="createBtn" title="새 명함 만들기">
                 <i class="fas fa-plus"></i>
-                새 명함 만들기
             </a>
         </div>
 
