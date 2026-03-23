@@ -810,7 +810,7 @@ function getMyProfileHTML() {
             // Check if camera is available on mobile
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 // Show options: Camera or Gallery
-                const useCamera = confirm('카메라로 촬영하시겠습니까?\n\n확인: 카메라 촬영\n취소: 갤러리에서 선택');
+                const useCamera = confirm('카메라로 촬영하시겠습니까?\\n\\n확인: 카메라 촬영\\n취소: 갤러리에서 선택');
                 
                 if (useCamera) {
                     openCamera();
