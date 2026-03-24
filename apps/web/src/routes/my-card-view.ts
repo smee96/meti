@@ -41,6 +41,16 @@ myCardView.get('/:id', async (c) => {
     
     // Parse JSON fields
     const links = card.links ? JSON.parse(card.links) : [];
+    
+    // Ensure URLs have https:// prefix
+    const normalizeUrl = (url: string) => {
+        if (!url) return '';
+        url = url.trim();
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+            return url;
+        }
+        return 'https://' + url;
+    };
     const theme = card.theme || 'deep-navy';
     
     // Theme colors mapping
@@ -472,7 +482,7 @@ myCardView.get('/:id', async (c) => {
                 ${links.length > 0 ? `
                 <div class="links">
                     ${links.map(link => `
-                        <a href="${link.url}" target="_blank" rel="noopener" class="link-item">
+                        <a href="${normalizeUrl(link.url)}" target="_blank" rel="noopener" class="link-item">
                             <i class="fas fa-link"></i>
                             ${link.label}
                         </a>

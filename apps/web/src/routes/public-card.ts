@@ -72,6 +72,16 @@ publicCard.get('/:id', async (c) => {
     const links = card.links ? JSON.parse(card.links) : [];
     const theme = card.theme || 'deep-navy';
     
+    // Ensure URLs have https:// prefix
+    const normalizeUrl = (url: string) => {
+        if (!url) return '';
+        url = url.trim();
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+            return url;
+        }
+        return 'https://' + url;
+    };
+    
     // Record view event (async, don't wait)
     const src = c.req.query('src') || null;
     DB.prepare(`
@@ -547,7 +557,7 @@ publicCard.get('/:id', async (c) => {
                 ${links.length > 0 ? `
                 <div class="links">
                     ${links.map(link => `
-                        <a href="${link.url}" target="_blank" rel="noopener" class="link-item">
+                        <a href="${normalizeUrl(link.url)}" target="_blank" rel="noopener" class="link-item">
                             <i class="fas fa-link"></i>
                             ${link.label}
                         </a>
