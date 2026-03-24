@@ -327,29 +327,28 @@ publicCard.get('/:id', async (c) => {
         margin-bottom: 16px;
       }
       
-      .name-line {
-        font-size: 18px;
-        font-weight: 400;
+      .name {
+        font-size: 22px;
+        font-weight: 600;
         letter-spacing: 0.3px;
-        margin-bottom: 8px;
-        line-height: 1.4;
+        margin-bottom: 6px;
       }
       
-      .name {
-        font-size: 20px;
-        font-weight: 600;
+      .position {
+        font-size: 15px;
+        font-weight: 400;
+        letter-spacing: 0.2px;
+        margin-bottom: 8px;
+        opacity: 0.85;
+        line-height: 1.5;
       }
       
       .company {
-        font-size: 16px;
-        font-weight: 400;
-        opacity: 0.85;
+        font-weight: 500;
       }
       
       .title {
-        font-size: 16px;
         font-weight: 400;
-        opacity: 0.85;
       }
       
       .headline {
@@ -358,6 +357,7 @@ publicCard.get('/:id', async (c) => {
         letter-spacing: 0.5px;
         opacity: 0.5;
         line-height: 1.6;
+        margin-top: 4px;
       }
       
       .contacts {
@@ -551,9 +551,12 @@ publicCard.get('/:id', async (c) => {
                 
                 <div class="profile">
                     ${card.avatar ? `<img src="${card.avatar}" alt="${card.name}" class="avatar">` : ''}
-                    <div class="name-line">
-                        <span class="name">${card.name}</span>${card.company || card.title ? ` - ` : ''}${card.company ? `<span class="company">${card.company}</span>` : ''}${card.company && card.title ? ` - ` : ''}${!card.company && card.title ? `<span class="title">${card.title}</span>` : ''}${card.company && card.title ? `<span class="title">${card.title}</span>` : ''}
+                    <div class="name">${card.name}</div>
+                    ${card.company || card.title ? `
+                    <div class="position">
+                        ${card.company ? `<span class="company">${card.company}</span>` : ''}${card.company && card.title ? ` ` : ''}${card.title ? `<span class="title">${card.title}</span>` : ''}
                     </div>
+                    ` : ''}
                     ${card.headline ? `<div class="headline">${card.headline}</div>` : ''}
                 </div>
                 
