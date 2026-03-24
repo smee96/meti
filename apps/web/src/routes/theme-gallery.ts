@@ -407,7 +407,7 @@ themeGallery.get('/', (c) => {
             <p class="cta-text">
                 지금 바로 무료로 나만의 디지털 명함을 만들어보세요
             </p>
-            <a href="/api/auth/register" class="btn-primary">
+            <a href="/auth/login" class="btn-primary">
                 <i class="fas fa-rocket"></i> 무료로 시작하기
             </a>
         </div>
