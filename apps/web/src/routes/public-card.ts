@@ -327,11 +327,29 @@ publicCard.get('/:id', async (c) => {
         margin-bottom: 16px;
       }
       
-      .name {
-        font-size: 24px;
-        font-weight: 500;
+      .name-line {
+        font-size: 18px;
+        font-weight: 400;
         letter-spacing: 0.3px;
         margin-bottom: 8px;
+        line-height: 1.4;
+      }
+      
+      .name {
+        font-size: 20px;
+        font-weight: 600;
+      }
+      
+      .company {
+        font-size: 16px;
+        font-weight: 400;
+        opacity: 0.85;
+      }
+      
+      .title {
+        font-size: 16px;
+        font-weight: 400;
+        opacity: 0.85;
       }
       
       .headline {
@@ -533,7 +551,9 @@ publicCard.get('/:id', async (c) => {
                 
                 <div class="profile">
                     ${card.avatar ? `<img src="${card.avatar}" alt="${card.name}" class="avatar">` : ''}
-                    <div class="name">${card.name}</div>
+                    <div class="name-line">
+                        <span class="name">${card.name}</span>${card.company || card.title ? ` - ` : ''}${card.company ? `<span class="company">${card.company}</span>` : ''}${card.company && card.title ? ` - ` : ''}${!card.company && card.title ? `<span class="title">${card.title}</span>` : ''}${card.company && card.title ? `<span class="title">${card.title}</span>` : ''}
+                    </div>
                     ${card.headline ? `<div class="headline">${card.headline}</div>` : ''}
                 </div>
                 
