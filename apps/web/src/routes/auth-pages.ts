@@ -131,6 +131,14 @@ function getLoginHTML() {
             border-color: #0A2260;
             box-shadow: 0 0 0 3px rgba(10, 34, 96, 0.1);
         }
+        
+        .form-input.valid {
+            border-color: #4CAF50;
+        }
+        
+        .form-input.invalid {
+            border-color: #f44336;
+        }
 
         .form-input::placeholder {
             color: #aaa;
@@ -644,6 +652,14 @@ function getRegisterHTML() {
             border-color: #0A2260;
             box-shadow: 0 0 0 3px rgba(10, 34, 96, 0.1);
         }
+        
+        .form-input.valid {
+            border-color: #4CAF50;
+        }
+        
+        .form-input.invalid {
+            border-color: #f44336;
+        }
 
         .form-input::placeholder {
             color: #aaa;
@@ -973,11 +989,13 @@ function getRegisterHTML() {
                         placeholder="비밀번호를 다시 입력하세요"
                         required
                         autocomplete="new-password"
+                        oninput="validatePasswordMatch()"
                     >
                     <button type="button" class="password-toggle" onclick="togglePassword('passwordConfirm', 'passwordConfirmIcon')">
                         <i class="fas fa-eye" id="passwordConfirmIcon"></i>
                     </button>
                 </div>
+                <div id="passwordMatchMessage" style="font-size: 13px; margin-top: 6px;"></div>
             </div>
 
             <div class="terms-wrapper">
@@ -1010,18 +1028,7 @@ function getRegisterHTML() {
             </button>
         </form>
 
-        <div class="divider">
-            <span>또는</span>
-        </div>
-
-        <div class="social-login">
-            <button class="btn-social" onclick="alert('Google 회원가입은 준비 중입니다.')">
-                <i class="fab fa-google btn-google"></i>
-                Google로 시작하기
-            </button>
-        </div>
-
-        <div class="auth-footer">
+        <div class="auth-footer" style="margin-top: 32px;">
             이미 계정이 있으신가요?
             <a href="/auth/login">로그인</a>
         </div>
@@ -1059,6 +1066,31 @@ function getRegisterHTML() {
                 strengthBar.classList.add('medium');
             } else if (strength >= 4) {
                 strengthBar.classList.add('strong');
+            }
+        }
+
+        function validatePasswordMatch() {
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('passwordConfirm').value;
+            const passwordConfirmInput = document.getElementById('passwordConfirm');
+            const messageDiv = document.getElementById('passwordMatchMessage');
+            
+            if (passwordConfirm.length === 0) {
+                passwordConfirmInput.classList.remove('valid', 'invalid');
+                messageDiv.textContent = '';
+                return;
+            }
+            
+            if (password === passwordConfirm) {
+                passwordConfirmInput.classList.remove('invalid');
+                passwordConfirmInput.classList.add('valid');
+                messageDiv.textContent = '✓ 비밀번호가 일치합니다';
+                messageDiv.style.color = '#4CAF50';
+            } else {
+                passwordConfirmInput.classList.remove('valid');
+                passwordConfirmInput.classList.add('invalid');
+                messageDiv.textContent = '✗ 비밀번호가 일치하지 않습니다';
+                messageDiv.style.color = '#f44336';
             }
         }
 
