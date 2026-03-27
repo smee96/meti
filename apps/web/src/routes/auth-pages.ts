@@ -397,18 +397,7 @@ function getLoginHTML() {
             </button>
         </form>
 
-        <div class="divider">
-            <span>또는</span>
-        </div>
-
-        <div class="social-login">
-            <button class="btn-social" onclick="alert('Google 로그인은 준비 중입니다.')">
-                <i class="fab fa-google btn-google"></i>
-                Google로 계속하기
-            </button>
-        </div>
-
-        <div class="auth-footer">
+        <div class="auth-footer" style="margin-top: 32px;">
             아직 계정이 없으신가요?
             <a href="/auth/register">회원가입</a>
         </div>
