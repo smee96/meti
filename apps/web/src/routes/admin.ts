@@ -1,21 +1,18 @@
 import { Hono } from 'hono';
 import type { Env } from '../types';
-import { Database } from '../lib/db';
 
 const admin = new Hono<{ Bindings: Env }>();
 
 // Admin dashboard
 admin.get('/', async (c) => {
   const { DB } = c.env;
-  const db = new Database(DB);
   
   try {
     // Get statistics
     const usersResult = await DB.prepare('SELECT COUNT(*) as count FROM users').first();
     const cardsResult = await DB.prepare('SELECT COUNT(*) as count FROM cards').first();
     const todayUsersResult = await DB.prepare(
-      `SELECT COUNT(*) as count FROM users 
-       WHERE DATE(created_at) = DATE('now')`
+      `SELECT COUNT(*) as count FROM users WHERE DATE(created_at) = DATE('now')`
     ).first();
     
     const totalUsers = usersResult?.count || 0;
@@ -33,535 +30,126 @@ admin.get('/', async (c) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>METI Admin - 관리자 페이지</title>
-    <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>METI Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @font-face {
-            font-family: 'Montserrat';
-            src: url('/static/fonts/Montserrat-Bold.woff2') format('woff2');
-            font-weight: 700;
-            font-style: normal;
-            font-display: block;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #0A2260 0%, #1A3368 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: white;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 24px 32px;
-            border-radius: 16px;
-            margin-bottom: 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 28px;
-            letter-spacing: 6px;
-            font-weight: 700;
-        }
-
-        .title {
-            font-size: 18px;
-            opacity: 0.9;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 24px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .stat-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
-            opacity: 0.8;
-        }
-
-        .stat-value {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            opacity: 0.7;
-        }
-
-        .section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 32px;
-            border-radius: 16px;
-            margin-bottom: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .tab-btn {
-            padding: 12px 24px;
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
-            color: white;
-            border-bottom-color: #ffc107;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .config-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .config-item {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .config-label {
-            font-size: 14px;
-            font-weight: 600;
-            opacity: 0.9;
-        }
-
-        .config-input {
-            padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .farm-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .farm-table th,
-        .farm-table td {
-            padding: 12px 16px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .farm-table th {
-            background: rgba(255, 255, 255, 0.1);
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .farm-table td {
-            font-size: 14px;
-        }
-
-        .farm-table tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .farm-table input {
-            width: 80px;
-            padding: 6px 8px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 24px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-        }
-
-        .result-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .result-label {
-            font-size: 13px;
-            opacity: 0.7;
-        }
-
-        .result-value {
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffc107;
-        }
-
-        .btn {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%);
-            color: #0A2260;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .success-message {
-            background: rgba(76, 175, 80, 0.2);
-            border: 1px solid rgba(76, 175, 80, 0.5);
-            color: #a5d6a7;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        .toggle-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            margin-bottom: 12px;
-        }
-
-        .toggle-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .collapsible {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .collapsible.open {
-            max-height: 2000px;
-        }
+        body { font-family: sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .tabs button { padding: 12px 24px; margin-right: 8px; border: none; background: #e2e8f0; cursor: pointer; border-radius: 8px 8px 0 0; }
+        .tabs button.active { background: white; font-weight: 600; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f7fafc; font-weight: 600; }
+        input[type="number"] { padding: 8px; border: 1px solid #cbd5e0; border-radius: 6px; width: 80px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-primary:hover { background: #5568d3; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; }
+        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0; }
+        .result-item { padding: 16px; background: #f7fafc; border-radius: 8px; }
+        .result-label { font-size: 14px; color: #64748b; margin-bottom: 4px; }
+        .result-value { font-size: 24px; font-weight: 700; color: #1e293b; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div>
-                <div class="logo">METI</div>
-                <div class="title">관리자 대시보드</div>
-            </div>
-            <button class="btn btn-secondary" onclick="window.location.href='/'">
-                <i class="fas fa-home"></i>
-                메인으로
-            </button>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-users"></i>
+        <div class="card">
+            <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 24px; color: #1e293b;">
+                <i class="fas fa-seedling" style="color: #667eea;"></i> METI Admin - HappyTree Simulator
+            </h1>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div style="font-size: 14px; opacity: 0.9;">총 가입자</div>
+                    <div style="font-size: 32px; font-weight: 700;">${totalUsers}</div>
                 </div>
-                <div class="stat-value">${totalUsers}</div>
-                <div class="stat-label">총 가입자 수</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-id-card"></i>
+                <div class="stat-card">
+                    <div style="font-size: 14px; opacity: 0.9;">총 명함</div>
+                    <div style="font-size: 32px; font-weight: 700;">${totalCards}</div>
                 </div>
-                <div class="stat-value">${totalCards}</div>
-                <div class="stat-label">총 명함 수</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-user-plus"></i>
+                <div class="stat-card">
+                    <div style="font-size: 14px; opacity: 0.9;">오늘 가입</div>
+                    <div style="font-size: 32px; font-weight: 700;">${todayUsers}</div>
                 </div>
-                <div class="stat-value">${todayUsers}</div>
-                <div class="stat-label">오늘 가입자</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="stat-value">${totalCards > 0 ? (totalCards / totalUsers).toFixed(1) : 0}</div>
-                <div class="stat-label">평균 명함 수</div>
             </div>
         </div>
 
-        <div class="section">
-            <div class="section-title">
-                <i class="fas fa-seedling"></i>
-                HappyTree 농장 시뮬레이터 & 설정
-            </div>
-
-            <div class="success-message" id="successMessage">
-                <i class="fas fa-check-circle"></i>
-                저장되었습니다!
-            </div>
-
-            <!-- Tabs -->
+        <div class="card">
             <div class="tabs">
                 ${[1, 2, 3, 4].map(farmId => 
-                  `<button class="tab-btn ${farmId === 1 ? 'active' : ''}" onclick="switchTab(${farmId})">
-                    농장 ${farmId}
-                  </button>`
+                  `<button class="tab-btn ${farmId === 1 ? 'active' : ''}" onclick="switchTab(${farmId})">농장 ${farmId}</button>`
                 ).join('')}
             </div>
 
-            <!-- Tab Contents -->
             ${[1, 2, 3, 4].map(farmId => {
               const levels = farmLevels.results?.filter((l: any) => l.farm_id === farmId) || [];
               
               return `
                 <div class="tab-content ${farmId === 1 ? 'active' : ''}" id="tab${farmId}">
-                  <h3 style="margin-bottom: 16px;">⚙️ 기본 설정</h3>
-                  <div class="config-grid">
-                    <div class="config-item">
-                      <label class="config-label">입장 인원</label>
-                      <input type="number" class="config-input" id="f${farmId}_users" value="100" min="1">
+                  <h3 style="margin: 20px 0 12px 0; font-weight: 600;">⚙️ 기본 설정</h3>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                    <div>
+                      <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">입장 인원</label>
+                      <input type="number" id="f${farmId}_users" value="100" min="1" style="width: 100%;">
                     </div>
-                    <div class="config-item">
-                      <label class="config-label">화분 개수</label>
-                      <input type="number" class="config-input" id="f${farmId}_pots" value="3" min="1">
+                    <div>
+                      <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">화분 개수</label>
+                      <input type="number" id="f${farmId}_pots" value="3" min="1" style="width: 100%;">
                     </div>
-                    <div class="config-item">
-                      <label class="config-label">별 가격 ($)</label>
-                      <input type="number" class="config-input" id="f${farmId}_star_price" value="2" min="0" step="0.01">
+                    <div>
+                      <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">별 가격 ($)</label>
+                      <input type="number" id="f${farmId}_star_price" value="2" min="0" step="0.01" style="width: 100%;">
                     </div>
-                    <div class="config-item">
-                      <label class="config-label">초기 하트</label>
-                      <input type="number" class="config-input" id="f${farmId}_initial_hearts" value="300000" min="0">
+                    <div>
+                      <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">초기 하트</label>
+                      <input type="number" id="f${farmId}_initial_hearts" value="300000" min="0" style="width: 100%;">
                     </div>
                   </div>
 
-                  <button class="toggle-btn" onclick="toggleLevelConfig(${farmId})">
-                    <i class="fas fa-cog"></i> 레벨 설정 펼치기/접기
-                  </button>
+                  <details style="margin: 20px 0;">
+                    <summary style="cursor: pointer; font-weight: 600; padding: 12px; background: #f7fafc; border-radius: 8px;">📊 레벨 설정</summary>
+                    <table style="margin-top: 16px;">
+                      <thead>
+                        <tr>
+                          <th>레벨</th>
+                          <th>필요 하트허용치</th>
+                          <th>필요 별</th>
+                          <th>보상 코인</th>
+                          <th>보상 하트</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${Array.from({ length: 8 }, (_, i) => i + 1).map(level => {
+                          const levelData = levels.find((l: any) => l.level === level);
+                          return `
+                            <tr>
+                              <td>Lv. ${level}</td>
+                              <td><input type="number" name="f${farmId}_l${level}_hearts" value="${levelData?.hearts_required || 0}" min="0"></td>
+                              <td><input type="number" name="f${farmId}_l${level}_stars" value="${levelData?.stars || 0}" min="0"></td>
+                              <td><input type="number" name="f${farmId}_l${level}_coins" value="${levelData?.coins || 0}" min="0"></td>
+                              <td><input type="number" name="f${farmId}_l${level}_reward" value="${levelData?.hearts_reward || 0}" min="0"></td>
+                            </tr>
+                          `;
+                        }).join('')}
+                      </tbody>
+                    </table>
+                  </details>
 
-                  <div class="collapsible" id="levelConfig${farmId}">
-                    <form id="farmForm${farmId}">
-                      <table class="farm-table">
-                        <thead>
-                          <tr>
-                            <th>레벨</th>
-                            <th>필요 하트허용치</th>
-                            <th>필요 별</th>
-                            <th>보상 코인</th>
-                            <th>보상 하트</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          ${Array.from({ length: 8 }, (_, i) => i + 1).map(level => {
-                            const levelData = levels.find((l: any) => l.level === level);
-                            return `
-                              <tr>
-                                <td>Lv. ${level}</td>
-                                <td>
-                                  <input type="number" 
-                                         name="f${farmId}_l${level}_hearts" 
-                                         value="${levelData?.hearts_required || 0}" 
-                                         min="0">
-                                </td>
-                                <td>
-                                  <input type="number" 
-                                         name="f${farmId}_l${level}_stars" 
-                                         value="${levelData?.stars || 0}" 
-                                         min="0">
-                                </td>
-                                <td>
-                                  <input type="number" 
-                                         name="f${farmId}_l${level}_coins" 
-                                         value="${levelData?.coins || 0}" 
-                                         min="0">
-                                </td>
-                                <td>
-                                  <input type="number" 
-                                         name="f${farmId}_l${level}_reward" 
-                                         value="${levelData?.hearts_reward || 0}" 
-                                         min="0">
-                                </td>
-                              </tr>
-                            `;
-                          }).join('')}
-                          <tr style="background: rgba(255, 193, 7, 0.2); font-weight: 600;">
-                            <td>합계</td>
-                            <td id="f${farmId}_total_hearts">-</td>
-                            <td id="f${farmId}_total_stars">-</td>
-                            <td id="f${farmId}_total_coins">-</td>
-                            <td id="f${farmId}_total_reward">-</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </form>
-                  </div>
-
-                  <div class="actions">
+                  <div style="display: flex; gap: 12px; margin: 20px 0;">
                     <button class="btn btn-primary" onclick="calculate(${farmId})">
-                      <i class="fas fa-calculator"></i>
-                      계산하기
+                      <i class="fas fa-calculator"></i> 계산하기
                     </button>
                     <button class="btn btn-primary" onclick="saveFarmLevels(${farmId})">
-                      <i class="fas fa-save"></i>
-                      레벨 설정 저장
-                    </button>
-                    <button class="btn btn-secondary" onclick="location.reload()">
-                      <i class="fas fa-undo"></i>
-                      초기화
+                      <i class="fas fa-save"></i> 레벨 설정 저장
                     </button>
                   </div>
 
-                  <!-- Results -->
-                  <div id="results${farmId}" style="display: none;">
-                    <h3 style="margin-top: 32px; margin-bottom: 16px;">💰 플랫폼 수익</h3>
-                    <div class="results-grid">
-                      <div class="result-item">
-                        <div class="result-label">별 판매</div>
-                        <div class="result-value" id="f${farmId}_stars_sold">-</div>
-                      </div>
-                      <div class="result-item">
-                        <div class="result-label">별 수익</div>
-                        <div class="result-value" id="f${farmId}_star_revenue">-</div>
-                      </div>
-                      <div class="result-item">
-                        <div class="result-label">코인 지출</div>
-                        <div class="result-value" id="f${farmId}_coin_expense">-</div>
-                      </div>
-                      <div class="result-item">
-                        <div class="result-label">순수익</div>
-                        <div class="result-value" id="f${farmId}_net_profit">-</div>
-                      </div>
-                      <div class="result-item">
-                        <div class="result-label">수익률</div>
-                        <div class="result-value" id="f${farmId}_profit_rate">-</div>
-                      </div>
-                    </div>
-
-                    <h3 style="margin-top: 32px; margin-bottom: 16px;">👤 1번 사용자 수익</h3>
-                    <div class="results-grid">
-                      <div class="result-item">
-                        <div class="result-label">화분 수</div>
-                        <div class="result-value" id="f${farmId}_user1_pots">-</div>
-                      </div>
-                      <div class="result-item">
-                        <div class="result-label">최고 레벨</div>
-                        <div class="result-value" id="f${farmId}_user1_level">-</div>
-                      </div>
-                      <div class="result-item">
-                        <div class="result-label">투자금</div>
-                        <div class="result-value" id="f${farmId}_user1_investment">-</div>
-                      </div>
-                      <div class="result-item">
-                        <div class="result-label">수익금</div>
-                        <div class="result-value" id="f${farmId}_user1_revenue">-</div>
-                      </div>
-                      <div class="result-item">
-                        <div class="result-label">ROI</div>
-                        <div class="result-value" id="f${farmId}_user1_roi">-</div>
-                      </div>
-                    </div>
-                  </div>
+                  <div id="results${farmId}" style="display: none;"></div>
                 </div>
               `;
             }).join('')}
@@ -570,130 +158,168 @@ admin.get('/', async (c) => {
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
     <script>
-        // Tab switching
-        function switchTab(farmId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById(\`tab\${farmId}\`).classList.add('active');
-        }
+function switchTab(farmId) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(\`tab\${farmId}\`).classList.add('active');
+}
 
-        // Toggle level config
-        function toggleLevelConfig(farmId) {
-            const config = document.getElementById(\`levelConfig\${farmId}\`);
-            config.classList.toggle('open');
+function getDescendants(nodeIndex, totalNodes) {
+    const descendants = [];
+    const queue = [nodeIndex];
+    while (queue.length > 0) {
+        const current = queue.shift();
+        const leftChild = 2 * current;
+        const rightChild = 2 * current + 1;
+        if (leftChild <= totalNodes) {
+            descendants.push(leftChild);
+            queue.push(leftChild);
         }
+        if (rightChild <= totalNodes) {
+            descendants.push(rightChild);
+            queue.push(rightChild);
+        }
+    }
+    return descendants;
+}
 
-        // Calculate simulation
-        function calculate(farmId) {
-            const users = parseInt(document.getElementById(\`f\${farmId}_users\`).value);
-            const pots = parseInt(document.getElementById(\`f\${farmId}_pots\`).value);
-            const starPrice = parseFloat(document.getElementById(\`f\${farmId}_star_price\`).value);
-            const initialHearts = parseInt(document.getElementById(\`f\${farmId}_initial_hearts\`).value);
-            
-            // Get level data
-            const levels = [];
-            let totalHearts = 0, totalStars = 0, totalCoins = 0, totalReward = 0;
-            
-            for (let level = 1; level <= 8; level++) {
-                const hearts = parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_hearts"]\`).value) || 0;
-                const stars = parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_stars"]\`).value) || 0;
-                const coins = parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_coins"]\`).value) || 0;
-                const reward = parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_reward"]\`).value) || 0;
+function calculate(farmId) {
+    const users = parseInt(document.getElementById(\`f\${farmId}_users\`).value);
+    const pots = parseInt(document.getElementById(\`f\${farmId}_pots\`).value);
+    const starPrice = parseFloat(document.getElementById(\`f\${farmId}_star_price\`).value);
+    const initialHearts = parseInt(document.getElementById(\`f\${farmId}_initial_hearts\`).value);
+    
+    const levels = [];
+    for (let level = 1; level <= 8; level++) {
+        const hearts = parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_hearts"]\`).value) || 0;
+        const stars = parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_stars"]\`).value) || 0;
+        const coins = parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_coins"]\`).value) || 0;
+        const reward = parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_reward"]\`).value) || 0;
+        levels.push({ hearts, stars, coins, reward });
+    }
+    
+    const userStates = new Map();
+    for (let i = 1; i <= users; i++) {
+        userStates.set(i, {
+            entryOrder: i,
+            heartsBalance: initialHearts,
+            heartAllowance: 0,
+            pots: Array.from({ length: pots }, (_, idx) => ({ potNumber: idx + 1, currentLevel: 0 })),
+            starsPurchased: 0,
+            coinsEarned: 0,
+            heartsEarned: initialHearts,
+            heartsSpent: 0
+        });
+    }
+    
+    userStates.forEach((user) => {
+        let allowance = user.pots.length;
+        const descendants = getDescendants(user.entryOrder, users);
+        descendants.forEach(descendantOrder => {
+            const descendant = userStates.get(descendantOrder);
+            if (descendant) allowance += descendant.pots.length;
+        });
+        user.heartAllowance = allowance;
+    });
+    
+    userStates.forEach(user => {
+        user.pots.forEach(pot => {
+            while (pot.currentLevel < 8) {
+                const nextLevel = levels[pot.currentLevel];
+                if (user.heartAllowance < nextLevel.hearts || user.heartsBalance < nextLevel.hearts) break;
                 
-                levels.push({ hearts, stars, coins, reward });
-                totalHearts += hearts;
-                totalStars += stars;
-                totalCoins += coins;
-                totalReward += reward;
+                if (nextLevel.stars > 0) user.starsPurchased += nextLevel.stars;
+                user.heartsBalance -= nextLevel.hearts;
+                user.heartsSpent += nextLevel.hearts;
+                user.heartAllowance -= nextLevel.hearts;
+                user.heartsBalance += nextLevel.reward;
+                user.heartsEarned += nextLevel.reward;
+                user.coinsEarned += nextLevel.coins;
+                pot.currentLevel++;
             }
-            
-            // Update totals
-            document.getElementById(\`f\${farmId}_total_hearts\`).textContent = totalHearts.toLocaleString();
-            document.getElementById(\`f\${farmId}_total_stars\`).textContent = totalStars.toLocaleString();
-            document.getElementById(\`f\${farmId}_total_coins\`).textContent = totalCoins.toLocaleString();
-            document.getElementById(\`f\${farmId}_total_reward\`).textContent = totalReward.toLocaleString();
-            
-            // Calculate platform revenue
-            const totalStarsSold = users * totalStars;
-            const starRevenue = totalStarsSold * starPrice;
-            const coinExpense = users * totalCoins;
-            const netProfit = starRevenue - coinExpense;
-            const profitRate = ((netProfit / starRevenue) * 100).toFixed(1);
-            
-            document.getElementById(\`f\${farmId}_stars_sold\`).textContent = totalStarsSold.toLocaleString();
-            document.getElementById(\`f\${farmId}_star_revenue\`).textContent = \`$\${starRevenue.toLocaleString()}\`;
-            document.getElementById(\`f\${farmId}_coin_expense\`).textContent = \`$\${coinExpense.toLocaleString()}\`;
-            document.getElementById(\`f\${farmId}_net_profit\`).textContent = \`$\${netProfit.toLocaleString()}\`;
-            document.getElementById(\`f\${farmId}_profit_rate\`).textContent = \`\${profitRate}%\`;
-            
-            // Calculate user 1 revenue
-            const user1Investment = totalStars * starPrice;
-            const user1Revenue = totalCoins;
-            const user1ROI = (((user1Revenue - user1Investment) / user1Investment) * 100).toFixed(1);
-            
-            document.getElementById(\`f\${farmId}_user1_pots\`).textContent = pots;
-            document.getElementById(\`f\${farmId}_user1_level\`).textContent = \`Lv. 8\`;
-            document.getElementById(\`f\${farmId}_user1_investment\`).textContent = \`$\${user1Investment.toFixed(2)}\`;
-            document.getElementById(\`f\${farmId}_user1_revenue\`).textContent = \`$\${user1Revenue.toLocaleString()}\`;
-            document.getElementById(\`f\${farmId}_user1_roi\`).textContent = \`\${user1ROI}%\`;
-            
-            // Show results
-            document.getElementById(\`results\${farmId}\`).style.display = 'block';
-        }
+        });
+    });
+    
+    let totalStarsSold = 0, totalCoinsPaid = 0;
+    userStates.forEach(user => {
+        totalStarsSold += user.starsPurchased;
+        totalCoinsPaid += user.coinsEarned;
+    });
+    
+    const starRevenue = totalStarsSold * starPrice;
+    const coinExpense = totalCoinsPaid * 0.1; // CRITICAL: $0.1 per coin
+    const netProfit = starRevenue - coinExpense;
+    const profitRate = starRevenue > 0 ? ((netProfit / starRevenue) * 100).toFixed(2) : '0.00';
+    
+    const user1 = userStates.get(1);
+    const user1Investment = user1.starsPurchased * starPrice;
+    const user1Revenue = user1.coinsEarned * 0.1; // CRITICAL: $0.1 per coin
+    const user1NetProfit = user1Revenue - user1Investment;
+    const user1ROI = user1Investment > 0 ? ((user1NetProfit / user1Investment) * 100).toFixed(2) : '0.00';
+    const user1MaxLevel = Math.max(...user1.pots.map(p => p.currentLevel));
+    
+    let levelStatsHTML = '<h3 style="margin-top: 20px; font-weight: 600;">📊 레벨별 달성 현황</h3><table><thead><tr><th>레벨</th><th>달성자 수</th><th>도달 화분 수</th><th>필요 별</th><th>필요 하트허용치</th><th>보상 코인</th><th>보상 하트</th></tr></thead><tbody>';
+    
+    for (let level = 1; level <= 8; level++) {
+        const achievers = new Set();
+        let potsAtLevel = 0;
+        userStates.forEach(user => {
+            const potsReachedLevel = user.pots.filter(pot => pot.currentLevel >= level);
+            if (potsReachedLevel.length > 0) {
+                achievers.add(user.entryOrder);
+                potsAtLevel += potsReachedLevel.length;
+            }
+        });
+        const levelData = levels[level - 1];
+        levelStatsHTML += \`<tr><td>Lv. \${level}</td><td>\${achievers.size}</td><td>\${potsAtLevel}</td><td>\${levelData.stars}</td><td>\${levelData.hearts}</td><td>\${levelData.coins}</td><td>\${levelData.reward}</td></tr>\`;
+    }
+    levelStatsHTML += '</tbody></table>';
+    
+    const resultsHTML = \`
+        <h3 style="margin-top: 20px; font-weight: 600;">💰 플랫폼 수익</h3>
+        <div class="result-grid">
+            <div class="result-item"><div class="result-label">별 판매</div><div class="result-value">\${totalStarsSold}</div></div>
+            <div class="result-item"><div class="result-label">별 수익</div><div class="result-value">$\${starRevenue.toFixed(2)}</div></div>
+            <div class="result-item"><div class="result-label">코인 지출</div><div class="result-value">$\${coinExpense.toFixed(2)}</div></div>
+            <div class="result-item"><div class="result-label">순수익</div><div class="result-value">$\${netProfit.toFixed(2)}</div></div>
+            <div class="result-item"><div class="result-label">수익률</div><div class="result-value">\${profitRate}%</div></div>
+        </div>
+        <h3 style="margin-top: 20px; font-weight: 600;">👤 1번 사용자</h3>
+        <div class="result-grid">
+            <div class="result-item"><div class="result-label">화분 수</div><div class="result-value">\${pots}</div></div>
+            <div class="result-item"><div class="result-label">최고 레벨</div><div class="result-value">Lv. \${user1MaxLevel}</div></div>
+            <div class="result-item"><div class="result-label">투자금</div><div class="result-value">$\${user1Investment.toFixed(2)}</div></div>
+            <div class="result-item"><div class="result-label">수익금</div><div class="result-value">$\${user1Revenue.toFixed(2)}</div></div>
+            <div class="result-item"><div class="result-label">ROI</div><div class="result-value">\${user1ROI}%</div></div>
+        </div>
+        \${levelStatsHTML}
+    \`;
+    
+    const resultsDiv = document.getElementById(\`results\${farmId}\`);
+    resultsDiv.innerHTML = resultsHTML;
+    resultsDiv.style.display = 'block';
+}
 
-        // Save farm levels
-        async function saveFarmLevels(farmId) {
-            const levels = [];
-            
-            for (let level = 1; level <= 8; level++) {
-                levels.push({
-                    farm_id: farmId,
-                    level: level,
-                    hearts_required: parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_hearts"]\`).value) || 0,
-                    stars: parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_stars"]\`).value) || 0,
-                    coins: parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_coins"]\`).value) || 0,
-                    hearts_reward: parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_reward"]\`).value) || 0
-                });
-            }
-            
-            try {
-                const response = await axios.post('/api/admin/farm-levels', { levels });
-                
-                if (response.data.success) {
-                    const successMsg = document.getElementById('successMessage');
-                    successMsg.classList.add('show');
-                    setTimeout(() => {
-                        successMsg.classList.remove('show');
-                    }, 3000);
-                }
-            } catch (error) {
-                alert('저장 중 오류가 발생했습니다: ' + error.message);
-            }
-        }
-
-        // Initialize: calculate totals on load
-        for (let farmId = 1; farmId <= 4; farmId++) {
-            const form = document.getElementById(\`farmForm\${farmId}\`);
-            if (form) {
-                form.addEventListener('input', () => {
-                    let totalHearts = 0, totalStars = 0, totalCoins = 0, totalReward = 0;
-                    
-                    for (let level = 1; level <= 8; level++) {
-                        totalHearts += parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_hearts"]\`).value) || 0;
-                        totalStars += parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_stars"]\`).value) || 0;
-                        totalCoins += parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_coins"]\`).value) || 0;
-                        totalReward += parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_reward"]\`).value) || 0;
-                    }
-                    
-                    document.getElementById(\`f\${farmId}_total_hearts\`).textContent = totalHearts.toLocaleString();
-                    document.getElementById(\`f\${farmId}_total_stars\`).textContent = totalStars.toLocaleString();
-                    document.getElementById(\`f\${farmId}_total_coins\`).textContent = totalCoins.toLocaleString();
-                    document.getElementById(\`f\${farmId}_total_reward\`).textContent = totalReward.toLocaleString();
-                });
-            }
-        }
+async function saveFarmLevels(farmId) {
+    const levels = [];
+    for (let level = 1; level <= 8; level++) {
+        levels.push({
+            farm_id: farmId,
+            level: level,
+            hearts_required: parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_hearts"]\`).value) || 0,
+            stars: parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_stars"]\`).value) || 0,
+            coins: parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_coins"]\`).value) || 0,
+            hearts_reward: parseInt(document.querySelector(\`[name="f\${farmId}_l\${level}_reward"]\`).value) || 0
+        });
+    }
+    try {
+        const response = await axios.post('/api/admin/farm-levels', { levels });
+        if (response.data.success) alert('저장되었습니다!');
+    } catch (error) {
+        alert('저장 중 오류: ' + error.message);
+    }
+}
     </script>
 </body>
 </html>
@@ -711,7 +337,6 @@ admin.post('/farm-levels', async (c) => {
   try {
     const { levels } = await c.req.json();
     
-    // Update each level
     for (const level of levels) {
       await DB.prepare(`
         INSERT OR REPLACE INTO game_farm_levels 
