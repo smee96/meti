@@ -19,6 +19,7 @@ import myWallet from './routes/my-wallet';
 import myProfile from './routes/my-profile';
 import profileEdit from './routes/profile-edit';
 import infoPages from './routes/info-pages';
+import admin from './routes/admin';
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -63,6 +64,10 @@ app.route('/my/profile', profileEdit);
 
 // Info pages (notices, events, contact, terms, privacy)
 app.route('/info', infoPages);
+
+// Admin pages
+app.route('/admin', admin);
+app.route('/api/admin', admin);
 
 // Landing page (catch all root)
 app.route('/', landing);
