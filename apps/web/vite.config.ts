@@ -5,7 +5,12 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [
-    build(),
+    build({
+      emptyOutDir: false,
+      cloudflareRoutes: {
+        exclude: ['/static/*', '/*.png', '/*.jpg', '/*.jpeg', '/*.gif', '/*.svg', '/*.ico', '/*.webp']
+      }
+    }),
     devServer({
       adapter,
       entry: 'src/index.tsx'
