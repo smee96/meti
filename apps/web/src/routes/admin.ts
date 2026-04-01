@@ -302,16 +302,16 @@ function calculate(farmId) {
         
         levelStatsHTML += \`<tr>
             <td>Lv. \${level}</td>
-            <td>\${achievers.size}</td>
-            <td>\${potsAtLevel}</td>
-            <td>\${levelData.stars}</td>
-            <td>\${levelData.hearts}</td>
-            <td>\${levelData.coins}</td>
-            <td>\${levelData.reward}</td>
-            <td style="color: \${investColor};">$\${avgInvestment.toFixed(2)}</td>
-            <td style="color: \${returnColor};">$\${avgReturn.toFixed(2)}</td>
-            <td style="color: \${profitColor}; font-weight: 600;">$\${avgNetProfit.toFixed(2)}</td>
-            <td style="color: \${roiColor}; font-weight: 600;">\${avgROI.toFixed(2)}%</td>
+            <td>\${achievers.size.toLocaleString()}</td>
+            <td>\${potsAtLevel.toLocaleString()}</td>
+            <td>\${levelData.stars.toLocaleString()}</td>
+            <td>\${levelData.hearts.toLocaleString()}</td>
+            <td>\${levelData.coins.toLocaleString()}</td>
+            <td>\${levelData.reward.toLocaleString()}</td>
+            <td style="color: \${investColor};">$\${avgInvestment.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td style="color: \${returnColor};">$\${avgReturn.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td style="color: \${profitColor}; font-weight: 600;">$\${avgNetProfit.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td style="color: \${roiColor}; font-weight: 600;">\${avgROI.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}%</td>
         </tr>\`;
     }
     levelStatsHTML += '</tbody></table>';
@@ -319,18 +319,18 @@ function calculate(farmId) {
     const resultsHTML = \`
         <h3 style="margin-top: 20px; font-weight: 600;">💰 플랫폼 수익</h3>
         <div class="result-grid">
-            <div class="result-item"><div class="result-label">별 판매</div><div class="result-value">\${totalStarsSold}</div></div>
-            <div class="result-item"><div class="result-label">별 수익</div><div class="result-value">$\${starRevenue.toFixed(2)}</div></div>
-            <div class="result-item"><div class="result-label">코인 지출</div><div class="result-value">$\${coinExpense.toFixed(2)}</div></div>
-            <div class="result-item"><div class="result-label">순수익</div><div class="result-value">$\${netProfit.toFixed(2)}</div></div>
+            <div class="result-item"><div class="result-label">별 판매</div><div class="result-value">\${totalStarsSold.toLocaleString()}</div></div>
+            <div class="result-item"><div class="result-label">별 수익</div><div class="result-value">$\${starRevenue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div></div>
+            <div class="result-item"><div class="result-label">코인 지출</div><div class="result-value">$\${coinExpense.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div></div>
+            <div class="result-item"><div class="result-label">순수익</div><div class="result-value">$\${netProfit.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div></div>
             <div class="result-item"><div class="result-label">수익률</div><div class="result-value">\${profitRate}%</div></div>
         </div>
         <h3 style="margin-top: 20px; font-weight: 600;">👤 1번 사용자</h3>
         <div class="result-grid">
             <div class="result-item"><div class="result-label">화분 수</div><div class="result-value">\${pots}</div></div>
             <div class="result-item"><div class="result-label">최고 레벨</div><div class="result-value">Lv. \${user1MaxLevel}</div></div>
-            <div class="result-item"><div class="result-label">투자금</div><div class="result-value">$\${user1Investment.toFixed(2)}</div></div>
-            <div class="result-item"><div class="result-label">수익금</div><div class="result-value">$\${user1Revenue.toFixed(2)}</div></div>
+            <div class="result-item"><div class="result-label">투자금</div><div class="result-value">$\${user1Investment.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div></div>
+            <div class="result-item"><div class="result-label">수익금</div><div class="result-value">$\${user1Revenue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div></div>
             <div class="result-item"><div class="result-label">ROI</div><div class="result-value">\${user1ROI}%</div></div>
         </div>
         \${levelStatsHTML}
