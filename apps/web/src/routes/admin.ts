@@ -35,12 +35,13 @@ admin.get('/', async (c) => {
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="METI Admin - HappyTree Simulator">
     <meta property="og:description" content="METI 관리자 대시보드 - HappyTree 농장 시뮬레이터">
-    <meta property="og:image" content="/og-image.png">
+    <meta property="og:image" content="https://meti-3gk.pages.dev/og-image.png">
+    <meta property="og:url" content="https://meti-3gk.pages.dev/admin">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="METI Admin - HappyTree Simulator">
     <meta name="twitter:description" content="METI 관리자 대시보드 - HappyTree 농장 시뮬레이터">
-    <meta name="twitter:image" content="/og-image.png">
+    <meta name="twitter:image" content="https://meti-3gk.pages.dev/og-image.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
