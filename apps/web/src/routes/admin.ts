@@ -259,20 +259,60 @@ function calculate(farmId) {
     const user1ROI = user1Investment > 0 ? ((user1NetProfit / user1Investment) * 100).toFixed(2) : '0.00';
     const user1MaxLevel = Math.max(...user1.pots.map(p => p.currentLevel));
     
-    let levelStatsHTML = '<h3 style="margin-top: 20px; font-weight: 600;">📊 레벨별 달성 현황</h3><table><thead><tr><th>레벨</th><th>달성자 수</th><th>도달 화분 수</th><th>필요 별</th><th>필요 하트허용치</th><th>보상 코인</th><th>보상 하트</th></tr></thead><tbody>';
+    let levelStatsHTML = '<h3 style="margin-top: 20px; font-weight: 600;">📊 레벨별 달성 현황</h3><table><thead><tr><th>레벨</th><th>달성자 수</th><th>도달 화분 수</th><th>필요 별</th><th>필요 하트허용치</th><th>보상 코인</th><th>보상 하트</th><th>1명당 투자</th><th>1명당 수익</th><th>1명당 순익</th><th>1명당 ROI</th></tr></thead><tbody>';
     
     for (let level = 1; level <= 8; level++) {
         const achievers = new Set();
         let potsAtLevel = 0;
+        
+        // Calculate cumulative stats for users who stopped at this level
+        let totalInvestment = 0;
+        let totalReturn = 0;
+        let usersStoppedHere = 0;
+        
         userStates.forEach(user => {
             const potsReachedLevel = user.pots.filter(pot => pot.currentLevel >= level);
             if (potsReachedLevel.length > 0) {
                 achievers.add(user.entryOrder);
                 potsAtLevel += potsReachedLevel.length;
             }
+            
+            // Find users whose highest level is exactly this level
+            const highestLevel = Math.max(0, ...user.pots.map(p => p.currentLevel));
+            if (highestLevel === level) {
+                usersStoppedHere++;
+                totalInvestment += user.starsPurchased * starPrice;
+                totalReturn += user.coinsEarned * 0.1;
+            }
         });
+        
         const levelData = levels[level - 1];
-        levelStatsHTML += \`<tr><td>Lv. \${level}</td><td>\${achievers.size}</td><td>\${potsAtLevel}</td><td>\${levelData.stars}</td><td>\${levelData.hearts}</td><td>\${levelData.coins}</td><td>\${levelData.reward}</td></tr>\`;
+        
+        // Calculate per-user stats
+        const avgInvestment = usersStoppedHere > 0 ? totalInvestment / usersStoppedHere : 0;
+        const avgReturn = usersStoppedHere > 0 ? totalReturn / usersStoppedHere : 0;
+        const avgNetProfit = avgReturn - avgInvestment;
+        const avgROI = avgInvestment > 0 ? (avgNetProfit / avgInvestment * 100) : 0;
+        
+        // Color coding for profit/loss
+        const investColor = '#ff6b6b';
+        const returnColor = avgReturn > 0 ? '#4dabf7' : '#adb5bd';
+        const profitColor = avgNetProfit >= 0 ? '#4dabf7' : '#ff6b6b';
+        const roiColor = avgROI >= 0 ? '#4dabf7' : '#ff6b6b';
+        
+        levelStatsHTML += \`<tr>
+            <td>Lv. \${level}</td>
+            <td>\${achievers.size}</td>
+            <td>\${potsAtLevel}</td>
+            <td>\${levelData.stars}</td>
+            <td>\${levelData.hearts}</td>
+            <td>\${levelData.coins}</td>
+            <td>\${levelData.reward}</td>
+            <td style="color: \${investColor};">$\${avgInvestment.toFixed(2)}</td>
+            <td style="color: \${returnColor};">$\${avgReturn.toFixed(2)}</td>
+            <td style="color: \${profitColor}; font-weight: 600;">$\${avgNetProfit.toFixed(2)}</td>
+            <td style="color: \${roiColor}; font-weight: 600;">\${avgROI.toFixed(2)}%</td>
+        </tr>\`;
     }
     levelStatsHTML += '</tbody></table>';
     
