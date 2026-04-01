@@ -125,7 +125,11 @@ publicCard.get('/:id', async (c) => {
     <meta property="og:description" content="${card.headline || '디지털 명함'}">
     <meta property="og:type" content="profile">
     <meta property="og:url" content="${c.req.url}">
-    ${card.avatar ? `<meta property="og:image" content="${card.avatar}">` : ''}
+    <meta property="og:image" content="${card.avatar || 'https://meti-3gk.pages.dev/og-image.png'}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${card.name} - METI">
+    <meta name="twitter:description" content="${card.headline || '디지털 명함'}">
+    <meta name="twitter:image" content="${card.avatar || 'https://meti-3gk.pages.dev/og-image.png'}"
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
