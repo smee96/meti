@@ -63,6 +63,10 @@ admin.get('/', async (c) => {
         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
         .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; }
         .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0; }
+        details summary { list-style: none; }
+        details summary::-webkit-details-marker { display: none; }
+        details summary:hover { opacity: 0.9; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); }
+        details[open] summary { border-radius: 8px 8px 0 0; margin-bottom: 16px; }
         .result-item { padding: 16px; background: #f7fafc; border-radius: 8px; }
         .result-label { font-size: 14px; color: #64748b; margin-bottom: 4px; }
         .result-value { font-size: 24px; font-weight: 700; color: #1e293b; }
@@ -124,7 +128,10 @@ admin.get('/', async (c) => {
                   </div>
 
                   <details style="margin: 20px 0;">
-                    <summary style="cursor: pointer; font-weight: 600; padding: 12px; background: #f7fafc; border-radius: 8px;">📊 레벨 설정</summary>
+                    <summary style="cursor: pointer; font-weight: 600; padding: 14px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px; display: flex; align-items: center; gap: 8px; user-select: none; transition: all 0.2s;">
+                      <span style="font-size: 18px;">📊</span>
+                      <span style="font-size: 15px;">레벨 설정 (펼치기/접기)</span>
+                    </summary>
                     <table style="margin-top: 16px;">
                       <thead>
                         <tr>
