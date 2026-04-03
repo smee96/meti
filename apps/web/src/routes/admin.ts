@@ -46,51 +46,51 @@ admin.get('/', async (c) => {
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        body { font-family: sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 12px; font-size: 13px; }
         .container { max-width: 1400px; margin: 0 auto; }
-        .card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .tabs button { padding: 12px 24px; margin-right: 8px; border: none; background: #e2e8f0; cursor: pointer; border-radius: 8px 8px 0 0; }
+        .card { background: white; border-radius: 8px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .tabs button { padding: 8px 16px; margin-right: 6px; border: none; background: #e2e8f0; cursor: pointer; border-radius: 6px 6px 0 0; font-size: 13px; }
         .tabs button.active { background: white; font-weight: 600; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #e2e8f0; }
         th { background: #f7fafc; font-weight: 600; }
-        input[type="number"] { padding: 8px; border: 1px solid #cbd5e0; border-radius: 6px; width: 80px; }
-        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        input[type="number"] { padding: 6px; border: 1px solid #cbd5e0; border-radius: 4px; width: 70px; font-size: 13px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .btn-primary { background: #667eea; color: white; }
         .btn-primary:hover { background: #5568d3; }
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; }
-        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 16px 0; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 16px; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px; border-radius: 8px; }
+        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 12px 0; }
         details summary { list-style: none; }
         details summary::-webkit-details-marker { display: none; }
         details summary:hover { opacity: 0.9; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3); }
-        details[open] summary { border-radius: 8px 8px 0 0; margin-bottom: 16px; }
-        .result-item { padding: 16px; background: #f7fafc; border-radius: 8px; }
-        .result-label { font-size: 14px; color: #64748b; margin-bottom: 4px; }
-        .result-value { font-size: 24px; font-weight: 700; color: #1e293b; }
+        details[open] summary { border-radius: 8px 8px 0 0; margin-bottom: 12px; }
+        .result-item { padding: 12px; background: #f7fafc; border-radius: 6px; }
+        .result-label { font-size: 11px; color: #64748b; margin-bottom: 3px; }
+        .result-value { font-size: 18px; font-weight: 700; color: #1e293b; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
-            <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 24px; color: #1e293b;">
+            <h1 style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1e293b;">
                 <i class="fas fa-seedling" style="color: #667eea;"></i> METI Admin - HappyTree Simulator
             </h1>
             
             <div class="stats">
                 <div class="stat-card">
-                    <div style="font-size: 14px; opacity: 0.9;">총 가입자</div>
-                    <div style="font-size: 32px; font-weight: 700;">${totalUsers}</div>
+                    <div style="font-size: 11px; opacity: 0.9;">총 가입자</div>
+                    <div style="font-size: 22px; font-weight: 700;">${totalUsers}</div>
                 </div>
                 <div class="stat-card">
-                    <div style="font-size: 14px; opacity: 0.9;">총 명함</div>
-                    <div style="font-size: 32px; font-weight: 700;">${totalCards}</div>
+                    <div style="font-size: 11px; opacity: 0.9;">총 명함</div>
+                    <div style="font-size: 22px; font-weight: 700;">${totalCards}</div>
                 </div>
                 <div class="stat-card">
-                    <div style="font-size: 14px; opacity: 0.9;">오늘 가입</div>
-                    <div style="font-size: 32px; font-weight: 700;">${todayUsers}</div>
+                    <div style="font-size: 11px; opacity: 0.9;">오늘 가입</div>
+                    <div style="font-size: 22px; font-weight: 700;">${todayUsers}</div>
                 </div>
             </div>
         </div>
@@ -107,30 +107,30 @@ admin.get('/', async (c) => {
               
               return `
                 <div class="tab-content ${farmId === 1 ? 'active' : ''}" id="tab${farmId}">
-                  <h3 style="margin: 20px 0 12px 0; font-weight: 600;">⚙️ 기본 설정</h3>
-                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                  <h3 style="margin: 14px 0 10px 0; font-weight: 600; font-size: 14px;">⚙️ 기본 설정</h3>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 14px;">
                     <div>
-                      <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">입장 인원</label>
+                      <label style="display: block; margin-bottom: 3px; font-size: 12px; font-weight: 500;">입장 인원</label>
                       <input type="number" id="f${farmId}_users" value="100" min="1" style="width: 100%;">
                     </div>
                     <div>
-                      <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">화분 개수</label>
+                      <label style="display: block; margin-bottom: 3px; font-size: 12px; font-weight: 500;">화분 개수</label>
                       <input type="number" id="f${farmId}_pots" value="3" min="1" style="width: 100%;">
                     </div>
                     <div>
-                      <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">별 가격 ($)</label>
+                      <label style="display: block; margin-bottom: 3px; font-size: 12px; font-weight: 500;">별 가격 ($)</label>
                       <input type="number" id="f${farmId}_star_price" value="2" min="0" step="0.01" style="width: 100%;">
                     </div>
                     <div>
-                      <label style="display: block; margin-bottom: 4px; font-size: 14px; font-weight: 500;">초기 하트</label>
+                      <label style="display: block; margin-bottom: 3px; font-size: 12px; font-weight: 500;">초기 하트</label>
                       <input type="number" id="f${farmId}_initial_hearts" value="300000" min="0" style="width: 100%;">
                     </div>
                   </div>
 
-                  <details style="margin: 20px 0;">
-                    <summary style="cursor: pointer; font-weight: 600; padding: 14px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 8px; display: flex; align-items: center; gap: 8px; user-select: none; transition: all 0.2s;">
-                      <span style="font-size: 18px;">📊</span>
-                      <span style="font-size: 15px;">레벨 설정 (펼치기/접기)</span>
+                  <details style="margin: 14px 0;">
+                    <summary style="cursor: pointer; font-weight: 600; padding: 10px 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 6px; display: flex; align-items: center; gap: 6px; user-select: none; transition: all 0.2s; font-size: 13px;">
+                      <span style="font-size: 14px;">📊</span>
+                      <span>레벨 설정 (펼치기/접기)</span>
                     </summary>
                     <table style="margin-top: 16px;">
                       <thead>
@@ -278,7 +278,7 @@ function calculate(farmId) {
     const user1ROI = user1Investment > 0 ? ((user1NetProfit / user1Investment) * 100).toFixed(2) : '0.00';
     const user1MaxLevel = Math.max(...user1.pots.map(p => p.currentLevel));
     
-    let levelStatsHTML = '<h3 style="margin-top: 20px; font-weight: 600;">📊 레벨별 달성 현황</h3><table><thead><tr><th>레벨</th><th>달성자 수</th><th>도달 화분 수</th><th>필요 별</th><th>필요 하트허용치</th><th>보상 코인</th><th>보상 하트</th><th>1명당 투자</th><th>1명당 수익</th><th>1명당 순익</th><th>1명당 ROI</th></tr></thead><tbody>';
+    let levelStatsHTML = '<h3 style="margin-top: 14px; font-weight: 600; font-size: 14px;">📊 레벨별 달성 현황</h3><table><thead><tr><th>레벨</th><th>달성자 수</th><th>도달 화분 수</th><th>필요 별</th><th>필요 하트허용치</th><th>보상 코인</th><th>보상 하트</th><th>1명당 투자</th><th>1명당 수익</th><th>1명당 순익</th><th>1명당 ROI</th></tr></thead><tbody>';
     
     for (let level = 1; level <= 8; level++) {
         const achievers = new Set();
@@ -336,7 +336,7 @@ function calculate(farmId) {
     levelStatsHTML += '</tbody></table>';
     
     const resultsHTML = \`
-        <h3 style="margin-top: 20px; font-weight: 600;">💰 플랫폼 수익</h3>
+        <h3 style="margin-top: 14px; font-weight: 600; font-size: 14px;">💰 플랫폼 수익</h3>
         <div class="result-grid">
             <div class="result-item"><div class="result-label">별 판매</div><div class="result-value">\${totalStarsSold.toLocaleString()}</div></div>
             <div class="result-item"><div class="result-label">별 수익</div><div class="result-value">$\${starRevenue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div></div>
@@ -344,7 +344,7 @@ function calculate(farmId) {
             <div class="result-item"><div class="result-label">순수익</div><div class="result-value">$\${netProfit.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div></div>
             <div class="result-item"><div class="result-label">수익률</div><div class="result-value">\${profitRate}%</div></div>
         </div>
-        <h3 style="margin-top: 20px; font-weight: 600;">👤 1번 사용자</h3>
+        <h3 style="margin-top: 14px; font-weight: 600; font-size: 14px;">👤 1번 사용자</h3>
         <div class="result-grid">
             <div class="result-item"><div class="result-label">화분 수</div><div class="result-value">\${pots}</div></div>
             <div class="result-item"><div class="result-label">최고 레벨</div><div class="result-value">Lv. \${user1MaxLevel}</div></div>
