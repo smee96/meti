@@ -142,19 +142,26 @@ admin.get('/', async (c) => {
                           <th>보상 하트</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody id="levelTableBody${farmId}">
                         ${Array.from({ length: 8 }, (_, i) => i + 1).map(level => {
                           const levelData = levels.find((l: any) => l.level === level);
                           return `
                             <tr>
                               <td>Lv. ${level}</td>
-                              <td><input type="number" name="f${farmId}_l${level}_hearts" value="${levelData?.hearts_required || 0}" min="0"></td>
-                              <td><input type="number" name="f${farmId}_l${level}_stars" value="${levelData?.stars || 0}" min="0"></td>
-                              <td><input type="number" name="f${farmId}_l${level}_coins" value="${levelData?.coins || 0}" min="0"></td>
-                              <td><input type="number" name="f${farmId}_l${level}_reward" value="${levelData?.hearts_reward || 0}" min="0"></td>
+                              <td><input type="number" class="hearts-input" name="f${farmId}_l${level}_hearts" value="${levelData?.hearts_required || 0}" min="0" onchange="updateSum(${farmId})"></td>
+                              <td><input type="number" class="stars-input" name="f${farmId}_l${level}_stars" value="${levelData?.stars || 0}" min="0" onchange="updateSum(${farmId})"></td>
+                              <td><input type="number" class="coins-input" name="f${farmId}_l${level}_coins" value="${levelData?.coins || 0}" min="0" onchange="updateSum(${farmId})"></td>
+                              <td><input type="number" class="reward-input" name="f${farmId}_l${level}_reward" value="${levelData?.hearts_reward || 0}" min="0" onchange="updateSum(${farmId})"></td>
                             </tr>
                           `;
                         }).join('')}
+                        <tr style="background: #f0f9ff; font-weight: 700; border-top: 2px solid #667eea;">
+                          <td style="color: #667eea;">합계</td>
+                          <td id="sumHearts${farmId}" style="color: #667eea;">0</td>
+                          <td id="sumStars${farmId}" style="color: #667eea;">0</td>
+                          <td id="sumCoins${farmId}" style="color: #667eea;">0</td>
+                          <td id="sumReward${farmId}" style="color: #667eea;">0</td>
+                        </tr>
                       </tbody>
                     </table>
                   </details>
@@ -183,6 +190,31 @@ function switchTab(farmId) {
     event.target.classList.add('active');
     document.getElementById(\`tab\${farmId}\`).classList.add('active');
 }
+
+function updateSum(farmId) {
+    const tbody = document.getElementById(\`levelTableBody\${farmId}\`);
+    const heartsInputs = tbody.querySelectorAll('.hearts-input');
+    const starsInputs = tbody.querySelectorAll('.stars-input');
+    const coinsInputs = tbody.querySelectorAll('.coins-input');
+    const rewardInputs = tbody.querySelectorAll('.reward-input');
+    
+    let sumHearts = 0, sumStars = 0, sumCoins = 0, sumReward = 0;
+    
+    heartsInputs.forEach(input => sumHearts += parseInt(input.value) || 0);
+    starsInputs.forEach(input => sumStars += parseInt(input.value) || 0);
+    coinsInputs.forEach(input => sumCoins += parseInt(input.value) || 0);
+    rewardInputs.forEach(input => sumReward += parseInt(input.value) || 0);
+    
+    document.getElementById(\`sumHearts\${farmId}\`).textContent = sumHearts.toLocaleString();
+    document.getElementById(\`sumStars\${farmId}\`).textContent = sumStars.toLocaleString();
+    document.getElementById(\`sumCoins\${farmId}\`).textContent = sumCoins.toLocaleString();
+    document.getElementById(\`sumReward\${farmId}\`).textContent = sumReward.toLocaleString();
+}
+
+// 페이지 로드 시 모든 농장의 합계 초기화
+window.addEventListener('DOMContentLoaded', () => {
+    [1, 2, 3, 4].forEach(farmId => updateSum(farmId));
+});
 
 function getDescendants(nodeIndex, totalNodes) {
     const descendants = [];
