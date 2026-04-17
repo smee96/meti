@@ -1,0 +1,90 @@
+테이블명,컬럼명,타입,제약조건,기본값,설명
+users,id,TEXT,PRIMARY KEY,-,사용자 ID
+users,email,TEXT,UNIQUE NOT NULL,-,이메일 주소
+users,name,TEXT,NOT NULL,-,사용자 이름
+users,profile_image,TEXT,-,-,프로필 이미지 URL
+users,created_at,DATETIME,-,CURRENT_TIMESTAMP,계정 생성일
+users,last_active_at,DATETIME,-,CURRENT_TIMESTAMP,마지막 활동일
+users,settings,TEXT,-,"{""language"":""ko"",""theme"":""light"",""notifications"":{...}}",설정 (언어/테마/알림)
+users,cards_sent,INTEGER,-,0,보낸 명함 수
+users,cards_received,INTEGER,-,0,받은 명함 수
+users,total_views,INTEGER,-,0,총 조회수
+users,password,TEXT,-,-,비밀번호 (해시)
+cards,id,TEXT,PRIMARY KEY,-,명함 ID
+cards,user_id,TEXT,FOREIGN KEY (users.id) ON DELETE CASCADE,-,소유자 ID
+cards,name,TEXT,NOT NULL,-,이름
+cards,title,TEXT,-,-,직함
+cards,company,TEXT,-,-,회사명
+cards,company_logo,TEXT,-,-,회사 로고 URL
+cards,bio,TEXT,-,-,소개
+cards,contacts,TEXT,-,'[]',연락처 JSON 배열
+cards,social_links,TEXT,-,'[]',소셜 링크 JSON 배열
+cards,design,TEXT,-,"{""theme"":""clean-white"",""backgroundColor"":""#ffffff"",...}",디자인 설정
+cards,is_default,INTEGER,-,0,기본 명함 여부
+cards,is_public,INTEGER,-,1,공개 여부
+cards,share_url,TEXT,NOT NULL,-,공유 URL
+cards,qr_code,TEXT,-,-,QR 코드
+cards,created_at,DATETIME,-,CURRENT_TIMESTAMP,생성일
+cards,updated_at,DATETIME,-,CURRENT_TIMESTAMP,수정일
+cards,views,INTEGER,-,0,조회수
+cards,shares,INTEGER,-,0,공유수
+cards,saves,INTEGER,-,0,저장수
+cards,last_viewed_at,DATETIME,-,-,마지막 조회일
+cards,theme,TEXT,-,'deep-navy',테마
+cards,short_id,TEXT,-,-,짧은 ID
+cards,headline,TEXT,-,-,헤드라인
+cards,phone,TEXT,-,-,전화번호
+cards,email,TEXT,-,-,이메일
+cards,show_phone,INTEGER,-,0,전화번호 표시 여부
+cards,show_email,INTEGER,-,0,이메일 표시 여부
+cards,status,TEXT,-,'public',상태
+cards,links,TEXT,-,'[]',링크 JSON 배열
+cards,avatar,TEXT,-,-,아바타 URL
+card_wallet,id,TEXT,PRIMARY KEY,-,지갑 항목 ID
+card_wallet,owner_id,TEXT,FOREIGN KEY (users.id) ON DELETE CASCADE,-,소유자 ID
+card_wallet,card_id,TEXT,FOREIGN KEY (cards.id) ON DELETE CASCADE,-,명함 ID
+card_wallet,saved_at,DATETIME,-,CURRENT_TIMESTAMP,저장일
+card_wallet,memo,TEXT,-,-,메모
+card_wallet,tags,TEXT,-,'[]',태그 JSON 배열
+card_wallet,group_id,TEXT,-,-,그룹 ID
+card_wallet,is_favorite,INTEGER,-,0,즐겨찾기 여부
+card_wallet,UNIQUE_CONSTRAINT,UNIQUE(owner_id + card_id),-,-,소유자와 명함 조합 유일성
+wallet_groups,id,TEXT,PRIMARY KEY,-,그룹 ID
+wallet_groups,owner_id,TEXT,FOREIGN KEY (users.id) ON DELETE CASCADE,-,소유자 ID
+wallet_groups,name,TEXT,NOT NULL,-,그룹명
+wallet_groups,color,TEXT,-,'#1A73E8',그룹 색상
+wallet_groups,order_index,INTEGER,-,0,정렬 순서
+wallet_groups,created_at,DATETIME,-,CURRENT_TIMESTAMP,생성일
+card_view_events,id,TEXT,PRIMARY KEY,lower(hex(randomblob(16))),이벤트 ID
+card_view_events,card_id,TEXT,FOREIGN KEY (cards.id) ON DELETE CASCADE,-,명함 ID
+card_view_events,viewed_at,DATETIME,-,CURRENT_TIMESTAMP,조회 시각
+card_view_events,source,TEXT,-,-,유입 경로
+card_rewards,id,INTEGER,PRIMARY KEY AUTOINCREMENT,-,보상 ID
+card_rewards,user_id,TEXT,FOREIGN KEY (users.id) ON DELETE CASCADE,-,사용자 ID
+card_rewards,event_type,TEXT,NOT NULL,-,이벤트 타입
+card_rewards,reward_type,TEXT,NOT NULL,-,보상 타입
+card_rewards,amount,INTEGER,NOT NULL,-,보상 수량
+card_rewards,card_id,TEXT,FOREIGN KEY (cards.id) ON DELETE SET NULL,-,관련 명함 ID
+card_rewards,created_at,DATETIME,-,CURRENT_TIMESTAMP,생성일
+game_user_data,user_id,TEXT,PRIMARY KEY & FOREIGN KEY (users.id) ON DELETE CASCADE,-,사용자 ID
+game_user_data,hearts_balance,INTEGER,-,300000,하트 잔액
+game_user_data,heart_allowance,INTEGER,-,1,하트 허용치
+game_user_data,stars_purchased,INTEGER,-,0,구매한 별 수
+game_user_data,coins_earned,INTEGER,-,0,획득 코인
+game_user_data,coins_withdrawn,INTEGER,-,0,출금 코인
+game_user_data,farm_unlocked,TEXT,-,"{""1"":true,""2"":false,""3"":false,""4"":false}",농장 잠금해제 상태
+game_user_data,test_mode,INTEGER,-,0,테스트 모드 여부
+game_user_data,created_at,DATETIME,-,CURRENT_TIMESTAMP,생성일
+game_user_data,updated_at,DATETIME,-,CURRENT_TIMESTAMP,수정일
+game_pots,id,INTEGER,PRIMARY KEY AUTOINCREMENT,-,화분 ID
+game_pots,user_id,TEXT,FOREIGN KEY (users.id) ON DELETE CASCADE,-,소유자 ID
+game_pots,farm_id,INTEGER,NOT NULL,-,농장 번호 (1-4)
+game_pots,level,INTEGER,-,0,현재 레벨 (0-8)
+game_pots,is_in_warehouse,INTEGER,-,0,창고 보관 여부
+game_pots,created_at,DATETIME,-,CURRENT_TIMESTAMP,생성일
+game_farm_levels,farm_id,INTEGER,PRIMARY KEY (복합),-,농장 번호 (1-4)
+game_farm_levels,level,INTEGER,PRIMARY KEY (복합),-,레벨 (1-8)
+game_farm_levels,hearts_required,INTEGER,-,0,필요 하트 수
+game_farm_levels,stars,INTEGER,-,0,필요 별 수
+game_farm_levels,coins,INTEGER,-,0,보상 코인
+game_farm_levels,hearts_reward,INTEGER,-,0,보상 하트
