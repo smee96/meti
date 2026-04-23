@@ -42,7 +42,7 @@ function getLoginHTML() {
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #0A2260 0%, #1A3368 100%);
+            background: #FAFAF9;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -51,12 +51,12 @@ function getLoginHTML() {
         }
 
         .auth-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border-radius: 24px;
             padding: 48px;
             max-width: 440px;
             width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             position: relative;
         }
         
@@ -91,7 +91,7 @@ function getLoginHTML() {
             font-family: 'Montserrat', sans-serif;
             font-size: 36px;
             letter-spacing: 8px;
-            color: #0A2260;
+            color: #1e3a8a;
             text-align: center;
             margin-bottom: 12px;
         }
@@ -204,7 +204,7 @@ function getLoginHTML() {
         .btn-primary {
             width: 100%;
             padding: 16px;
-            background: #0A2260;
+            background: #1e3a8a;
             color: white;
             border: none;
             border-radius: 12px;
@@ -220,9 +220,9 @@ function getLoginHTML() {
         }
 
         .btn-primary:hover {
-            background: #1A3368;
+            background: #1e40af;
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(10, 34, 96, 0.3);
+            box-shadow: 0 8px 16px rgba(30, 58, 138, 0.3);
         }
 
         .btn-primary:disabled {
@@ -548,7 +548,7 @@ function getRegisterHTML() {
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #0A2260 0%, #1A3368 100%);
+            background: #FAFAF9;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -557,12 +557,12 @@ function getRegisterHTML() {
         }
 
         .auth-container {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border-radius: 24px;
             padding: 48px;
             max-width: 440px;
             width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             position: relative;
         }
         
@@ -597,7 +597,7 @@ function getRegisterHTML() {
             font-family: 'Montserrat', sans-serif;
             font-size: 36px;
             letter-spacing: 8px;
-            color: #0A2260;
+            color: #1e3a8a;
             text-align: center;
             margin-bottom: 12px;
         }
@@ -748,7 +748,7 @@ function getRegisterHTML() {
         .btn-primary {
             width: 100%;
             padding: 16px;
-            background: #0A2260;
+            background: #1e3a8a;
             color: white;
             border: none;
             border-radius: 12px;
@@ -764,9 +764,9 @@ function getRegisterHTML() {
         }
 
         .btn-primary:hover {
-            background: #1A3368;
+            background: #1e40af;
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(10, 34, 96, 0.3);
+            box-shadow: 0 8px 16px rgba(30, 58, 138, 0.3);
         }
 
         .btn-primary:disabled {

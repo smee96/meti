@@ -38,14 +38,14 @@ function getMyCardsHTML() {
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #0A2260 0%, #1A3368 100%);
+            background: #FAFAF9;
             min-height: 100vh;
-            color: white;
+            color: #111827;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
             padding: 20px 40px;
             min-height: 80px;
             display: flex;
@@ -54,7 +54,7 @@ function getMyCardsHTML() {
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .header-left {
@@ -68,7 +68,7 @@ function getMyCardsHTML() {
             font-weight: 700;
             font-size: 28px;
             letter-spacing: 8px;
-            color: white;
+            color: #1e3a8a;
             cursor: pointer;
         }
 
@@ -138,7 +138,7 @@ function getMyCardsHTML() {
         }
 
         .nav-link {
-            color: rgba(255, 255, 255, 0.7);
+            color: #6B7280;
             text-decoration: none;
             font-size: 15px;
             transition: color 0.3s;
@@ -146,7 +146,7 @@ function getMyCardsHTML() {
 
         .nav-link:hover,
         .nav-link.active {
-            color: white;
+            color: #1e3a8a;
         }
 
         .header-right {
@@ -160,21 +160,22 @@ function getMyCardsHTML() {
             align-items: center;
             gap: 12px;
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .user-info:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: #E5E7EB;
         }
 
         .user-avatar {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: #1e3a8a;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -291,23 +292,24 @@ function getMyCardsHTML() {
         }
 
         .btn-primary {
-            background: white;
-            color: #0A2260;
+            background: #1e3a8a;
+            color: white;
         }
 
         .btn-primary:hover {
+            background: #1e40af;
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 16px rgba(30, 58, 138, 0.3);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: white;
+            color: #1e3a8a;
+            border: 2px solid #1e3a8a;
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: #F9FAFB;
         }
 
         .cards-grid {
@@ -318,18 +320,19 @@ function getMyCardsHTML() {
         }
 
         .card-item {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border-radius: 20px;
             padding: 24px;
-            color: #333;
+            color: #111827;
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         }
 
         .card-item:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
         }
 
         .card-theme-bar {
