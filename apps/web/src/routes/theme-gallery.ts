@@ -467,7 +467,7 @@ themeGallery.get('/', (c) => {
         
         <div class="theme-grid">
             ${themes.map(theme => {
-                // 밝기 계산 (0-255 기준)
+                // 밝기 계산 (0-255 기준) - 더 정확한 계산
                 const getBrightness = (hex) => {
                     const r = parseInt(hex.slice(1, 3), 16);
                     const g = parseInt(hex.slice(3, 5), 16);
@@ -478,38 +478,41 @@ themeGallery.get('/', (c) => {
                 const primaryBrightness = getBrightness(theme.primary);
                 const secondaryBrightness = getBrightness(theme.secondary);
                 
-                // 더 밝은 색을 배경으로, 더 어두운 색을 텍스트로
-                const isLightPrimary = primaryBrightness > 128;
-                const isLightSecondary = secondaryBrightness > 128;
+                // 명함 배경 = 사용자가 제공한 두 컬러 조합 (primary + secondary)
+                // 사선으로 나눠서 두 컬러 모두 배경으로 사용
+                const mainBg = theme.primary;  // 왼쪽/상단 메인 배경
+                const diagonalBg = theme.secondary;  // 오른쪽/하단 사선 배경
                 
-                let cardBg, textColor, accentColor, diagonalColor;
-                
-                if (isLightPrimary && isLightSecondary) {
-                    // 둘 다 밝으면: 더 밝은 것을 배경, 어두운 텍스트 사용
-                    cardBg = primaryBrightness > secondaryBrightness ? theme.primary : theme.secondary;
+                // 텍스트 컬러 = 배경 밝기에 따라 자동 선택 (흰색/검정/다크그레이)
+                // primary 배경의 밝기를 기준으로 텍스트 색상 결정
+                let textColor;
+                if (primaryBrightness > 160) {
+                    // 매우 밝은 배경 → 진한 검정
+                    textColor = '#1A202C';
+                } else if (primaryBrightness > 100) {
+                    // 중간 밝기 → 다크 그레이
                     textColor = '#2D3748';
-                    accentColor = primaryBrightness > secondaryBrightness ? theme.secondary : theme.primary;
-                    diagonalColor = accentColor;
-                } else if (!isLightPrimary && !isLightSecondary) {
-                    // 둘 다 어두우면: 화이트 배경, 더 어두운 것을 텍스트로
-                    cardBg = '#FFFFFF';
-                    textColor = theme.primary;
-                    accentColor = theme.secondary;
-                    diagonalColor = accentColor;
                 } else {
-                    // 하나만 밝으면: 밝은 것을 배경, 어두운 것을 텍스트로
-                    cardBg = isLightPrimary ? theme.primary : theme.secondary;
-                    textColor = isLightPrimary ? theme.secondary : theme.primary;
-                    accentColor = textColor;
-                    diagonalColor = isLightPrimary ? theme.secondary : theme.primary;
+                    // 어두운 배경 → 흰색
+                    textColor = '#FFFFFF';
+                }
+                
+                // 액센트 컬러 (구분선, 아이콘) = 텍스트와 대비되는 색
+                let accentColor;
+                if (primaryBrightness > 128) {
+                    // 밝은 배경이면 secondary를 액센트로 (또는 어두운 회색)
+                    accentColor = secondaryBrightness < 100 ? theme.secondary : '#4A5568';
+                } else {
+                    // 어두운 배경이면 흰색이나 밝은 secondary
+                    accentColor = secondaryBrightness > 150 ? theme.secondary : '#E2E8F0';
                 }
                 
                 return `
                 <div class="theme-card" onclick="selectTheme('${theme.id}')">
                     <div class="theme-preview">
-                        <div class="card-content-preview" style="background: ${cardBg};">
+                        <div class="card-content-preview" style="background: ${mainBg};">
                             <div class="diagonal-divider">
-                                <div style="background: ${diagonalColor}; opacity: 0.15; position: absolute; bottom: 0; right: 0; width: 60%; height: 60%; clip-path: polygon(100% 0, 100% 100%, 0 100%);"></div>
+                                <div style="background: ${diagonalBg}; opacity: 0.25; position: absolute; bottom: 0; right: 0; width: 60%; height: 60%; clip-path: polygon(100% 0, 100% 100%, 0 100%);"></div>
                             </div>
                             <div class="content-wrapper">
                                 <div>
