@@ -3,67 +3,112 @@ import type { Env } from '../types';
 
 const themeGallery = new Hono<{ Bindings: Env }>();
 
-// Theme configurations
+// Theme configurations with dual color scheme
 const themes = [
   {
-    id: 'deep-navy',
-    name: 'Deep Navy',
-    color: '#0A2260',
-    description: '신뢰감 있는 클래식 네이비'
+    id: 'midnight-cream',
+    name: 'Midnight Cream',
+    primary: '#01112B',
+    secondary: '#F3EDE0',
+    description: '고급스러운 미드나잇 블루와 크림의 조화'
   },
   {
-    id: 'midnight-teal',
-    name: 'Midnight Teal',
-    color: '#0D3D4D',
-    description: '세련된 청록색'
+    id: 'neon-dark',
+    name: 'Neon Dark',
+    primary: '#222222',
+    secondary: '#89E900',
+    description: '강렬한 네온 그린과 다크의 대비'
   },
   {
-    id: 'forest-deep',
-    name: 'Forest Deep',
-    color: '#1A3D2E',
-    description: '자연의 깊은 초록'
+    id: 'sky-blue',
+    name: 'Sky Blue',
+    primary: '#EDF1F5',
+    secondary: '#0145F2',
+    description: '맑은 하늘과 딥 블루의 조화'
   },
   {
-    id: 'royal-burgundy',
-    name: 'Royal Burgundy',
-    color: '#4A1E2E',
-    description: '고급스러운 버건디'
+    id: 'red-passion',
+    name: 'Red Passion',
+    primary: '#000F08',
+    secondary: '#FB3640',
+    description: '정열적인 레드와 다크 그린의 만남'
   },
   {
-    id: 'charcoal-dark',
-    name: 'Charcoal Dark',
-    color: '#1C1C1E',
-    description: '모던한 차콜'
+    id: 'lavender-forest',
+    name: 'Lavender Forest',
+    primary: '#BBBFEC',
+    secondary: '#06530B',
+    description: '라벤더와 깊은 숲의 조화'
   },
   {
-    id: 'slate-blue',
-    name: 'Slate Blue',
-    color: '#2C3E50',
-    description: '중후한 슬레이트 블루'
+    id: 'lime-forest',
+    name: 'Lime Forest',
+    primary: '#CCDA47',
+    secondary: '#0A3625',
+    description: '라임 그린과 포레스트의 자연스러움'
   },
   {
-    id: 'deep-purple',
-    name: 'Deep Purple',
-    color: '#3D2857',
-    description: '창의적인 딥 퍼플'
+    id: 'sunset-navy',
+    name: 'Sunset Navy',
+    primary: '#FD802E',
+    secondary: '#233D4C',
+    description: '석양 오렌지와 네이비의 세련됨'
   },
   {
-    id: 'warm-brown',
-    name: 'Warm Brown',
-    color: '#3E2723',
-    description: '따뜻한 브라운'
+    id: 'copper-charcoal',
+    name: 'Copper Charcoal',
+    primary: '#2B2B2B',
+    secondary: '#C66B3D',
+    description: '차콜과 구리빛의 모던함'
   },
   {
-    id: 'olive-night',
-    name: 'Olive Night',
-    color: '#3D4A2C',
-    description: '차분한 올리브'
+    id: 'golden-cream',
+    name: 'Golden Cream',
+    primary: '#574C00',
+    secondary: '#FEF9DB',
+    description: '골드와 크림의 우아함'
   },
   {
-    id: 'sunset-orange',
-    name: 'Sunset Orange',
-    color: '#8B4513',
-    description: '따뜻한 석양'
+    id: 'ruby-beige',
+    name: 'Ruby Beige',
+    primary: '#B40023',
+    secondary: '#FCF0D6',
+    description: '루비 레드와 베이지의 고급스러움'
+  },
+  {
+    id: 'royal-grey',
+    name: 'Royal Grey',
+    primary: '#EBEBEB',
+    secondary: '#10367D',
+    description: '로얄 블루와 라이트 그레이의 조화'
+  },
+  {
+    id: 'coral-cream',
+    name: 'Coral Cream',
+    primary: '#EA2E00',
+    secondary: '#F0E7D6',
+    description: '코랄 레드와 크림의 따뜻함'
+  },
+  {
+    id: 'sage-ivory',
+    name: 'Sage Ivory',
+    primary: '#A8B89F',
+    secondary: '#F4EFE6',
+    description: '세이지 그린과 아이보리의 자연스러움'
+  },
+  {
+    id: 'olive-gold',
+    name: 'Olive Gold',
+    primary: '#887114',
+    secondary: '#06530B',
+    description: '올리브 골드와 딥 그린의 클래식함'
+  },
+  {
+    id: 'purple-pink',
+    name: 'Purple Pink',
+    primary: '#2A234F',
+    secondary: '#FFB3C3',
+    description: '퍼플과 핑크의 부드러움'
   }
 ];
 
@@ -76,7 +121,7 @@ themeGallery.get('/', (c) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>METI - 테마 갤러리</title>
     <link rel="preload" href="/static/fonts/Montserrat-Bold.woff2" as="font" type="font/woff2" crossorigin>
-    <meta name="description" content="METI 디지털 명함의 10가지 컬러 테마를 둘러보세요">
+    <meta name="description" content="METI 디지털 명함의 15가지 컬러 조합을 둘러보세요">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -105,8 +150,8 @@ themeGallery.get('/', (c) => {
       
       body {
         font-family: 'Noto Sans KR', sans-serif;
-        background: linear-gradient(135deg, #0A2260 0%, #0D1B3E 100%);
-        color: #fff;
+        background: #FAFAF9;
+        color: #111827;
         min-height: 100vh;
         padding: 40px 20px;
       }
@@ -120,9 +165,9 @@ themeGallery.get('/', (c) => {
       }
       
       .nav-btn {
-        background: rgba(255,255,255,0.1);
-        border: 1px solid rgba(255,255,255,0.2);
-        color: #fff;
+        background: white;
+        border: 2px solid #1e3a8a;
+        color: #1e3a8a;
         padding: 12px 20px;
         border-radius: 12px;
         font-size: 14px;
@@ -130,12 +175,14 @@ themeGallery.get('/', (c) => {
         cursor: pointer;
         transition: all 0.2s;
         text-decoration: none;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       }
       
       .nav-btn:hover {
-        background: rgba(255,255,255,0.2);
+        background: #1e3a8a;
+        color: white;
         transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(30, 58, 138, 0.2);
       }
       
       .container {
@@ -154,17 +201,19 @@ themeGallery.get('/', (c) => {
         letter-spacing: 20px;
         padding-left: 20px;
         margin-bottom: 20px;
+        color: #1e3a8a;
       }
       
       .subtitle {
         font-size: 24px;
-        font-weight: 300;
+        font-weight: 600;
         margin-bottom: 16px;
+        color: #111827;
       }
       
       .description {
         font-size: 16px;
-        opacity: 0.8;
+        color: #6B7280;
         line-height: 1.7;
       }
       
@@ -173,111 +222,111 @@ themeGallery.get('/', (c) => {
         font-weight: 600;
         margin-bottom: 24px;
         text-align: center;
+        color: #111827;
       }
       
       .section-subtitle {
         text-align: center;
-        opacity: 0.7;
+        color: #6B7280;
         margin-bottom: 40px;
         font-size: 15px;
       }
       
       .theme-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 24px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 32px;
+        margin-bottom: 60px;
       }
       
       .theme-card {
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 16px;
+        background: white;
+        border-radius: 20px;
         overflow: hidden;
         transition: all 0.3s;
         cursor: pointer;
         text-decoration: none;
-        color: #fff;
         display: block;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       }
       
       .theme-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
       }
       
       .theme-preview {
+        height: 240px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: #FEFEFE;
+      }
+      
+      .card-content-preview {
         width: 100%;
-        height: 160px;
+        padding: 24px;
+        border-radius: 12px;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
       }
       
-      .theme-bg {
-        width: 100%;
-        height: 100%;
-        transition: transform 0.3s;
-      }
-      
-      .theme-card:hover .theme-bg {
-        transform: scale(1.05);
-      }
-      
-      .mini-card {
+      .theme-bar {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 160px;
-        height: 95px;
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.2);
-        border-radius: 10px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        padding: 12px;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
       }
       
-      .mini-card-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+      .theme-bar-primary {
+        flex: 6;
       }
       
-      .mini-logo {
-        font-family: 'Montserrat', sans-serif;
-        font-size: 8px;
-        letter-spacing: 3px;
-        padding-left: 3px;
-        color: #fff;
-        opacity: 0.7;
+      .theme-bar-secondary {
+        flex: 4;
       }
       
-      .mini-qr {
-        width: 16px;
-        height: 16px;
+      .preview-name {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+        margin-top: 8px;
+      }
+      
+      .preview-title {
+        font-size: 14px;
+        margin-bottom: 16px;
+        opacity: 0.8;
+      }
+      
+      .preview-divider {
+        height: 1px;
+        margin: 12px 0;
         opacity: 0.2;
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 1px;
       }
       
-      .mini-qr span {
-        background: #fff;
-        aspect-ratio: 1;
-      }
-      
-      .mini-name {
+      .preview-contact {
         font-size: 13px;
-        font-weight: 500;
-        color: #fff;
+        line-height: 1.8;
+        opacity: 0.75;
+      }
+      
+      .preview-contact-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         margin-bottom: 4px;
       }
       
-      .mini-title {
-        font-size: 8px;
-        color: rgba(255,255,255,0.6);
+      .preview-icon {
+        width: 16px;
+        text-align: center;
+        font-size: 12px;
       }
       
       .theme-info {
@@ -288,62 +337,77 @@ themeGallery.get('/', (c) => {
         font-size: 18px;
         font-weight: 600;
         margin-bottom: 8px;
+        color: #111827;
       }
       
       .theme-description {
-        font-size: 13px;
-        opacity: 0.7;
+        font-size: 14px;
+        color: #6B7280;
+        margin-bottom: 12px;
         line-height: 1.5;
+      }
+      
+      .color-codes {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      
+      .color-code {
+        font-size: 11px;
+        font-family: 'Courier New', monospace;
+        padding: 4px 8px;
+        background: #F3F4F6;
+        border-radius: 6px;
+        color: #4B5563;
+        font-weight: 500;
       }
       
       .cta-section {
         text-align: center;
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
+        margin-top: 60px;
+        padding: 40px 20px;
+        background: white;
         border-radius: 24px;
-        padding: 60px 40px;
-        margin-top: 80px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       }
       
       .cta-title {
-        font-size: 32px;
-        font-weight: 600;
+        font-size: 28px;
+        font-weight: 700;
         margin-bottom: 16px;
+        color: #111827;
       }
       
       .cta-text {
         font-size: 16px;
-        opacity: 0.8;
+        color: #6B7280;
         margin-bottom: 32px;
       }
       
-      .btn-primary {
-        background: #D4AF37;
-        color: #0A2260;
-        padding: 18px 40px;
-        border-radius: 16px;
-        font-size: 17px;
-        font-weight: 700;
-        cursor: pointer;
-        border: none;
-        transition: all 0.2s;
-        text-decoration: none;
+      .cta-button {
         display: inline-block;
+        padding: 16px 48px;
+        background: #1e3a8a;
+        color: white;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
       }
       
-      .btn-primary:hover {
-        transform: scale(1.05);
-        box-shadow: 0 12px 32px rgba(212,175,55,0.4);
+      .cta-button:hover {
+        background: #1e40af;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(30, 58, 138, 0.4);
       }
       
       @media (max-width: 768px) {
-        body {
-          padding: 24px 16px;
-        }
-        
         .logo {
-          font-size: 40px;
-          letter-spacing: 14px;
+          font-size: 36px;
+          letter-spacing: 12px;
         }
         
         .subtitle {
@@ -352,66 +416,101 @@ themeGallery.get('/', (c) => {
         
         .theme-grid {
           grid-template-columns: 1fr;
+          gap: 24px;
         }
       }
     </style>
 </head>
 <body>
-    <nav class="nav">
-        <a href="/" class="nav-btn"><i class="fas fa-home"></i> 메인</a>
-    </nav>
-    
+    <div class="nav">
+        <a href="/" class="nav-btn">
+            <i class="fas fa-home"></i> 홈으로
+        </a>
+        <a href="/auth/login" class="nav-btn">
+            <i class="fas fa-sign-in-alt"></i> 로그인
+        </a>
+    </div>
+
     <div class="container">
         <div class="header">
-            <div class="logo">METI</div>
-            <div class="subtitle">테마 갤러리</div>
+            <h1 class="logo">METI</h1>
+            <h2 class="subtitle">테마 갤러리</h2>
             <p class="description">
-                10가지 컬러 테마를 자유롭게 선택하여<br>
-                나만의 개성을 담은 디지털 명함을 만들어보세요
+                15가지 컬러 조합으로 나만의 명함을 만들어보세요<br>
+                각 테마는 두 가지 컬러의 조화로 디자인되었습니다
             </p>
         </div>
         
-        <div class="theme-colors">
-            <h2 class="section-title">컬러 테마</h2>
-            <p class="section-subtitle">10가지 컬러 스킴으로 명함을 개성있게 꾸미세요</p>
-            
-            <div class="theme-grid">
-                ${themes.map(theme => `
-                <a href="/c/demo?theme=${theme.id}" class="theme-card">
+        <div class="section-title">컬러 조합 테마</div>
+        <div class="section-subtitle">클릭하여 각 테마를 미리보기 할 수 있습니다</div>
+        
+        <div class="theme-grid">
+            ${themes.map(theme => {
+                // 밝은 배경 컬러인지 확인 (명함 배경용)
+                const isLightPrimary = parseInt(theme.primary.slice(1), 16) > 0xAAAAAA;
+                const isLightSecondary = parseInt(theme.secondary.slice(1), 16) > 0xAAAAAA;
+                
+                // 명함 배경은 더 밝은 색, 텍스트/액센트는 더 어두운 색
+                const cardBg = isLightPrimary ? theme.primary : (isLightSecondary ? theme.secondary : '#FFFFFF');
+                const textColor = isLightPrimary ? (isLightSecondary ? '#333333' : theme.secondary) : theme.primary;
+                const accentColor = isLightPrimary ? theme.secondary : theme.primary;
+                
+                return `
+                <div class="theme-card" onclick="selectTheme('${theme.id}')">
                     <div class="theme-preview">
-                        <div class="theme-bg" style="background: ${theme.color}"></div>
-                        <div class="mini-card">
-                            <div class="mini-card-top">
-                                <div class="mini-logo">METI</div>
-                                <div class="mini-qr">
-                                    ${Array(25).fill('<span></span>').join('')}
-                                </div>
+                        <div class="card-content-preview" style="background: ${cardBg}; color: ${textColor};">
+                            <div class="theme-bar">
+                                <div class="theme-bar-primary" style="background: ${theme.primary}"></div>
+                                <div class="theme-bar-secondary" style="background: ${theme.secondary}"></div>
                             </div>
-                            <div>
-                                <div class="mini-name">홍길동</div>
-                                <div class="mini-title">Product Manager</div>
+                            <div class="preview-name" style="color: ${textColor};">홍길동</div>
+                            <div class="preview-title" style="color: ${textColor};">대표이사 · CEO</div>
+                            <div class="preview-divider" style="background: ${accentColor};"></div>
+                            <div class="preview-contact" style="color: ${textColor};">
+                                <div class="preview-contact-item">
+                                    <span class="preview-icon" style="color: ${accentColor};">📞</span>
+                                    <span>010-1234-5678</span>
+                                </div>
+                                <div class="preview-contact-item">
+                                    <span class="preview-icon" style="color: ${accentColor};">✉️</span>
+                                    <span>hello@meti.app</span>
+                                </div>
+                                <div class="preview-contact-item">
+                                    <span class="preview-icon" style="color: ${accentColor};">🏢</span>
+                                    <span>METI Inc.</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="theme-info">
                         <div class="theme-name">${theme.name}</div>
                         <div class="theme-description">${theme.description}</div>
+                        <div class="color-codes">
+                            <span class="color-code">${theme.primary}</span>
+                            <span class="color-code">${theme.secondary}</span>
+                        </div>
                     </div>
-                </a>
-                `).join('')}
-            </div>
+                </div>
+                `;
+            }).join('')}
         </div>
         
         <div class="cta-section">
-            <div class="cta-title">마음에 드는 테마를 찾으셨나요?</div>
-            <p class="cta-text">
-                지금 바로 무료로 나만의 디지털 명함을 만들어보세요
-            </p>
-            <a href="/auth/login" class="btn-primary">
+            <h3 class="cta-title">마음에 드는 테마를 찾으셨나요?</h3>
+            <p class="cta-text">지금 바로 METI에 가입하고 나만의 디지털 명함을 만들어보세요</p>
+            <a href="/auth/register" class="cta-button">
                 <i class="fas fa-rocket"></i> 무료로 시작하기
             </a>
         </div>
     </div>
+    
+    <script>
+        function selectTheme(themeId) {
+            // 테마 선택 시 로컬스토리지에 저장
+            localStorage.setItem('selectedTheme', themeId);
+            alert('테마가 선택되었습니다! 회원가입 후 적용할 수 있습니다.');
+        }
+    </script>
 </body>
 </html>
   `);
