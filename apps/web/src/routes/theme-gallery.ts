@@ -256,7 +256,7 @@ themeGallery.get('/', (c) => {
       }
       
       .theme-preview {
-        height: 240px;
+        height: 280px;
         position: relative;
         display: flex;
         align-items: center;
@@ -267,66 +267,87 @@ themeGallery.get('/', (c) => {
       
       .card-content-preview {
         width: 100%;
-        padding: 24px;
-        border-radius: 12px;
+        height: 100%;
+        padding: 28px;
+        border-radius: 16px;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-      }
-      
-      .theme-bar {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
         display: flex;
+        flex-direction: column;
+        justify-content: space-between;
       }
       
-      .theme-bar-primary {
-        flex: 6;
+      /* 사선 배경 디바이더 */
+      .diagonal-divider {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
       }
       
-      .theme-bar-secondary {
-        flex: 4;
+      .diagonal-divider::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 60%;
+        height: 60%;
+        clip-path: polygon(100% 0, 100% 100%, 0 100%);
+      }
+      
+      .content-wrapper {
+        position: relative;
+        z-index: 1;
       }
       
       .preview-name {
-        font-size: 20px;
+        font-size: 22px;
         font-weight: 700;
-        margin-bottom: 8px;
-        margin-top: 8px;
+        margin-bottom: 6px;
+        line-height: 1.2;
       }
       
       .preview-title {
-        font-size: 14px;
-        margin-bottom: 16px;
-        opacity: 0.8;
+        font-size: 15px;
+        margin-bottom: 4px;
+        opacity: 0.75;
+        font-weight: 500;
+      }
+      
+      .preview-company {
+        font-size: 13px;
+        margin-bottom: 20px;
+        opacity: 0.6;
       }
       
       .preview-divider {
-        height: 1px;
-        margin: 12px 0;
-        opacity: 0.2;
+        height: 2px;
+        width: 40px;
+        margin: 16px 0;
+        opacity: 0.3;
       }
       
       .preview-contact {
         font-size: 13px;
-        line-height: 1.8;
-        opacity: 0.75;
+        line-height: 1.9;
+        opacity: 0.7;
       }
       
       .preview-contact-item {
         display: flex;
         align-items: center;
-        gap: 8px;
-        margin-bottom: 4px;
+        gap: 10px;
+        margin-bottom: 6px;
       }
       
       .preview-icon {
-        width: 16px;
+        width: 18px;
         text-align: center;
-        font-size: 12px;
+        font-size: 13px;
+        opacity: 0.8;
       }
       
       .theme-info {
@@ -446,38 +467,68 @@ themeGallery.get('/', (c) => {
         
         <div class="theme-grid">
             ${themes.map(theme => {
-                // 밝은 배경 컬러인지 확인 (명함 배경용)
-                const isLightPrimary = parseInt(theme.primary.slice(1), 16) > 0xAAAAAA;
-                const isLightSecondary = parseInt(theme.secondary.slice(1), 16) > 0xAAAAAA;
+                // 밝기 계산 (0-255 기준)
+                const getBrightness = (hex) => {
+                    const r = parseInt(hex.slice(1, 3), 16);
+                    const g = parseInt(hex.slice(3, 5), 16);
+                    const b = parseInt(hex.slice(5, 7), 16);
+                    return (r * 299 + g * 587 + b * 114) / 1000;
+                };
                 
-                // 명함 배경은 더 밝은 색, 텍스트/액센트는 더 어두운 색
-                const cardBg = isLightPrimary ? theme.primary : (isLightSecondary ? theme.secondary : '#FFFFFF');
-                const textColor = isLightPrimary ? (isLightSecondary ? '#333333' : theme.secondary) : theme.primary;
-                const accentColor = isLightPrimary ? theme.secondary : theme.primary;
+                const primaryBrightness = getBrightness(theme.primary);
+                const secondaryBrightness = getBrightness(theme.secondary);
+                
+                // 더 밝은 색을 배경으로, 더 어두운 색을 텍스트로
+                const isLightPrimary = primaryBrightness > 128;
+                const isLightSecondary = secondaryBrightness > 128;
+                
+                let cardBg, textColor, accentColor, diagonalColor;
+                
+                if (isLightPrimary && isLightSecondary) {
+                    // 둘 다 밝으면: 더 밝은 것을 배경, 어두운 텍스트 사용
+                    cardBg = primaryBrightness > secondaryBrightness ? theme.primary : theme.secondary;
+                    textColor = '#2D3748';
+                    accentColor = primaryBrightness > secondaryBrightness ? theme.secondary : theme.primary;
+                    diagonalColor = accentColor;
+                } else if (!isLightPrimary && !isLightSecondary) {
+                    // 둘 다 어두우면: 화이트 배경, 더 어두운 것을 텍스트로
+                    cardBg = '#FFFFFF';
+                    textColor = theme.primary;
+                    accentColor = theme.secondary;
+                    diagonalColor = accentColor;
+                } else {
+                    // 하나만 밝으면: 밝은 것을 배경, 어두운 것을 텍스트로
+                    cardBg = isLightPrimary ? theme.primary : theme.secondary;
+                    textColor = isLightPrimary ? theme.secondary : theme.primary;
+                    accentColor = textColor;
+                    diagonalColor = isLightPrimary ? theme.secondary : theme.primary;
+                }
                 
                 return `
                 <div class="theme-card" onclick="selectTheme('${theme.id}')">
                     <div class="theme-preview">
-                        <div class="card-content-preview" style="background: ${cardBg}; color: ${textColor};">
-                            <div class="theme-bar">
-                                <div class="theme-bar-primary" style="background: ${theme.primary}"></div>
-                                <div class="theme-bar-secondary" style="background: ${theme.secondary}"></div>
+                        <div class="card-content-preview" style="background: ${cardBg};">
+                            <div class="diagonal-divider">
+                                <div style="background: ${diagonalColor}; opacity: 0.15; position: absolute; bottom: 0; right: 0; width: 60%; height: 60%; clip-path: polygon(100% 0, 100% 100%, 0 100%);"></div>
                             </div>
-                            <div class="preview-name" style="color: ${textColor};">홍길동</div>
-                            <div class="preview-title" style="color: ${textColor};">대표이사 · CEO</div>
-                            <div class="preview-divider" style="background: ${accentColor};"></div>
-                            <div class="preview-contact" style="color: ${textColor};">
-                                <div class="preview-contact-item">
-                                    <span class="preview-icon" style="color: ${accentColor};">📞</span>
-                                    <span>010-1234-5678</span>
+                            <div class="content-wrapper">
+                                <div>
+                                    <div class="preview-name" style="color: ${textColor};">홍길동</div>
+                                    <div class="preview-title" style="color: ${textColor};">대표이사 · CEO</div>
+                                    <div class="preview-company" style="color: ${textColor};">METI Inc.</div>
                                 </div>
-                                <div class="preview-contact-item">
-                                    <span class="preview-icon" style="color: ${accentColor};">✉️</span>
-                                    <span>hello@meti.app</span>
-                                </div>
-                                <div class="preview-contact-item">
-                                    <span class="preview-icon" style="color: ${accentColor};">🏢</span>
-                                    <span>METI Inc.</span>
+                                <div>
+                                    <div class="preview-divider" style="background: ${accentColor};"></div>
+                                    <div class="preview-contact" style="color: ${textColor};">
+                                        <div class="preview-contact-item">
+                                            <span class="preview-icon" style="color: ${accentColor};">📞</span>
+                                            <span>010-1234-5678</span>
+                                        </div>
+                                        <div class="preview-contact-item">
+                                            <span class="preview-icon" style="color: ${accentColor};">✉️</span>
+                                            <span>hello@meti.app</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
