@@ -6,6 +6,13 @@ const themeGallery = new Hono<{ Bindings: Env }>();
 // Theme configurations with dual color scheme
 const themes = [
   {
+    id: 'meti-signature',
+    name: 'METI Signature',
+    primary: '#F8F6F0',
+    secondary: '#1e3a8a',
+    description: 'METI의 시그니처 크림과 네이비 조합'
+  },
+  {
     id: 'midnight-cream',
     name: 'Midnight Cream',
     primary: '#01112B',
@@ -457,7 +464,7 @@ themeGallery.get('/', (c) => {
             <h1 class="logo">METI</h1>
             <h2 class="subtitle">테마 갤러리</h2>
             <p class="description">
-                15가지 컬러 조합으로 나만의 명함을 만들어보세요<br>
+                16가지 컬러 조합으로 나만의 명함을 만들어보세요<br>
                 각 테마는 두 가지 컬러의 조화로 디자인되었습니다
             </p>
         </div>
