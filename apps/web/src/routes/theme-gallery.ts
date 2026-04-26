@@ -130,7 +130,7 @@ themeGallery.get('/', (c) => {
         cursor: pointer;
         transition: all 0.2s;
         text-decoration: none;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
       }
       
       .nav-btn:hover {
@@ -232,7 +232,7 @@ themeGallery.get('/', (c) => {
         background: rgba(255,255,255,0.12);
         border: 1px solid rgba(255,255,255,0.2);
         border-radius: 10px;
-        backdrop-filter: blur(10px);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         padding: 12px;
         display: flex;
         flex-direction: column;

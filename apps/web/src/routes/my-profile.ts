@@ -37,14 +37,14 @@ function getMyProfileHTML() {
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #0A2260 0%, #1A3368 100%);
+            background: #FAFAF9;
             min-height: 100vh;
-            color: white;
+            color: #111827;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
             padding: 20px 40px;
             min-height: 80px;
             display: flex;
@@ -53,7 +53,7 @@ function getMyProfileHTML() {
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .header-left {
@@ -66,7 +66,7 @@ function getMyProfileHTML() {
             font-family: 'Montserrat', sans-serif;
             font-size: 28px;
             letter-spacing: 8px;
-            color: white;
+            color: #111827;
             cursor: pointer;
             font-display: block;
         }
@@ -77,7 +77,7 @@ function getMyProfileHTML() {
         }
 
         .nav-link {
-            color: rgba(255, 255, 255, 0.7);
+            color: #6B7280;
             text-decoration: none;
             font-size: 15px;
             transition: color 0.3s;
@@ -85,7 +85,7 @@ function getMyProfileHTML() {
 
         .nav-link:hover,
         .nav-link.active {
-            color: white;
+            color: #111827;
         }
 
         .header-right {
@@ -94,9 +94,9 @@ function getMyProfileHTML() {
         }
 
         .settings-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border: none;
-            color: white;
+            color: #111827;
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -109,7 +109,7 @@ function getMyProfileHTML() {
         }
 
         .settings-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: #1e3a8a;
             transform: rotate(90deg);
         }
 
@@ -194,7 +194,7 @@ function getMyProfileHTML() {
             justify-content: center;
             font-size: 48px;
             font-weight: 700;
-            color: white;
+            color: #111827;
             margin: 0 auto 24px;
             border: 4px solid rgba(255, 255, 255, 0.2);
             position: relative;
@@ -217,7 +217,7 @@ function getMyProfileHTML() {
         }
 
         .upload-option-btn {
-            background: rgba(255, 255, 255, 0.05);
+            background: white;
             border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 20px;
@@ -226,11 +226,11 @@ function getMyProfileHTML() {
             display: flex;
             align-items: center;
             gap: 16px;
-            color: white;
+            color: #111827;
         }
 
         .upload-option-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border-color: rgba(255, 193, 7, 0.5);
             transform: translateX(4px);
         }
@@ -270,7 +270,7 @@ function getMyProfileHTML() {
         }
 
         .menu-section {
-            background: rgba(255, 255, 255, 0.05);
+            background: white;
             border-radius: 16px;
             padding: 8px 0;
             margin-bottom: 24px;
@@ -294,11 +294,11 @@ function getMyProfileHTML() {
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
-            color: white;
+            color: #111827;
         }
 
         .menu-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
         }
 
         .menu-item-left {
@@ -311,7 +311,7 @@ function getMyProfileHTML() {
             width: 40px;
             height: 40px;
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -353,7 +353,7 @@ function getMyProfileHTML() {
 
         .menu-item-badge {
             background: #f44336;
-            color: white;
+            color: #111827;
             padding: 2px 8px;
             border-radius: 12px;
             font-size: 12px;
@@ -415,7 +415,7 @@ function getMyProfileHTML() {
         .modal-close {
             background: none;
             border: none;
-            color: white;
+            color: #111827;
             font-size: 24px;
             cursor: pointer;
             opacity: 0.7;
@@ -428,7 +428,7 @@ function getMyProfileHTML() {
 
         .setting-item {
             padding: 16px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid #E5E7EB;
         }
 
         .setting-item:last-child {
@@ -458,7 +458,7 @@ function getMyProfileHTML() {
             position: relative;
             width: 50px;
             height: 28px;
-            background: rgba(255, 255, 255, 0.2);
+            background: #1e3a8a;
             border-radius: 14px;
             cursor: pointer;
             transition: background 0.3s;

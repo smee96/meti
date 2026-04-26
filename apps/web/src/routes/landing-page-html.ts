@@ -33,8 +33,8 @@ export const landingPageHTML = `
       
       body {
         font-family: 'Noto Sans KR', sans-serif;
-        background: #FAFAF9;
-        color: #111827;
+        background: linear-gradient(135deg, #0A2260 0%, #1A3368 100%);
+        color: #fff;
         min-height: 100vh;
         display: flex;
         align-items: center;
@@ -57,16 +57,16 @@ export const landingPageHTML = `
         font-weight: 700;
         letter-spacing: 20px;
         margin-bottom: 120px;
-        color: #1e3a8a;
-        text-shadow: 0 4px 20px rgba(30, 58, 138, 0.15);
+        color: white;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         animation: fadeInUp 0.8s ease;
       }
       
       /* Tagline */
       .tagline {
         font-size: 18px;
-        font-weight: 400;
-        color: #4B5563;
+        font-weight: 300;
+        opacity: 0.9;
         margin-bottom: 80px;
         line-height: 1.6;
         animation: fadeInUp 1s ease 0.2s both;
@@ -96,27 +96,25 @@ export const landingPageHTML = `
       }
       
       .btn-primary {
-        background: #1e3a8a;
-        color: white;
-        box-shadow: 0 4px 16px rgba(30, 58, 138, 0.3);
+        background: linear-gradient(135deg, #ffc107 0%, #ffcd38 100%);
+        color: #0A2260;
+        box-shadow: 0 4px 16px rgba(255, 193, 7, 0.4);
       }
       
       .btn-primary:hover {
-        background: #1e40af;
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(30, 58, 138, 0.4);
+        box-shadow: 0 6px 20px rgba(255, 193, 7, 0.6);
       }
       
       .btn-secondary {
-        background: white;
-        color: #1e3a8a;
-        border: 2px solid #1e3a8a;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
       }
       
       .btn-secondary:hover {
-        background: #F9FAFB;
-        border-color: #1e40af;
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
       }
       
       /* Animations */
@@ -171,7 +169,7 @@ export const landingPageHTML = `
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(30, 58, 138, 0.03) 1px, transparent 1px);
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
         background-size: 50px 50px;
         animation: moveBackground 20s linear infinite;
         pointer-events: none;

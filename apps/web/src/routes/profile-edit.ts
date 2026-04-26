@@ -34,25 +34,25 @@ profileEdit.get('/name', (c) => {
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #0A2260 0%, #1A3368 100%);
+            background: #FAFAF9;
             min-height: 100vh;
-            color: white;
+            color: #111827;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
             padding: 20px 40px;
             min-height: 80px;
             display: flex;
             align-items: center;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .back-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border: none;
-            color: white;
+            color: #111827;
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -65,7 +65,7 @@ profileEdit.get('/name', (c) => {
         }
 
         .back-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: #1e3a8a;
             transform: scale(1.05);
         }
 
@@ -96,10 +96,10 @@ profileEdit.get('/name', (c) => {
         .form-input {
             width: 100%;
             padding: 16px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            color: white;
+            color: #111827;
             font-size: 16px;
             font-family: 'Noto Sans KR', sans-serif;
             transition: all 0.3s;
@@ -107,7 +107,7 @@ profileEdit.get('/name', (c) => {
 
         .form-input:focus {
             outline: none;
-            background: rgba(255, 255, 255, 0.15);
+            background: #E5E7EB;
             border-color: rgba(255, 193, 7, 0.5);
         }
 
@@ -130,7 +130,7 @@ profileEdit.get('/name', (c) => {
             padding: 20px;
             display: flex;
             justify-content: center;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
         }
 
@@ -314,25 +314,25 @@ profileEdit.get('/password', (c) => {
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #0A2260 0%, #1A3368 100%);
+            background: #FAFAF9;
             min-height: 100vh;
-            color: white;
+            color: #111827;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
             padding: 20px 40px;
             min-height: 80px;
             display: flex;
             align-items: center;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .back-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border: none;
-            color: white;
+            color: #111827;
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -345,7 +345,7 @@ profileEdit.get('/password', (c) => {
         }
 
         .back-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: #1e3a8a;
             transform: scale(1.05);
         }
 
@@ -386,10 +386,10 @@ profileEdit.get('/password', (c) => {
         .form-input {
             width: 100%;
             padding: 16px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            color: white;
+            color: #111827;
             font-size: 16px;
             font-family: 'Noto Sans KR', sans-serif;
             transition: all 0.3s;
@@ -397,7 +397,7 @@ profileEdit.get('/password', (c) => {
 
         .form-input:focus {
             outline: none;
-            background: rgba(255, 255, 255, 0.15);
+            background: #E5E7EB;
             border-color: rgba(255, 193, 7, 0.5);
         }
 
@@ -436,7 +436,7 @@ profileEdit.get('/password', (c) => {
             font-size: 12px;
             margin-top: 8px;
             padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.05);
+            background: white;
             border-radius: 8px;
             display: flex;
             gap: 16px;
@@ -464,7 +464,7 @@ profileEdit.get('/password', (c) => {
             padding: 20px;
             display: flex;
             justify-content: center;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
         }
 

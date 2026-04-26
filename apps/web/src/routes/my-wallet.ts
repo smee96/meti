@@ -37,14 +37,14 @@ function getMyWalletHTML() {
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(135deg, #0A2260 0%, #1A3368 100%);
+            background: #FAFAF9;
             min-height: 100vh;
-            color: white;
+            color: #111827;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: white;
+            border-bottom: 1px solid #E5E7EB;
             padding: 20px 40px;
             min-height: 80px;
             display: flex;
@@ -53,7 +53,7 @@ function getMyWalletHTML() {
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .header-left {
@@ -66,7 +66,7 @@ function getMyWalletHTML() {
             font-family: 'Montserrat', sans-serif;
             font-size: 28px;
             letter-spacing: 8px;
-            color: white;
+            color: #111827;
             cursor: pointer;
         }
 
@@ -76,7 +76,7 @@ function getMyWalletHTML() {
         }
 
         .nav-link {
-            color: rgba(255, 255, 255, 0.7);
+            color: #6B7280;
             text-decoration: none;
             font-size: 15px;
             transition: color 0.3s;
@@ -84,7 +84,7 @@ function getMyWalletHTML() {
 
         .nav-link:hover,
         .nav-link.active {
-            color: white;
+            color: #111827;
         }
 
         .header-right {
@@ -98,21 +98,21 @@ function getMyWalletHTML() {
             align-items: center;
             gap: 12px;
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s;
         }
 
         .user-info:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: #E5E7EB;
         }
 
         .user-avatar {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            background: #1e3a8a;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -210,7 +210,7 @@ function getMyWalletHTML() {
         .search-box {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border-radius: 12px;
             padding: 12px 16px;
             gap: 12px;
@@ -225,7 +225,7 @@ function getMyWalletHTML() {
             flex: 1;
             background: none;
             border: none;
-            color: white;
+            color: #111827;
             font-size: 15px;
             outline: none;
         }
@@ -243,10 +243,10 @@ function getMyWalletHTML() {
 
         .filter-tab {
             padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border-radius: 20px;
             border: none;
-            color: rgba(255, 255, 255, 0.7);
+            color: #6B7280;
             cursor: pointer;
             transition: all 0.3s;
             font-size: 14px;
@@ -259,8 +259,8 @@ function getMyWalletHTML() {
         }
 
         .filter-tab:hover:not(.active) {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
+            background: #E5E7EB;
+            color: #111827;
         }
 
         .cards-grid {
@@ -270,7 +270,7 @@ function getMyWalletHTML() {
         }
 
         .wallet-card {
-            background: rgba(255, 255, 255, 0.1);
+            background: #F3F4F6;
             border-radius: 16px;
             padding: 24px;
             transition: all 0.3s;
@@ -279,7 +279,7 @@ function getMyWalletHTML() {
         }
 
         .wallet-card:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: #E5E7EB;
             transform: translateY(-4px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
@@ -321,7 +321,7 @@ function getMyWalletHTML() {
             justify-content: center;
             font-size: 28px;
             font-weight: 700;
-            color: white;
+            color: #111827;
             flex-shrink: 0;
         }
 
@@ -400,12 +400,12 @@ function getMyWalletHTML() {
         }
 
         .card-btn.secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: #F3F4F6;
+            color: #111827;
         }
 
         .card-btn.secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: #1e3a8a;
         }
 
         .card-btn.danger {
@@ -451,7 +451,7 @@ function getMyWalletHTML() {
             width: 48px;
             height: 48px;
             border: 4px solid rgba(255, 255, 255, 0.2);
-            border-top-color: white;
+            border-top-color: #111827;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
