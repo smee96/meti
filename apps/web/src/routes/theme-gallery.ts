@@ -483,28 +483,34 @@ themeGallery.get('/', (c) => {
                 const mainBg = theme.primary;  // 왼쪽/상단 메인 배경
                 const diagonalBg = theme.secondary;  // 오른쪽/하단 사선 배경
                 
-                // 텍스트 컬러 = 배경 밝기에 따라 자동 선택 (흰색/검정/다크그레이)
-                // primary 배경의 밝기를 기준으로 텍스트 색상 결정
+                // 텍스트 컬러 = 두 배경색 모두에서 읽혀야 함
+                // 두 배경의 평균 밝기를 기준으로 텍스트 색상 결정
+                const avgBrightness = (primaryBrightness + secondaryBrightness) / 2;
                 let textColor;
-                if (primaryBrightness > 160) {
-                    // 매우 밝은 배경 → 진한 검정
+                
+                // 두 배경 중 하나라도 매우 어두우면 흰색 사용
+                if (primaryBrightness < 80 || secondaryBrightness < 80) {
+                    textColor = '#FFFFFF';
+                } 
+                // 두 배경 중 하나라도 매우 밝으면 검정 사용
+                else if (primaryBrightness > 180 || secondaryBrightness > 180) {
                     textColor = '#1A202C';
-                } else if (primaryBrightness > 100) {
-                    // 중간 밝기 → 다크 그레이
+                }
+                // 평균 밝기로 판단
+                else if (avgBrightness > 140) {
+                    textColor = '#1A202C';
+                } else if (avgBrightness > 100) {
                     textColor = '#2D3748';
                 } else {
-                    // 어두운 배경 → 흰색
                     textColor = '#FFFFFF';
                 }
                 
-                // 액센트 컬러 (구분선, 아이콘) = 텍스트와 대비되는 색
+                // 액센트 컬러 (구분선, 아이콘) = 텍스트와 같은 계열 (약간 연하게)
                 let accentColor;
-                if (primaryBrightness > 128) {
-                    // 밝은 배경이면 secondary를 액센트로 (또는 어두운 회색)
-                    accentColor = secondaryBrightness < 100 ? theme.secondary : '#4A5568';
+                if (textColor === '#FFFFFF') {
+                    accentColor = 'rgba(255, 255, 255, 0.7)';
                 } else {
-                    // 어두운 배경이면 흰색이나 밝은 secondary
-                    accentColor = secondaryBrightness > 150 ? theme.secondary : '#E2E8F0';
+                    accentColor = 'rgba(26, 32, 44, 0.6)';
                 }
                 
                 return `
@@ -512,7 +518,7 @@ themeGallery.get('/', (c) => {
                     <div class="theme-preview">
                         <div class="card-content-preview" style="background: ${mainBg};">
                             <div class="diagonal-divider">
-                                <div style="background: ${diagonalBg}; opacity: 0.25; position: absolute; bottom: 0; right: 0; width: 60%; height: 60%; clip-path: polygon(100% 0, 100% 100%, 0 100%);"></div>
+                                <div style="background: ${diagonalBg}; position: absolute; bottom: 0; right: 0; width: 60%; height: 60%; clip-path: polygon(100% 0, 100% 100%, 0 100%);"></div>
                             </div>
                             <div class="content-wrapper">
                                 <div>
