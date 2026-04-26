@@ -483,35 +483,12 @@ themeGallery.get('/', (c) => {
                 const mainBg = theme.primary;  // 왼쪽/상단 메인 배경
                 const diagonalBg = theme.secondary;  // 오른쪽/하단 사선 배경
                 
-                // 텍스트 컬러 = 두 배경색 모두에서 읽혀야 함
-                // 두 배경의 평균 밝기를 기준으로 텍스트 색상 결정
-                const avgBrightness = (primaryBrightness + secondaryBrightness) / 2;
-                let textColor;
+                // 텍스트 컬러 = Secondary 컬러(사선 컬러) 사용
+                // Primary 배경 위에서 읽혀야 하므로 대비 확인
+                const textColor = theme.secondary;
                 
-                // 두 배경 중 하나라도 매우 어두우면 흰색 사용
-                if (primaryBrightness < 80 || secondaryBrightness < 80) {
-                    textColor = '#FFFFFF';
-                } 
-                // 두 배경 중 하나라도 매우 밝으면 검정 사용
-                else if (primaryBrightness > 180 || secondaryBrightness > 180) {
-                    textColor = '#1A202C';
-                }
-                // 평균 밝기로 판단
-                else if (avgBrightness > 140) {
-                    textColor = '#1A202C';
-                } else if (avgBrightness > 100) {
-                    textColor = '#2D3748';
-                } else {
-                    textColor = '#FFFFFF';
-                }
-                
-                // 액센트 컬러 (구분선, 아이콘) = 텍스트와 같은 계열 (약간 연하게)
-                let accentColor;
-                if (textColor === '#FFFFFF') {
-                    accentColor = 'rgba(255, 255, 255, 0.7)';
-                } else {
-                    accentColor = 'rgba(26, 32, 44, 0.6)';
-                }
+                // 액센트 컬러 (구분선, 아이콘) = Secondary를 약간 연하게
+                const accentColor = theme.secondary;
                 
                 return `
                 <div class="theme-card" onclick="selectTheme('${theme.id}')">
